@@ -10,3 +10,4 @@
 * We will set deadlines and sessions set outside of lecture and section to make sure everyone is on track.
 * We will provide a MVP (minimal viable product) to present and can add features to it once agreed upon as a group.
 * Slack will be the main form of communication as a group.
+* We plan to meet on each Friday, 12-1 pm that will be optional based on team progress.
