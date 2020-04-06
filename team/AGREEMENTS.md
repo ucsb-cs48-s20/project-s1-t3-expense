@@ -7,3 +7,6 @@
 * Atmosphere wise: Relaxed, chill, encouraging.
 * If trouble arises, first ask in the team slack, and if no help is provided we can go to the other channels such as 'general' or 'nextjs...' and can be discussed in team meetings if needed (i.e. via Zoom)
 * Open communication is key to success, there are no dumb questions. Don't hesitate to bring up new ideas.
+* We will set deadlines and sessions set outside of lecture and section to make sure everyone is on track.
+* We will provide a MVP (minimal viable product) to present and can add features to it once agreed upon as a group.
+* Slack will be the main form of communication as a group.
