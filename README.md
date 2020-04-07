@@ -11,7 +11,7 @@ Housing Expenses Splitter
 * Dylan Lin, DylanLin29
 * Greg Baroni, gbaroni888
 
-* Tech stack is TBD, but leaning towards Javascript based tech stack.
+* Tech stack is Javascript.
 
 # Plans for the user
 * Different user profiles that would be saved.
