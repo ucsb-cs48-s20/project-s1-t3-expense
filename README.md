@@ -8,6 +8,7 @@
 - Quick Calculations: do not need to sign in
 - Profiles: each household will have a profile where users can input their bills, record the payment methods, keep track of them later, have a bill history where users can view/delete paid bills
 * A budget system will be provided.
+* Tech stack is Javascript.
 
 # Users
 
@@ -15,6 +16,7 @@
 * Bill Owner (Everyone can be the bill owner): create a new bill, put in the amount and description, add members of this bill and the amount correspondingly (does not need to be everyone), keep track of the payment status
 * Bill Member: agree/disagree with the payment
 
+# Project Members
 
 * Kobe Shavolian, KobeShav
 * Roberto Gutierrez, robg1638
@@ -22,5 +24,3 @@
 * Kaylee Nguyen, kayleenguyen
 * Dylan Lin, DylanLin29
 * Greg Baroni, gbaroni888
-
-* Tech stack is Javascript.
