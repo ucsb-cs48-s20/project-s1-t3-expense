@@ -1,4 +1,4 @@
-# project-s1-t3-expense
+# project-s1-t3-expensee
 
 # Housing Expenses Splitter
 
