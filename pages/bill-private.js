@@ -20,8 +20,11 @@ function RandomDog() {
 
   return (
     <div>
-      <p>Enjoy this doggo!</p>
-      <Image data-cy="doggo" src={data.image} />
+      <p>Enjoy this bill!</p>
+
+      <div className="show-bill">
+        <h1>Bill</h1>
+      </div>
     </div>
   );
 }
