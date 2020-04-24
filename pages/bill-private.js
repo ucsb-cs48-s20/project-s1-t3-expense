@@ -4,6 +4,7 @@ import Image from "react-bootstrap/Image";
 import { fetch } from "../utils/fetch";
 import Layout from "../components/Layout";
 import { requiredAuth } from "../utils/ssr";
+import Button from "react-bootstrap/Button";
 
 function RandomDog() {
   const { data } = useSWR("/api/dog-private", fetch, {
@@ -20,11 +21,12 @@ function RandomDog() {
 
   return (
     <div>
-      <p>Enjoy this bill!</p>
-
-      <div className="show-bill">
-        <h1>Bill</h1>
-      </div>
+      <p>Bills! (TBA)</p>
+      <>
+        <Button variant="primary">To Be Paid</Button>{" "}
+        <Button variant="secondary">Already Paid</Button>{" "}
+        <Button variant="success">+ Create Bill</Button>
+      </>
     </div>
   );
 }
