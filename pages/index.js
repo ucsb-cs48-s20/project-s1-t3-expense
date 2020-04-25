@@ -1,4 +1,4 @@
-import Layout from "../components/Layout";
+import MainLayout from "../components/MainLayout";
 import { optionalAuth } from "../utils/ssr";
 
 export const getServerSideProps = optionalAuth;
@@ -7,7 +7,7 @@ function HomePage(props) {
   const user = props.user;
 
   return (
-    <Layout user={user}>
+    <MainLayout user={user}>
       {user ? (
         <div>
           You're logged in! Here's what the server knows about you:
@@ -16,7 +16,7 @@ function HomePage(props) {
       ) : (
         <div className="not-log-in-message">You're not logged in!</div>
       )}
-    </Layout>
+    </MainLayout>
   );
 }
 

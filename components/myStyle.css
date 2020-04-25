@@ -2,3 +2,12 @@
   font-size: 30px;
   text-align: center;
 }
+
+.Jumbotron {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  margin-top: 10px;
+  padding-left: 50px;
+  padding-right: 50px;
+  border-radius: 10px;
+}
