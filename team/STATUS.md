@@ -2,7 +2,7 @@
 
 ## Sprint Goal for Monday 04/27 through Monday 05/04
 
-Be able to save builds
+Be able to save bills
 
 ## Brief description of MVP
 
