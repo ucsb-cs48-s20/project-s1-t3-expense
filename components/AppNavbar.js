@@ -10,10 +10,12 @@ function AppNavbar(props) {
   const user = props.user;
 
   return (
-    <Navbar bg="light" expand="lg">
+    <Navbar bg="dark" variant="dark" className="Navbar">
       <Container>
         <Link href="/" passHref={true}>
-          <Navbar.Brand>Housing Expenses Splitter</Navbar.Brand>
+          <Navbar.Brand>
+            <i className="fas fa-money-bill"></i> Housing Expenses Splitter
+          </Navbar.Brand>
         </Link>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
@@ -39,14 +41,18 @@ function AppNavbar(props) {
                   </>
                 }
               >
-                <NavDropdown.Item className="text-danger" href="/api/logout">
+                <NavDropdown.Item
+                  className="text-danger"
+                  href="/api/logout"
+                  variant="dark"
+                >
                   Logout
                 </NavDropdown.Item>
               </NavDropdown>
             ) : (
-              <Button data-cy="login" href="/api/login">
+              <Nav.Link data-cy="login" href="/api/login" className="fontColor">
                 Login
-              </Button>
+              </Nav.Link>
             )}
           </Nav>
         </Navbar.Collapse>

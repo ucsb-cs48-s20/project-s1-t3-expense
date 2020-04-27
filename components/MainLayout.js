@@ -1,10 +1,11 @@
 import Container from "react-bootstrap/Container";
 import AppNavbar from "./AppNavbar";
 import AppFooter from "./AppFooter";
+import AppJumbotron from "./AppJumbotron";
 import Head from "next/head";
 
-// Layout without Jumbotron
-function Layout(props) {
+// Layout with Jumbotron
+function MainLayout(props) {
   const user = props.user;
 
   return (
@@ -18,10 +19,11 @@ function Layout(props) {
         />
       </Head>
       <AppNavbar user={user} />
+      <AppJumbotron uers={user} />
       <Container>{props.children}</Container>
       <AppFooter />
     </>
   );
 }
 
-export default Layout;
+export default MainLayout;
