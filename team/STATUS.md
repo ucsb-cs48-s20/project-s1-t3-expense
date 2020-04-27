@@ -30,3 +30,6 @@ What obstacles remain to completing MVP:
 
 Support that would be helpful from course staff to completing MVP
 * Lab/lecture on mongoDB (maybe based on how to connect mongo in the code and save data to the database)
+
+## Support for future iterations
+* How to invite other users (via urls, emails, etc.) and connect them to a group
