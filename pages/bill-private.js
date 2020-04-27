@@ -5,6 +5,7 @@ import { fetch } from "../utils/fetch";
 import Layout from "../components/Layout";
 import { requiredAuth } from "../utils/ssr";
 import Button from "react-bootstrap/Button";
+import AddBill from "../components/AddBill";
 
 function RandomDog() {
   const { data } = useSWR("/api/dog-private", fetch, {
@@ -26,6 +27,7 @@ function RandomDog() {
         <Button variant="primary">To Be Paid</Button>{" "}
         <Button variant="secondary">Already Paid</Button>{" "}
         <Button variant="success">+ Create Bill</Button>
+        <AddBill />
       </>
     </div>
   );
