@@ -2,7 +2,8 @@
 
 ## Sprint Goal for Monday 04/27 through Monday 05/04
 
-Be able to save bills
+Be able to save bills so that bills are uploaded to the database and can be shown on the website when logged out/in.
+Saves all bills that are marked as active (not yet paid) and inactive (paid)
 
 ## Brief description of MVP
 
