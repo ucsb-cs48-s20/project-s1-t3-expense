@@ -1,13 +1,28 @@
 import React, { useState } from "react";
+import { GlobalContext } from "../context/GlobalState";
 
 function AddBill() {
   const [text, setText] = useState("");
   const [amount, setAmount] = useState(0.0);
 
+  const { addBill } = useContext(GlobalContext);
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+
+    const newBill = {
+      id: Math.floor(Math.random() * 100000000),
+      text,
+      amount: +amount,
+    };
+
+    addBill(newBill);
+  };
+
   return (
     <>
       <h3>Add new bill</h3>
-      <form>
+      <form onSubmit={onSubmit}>
         <div>
           <h4>Text</h4>
           <input
@@ -18,8 +33,7 @@ function AddBill() {
           />
         </div>
         <div>
-          <h4>Amount</h4>
-          ${" "}
+          <h4>Amount</h4>${" "}
           <input
             type="number"
             step="0.01"

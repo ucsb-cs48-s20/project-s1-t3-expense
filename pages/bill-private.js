@@ -6,6 +6,8 @@ import Layout from "../components/Layout";
 import { requiredAuth } from "../utils/ssr";
 import Button from "react-bootstrap/Button";
 import AddBill from "../components/AddBill";
+import BillList from "../components/BillList";
+import { GlobalProvider } from "./context/GlobalState";
 
 function RandomDog() {
   const { data } = useSWR("/api/dog-private", fetch, {
@@ -21,15 +23,16 @@ function RandomDog() {
   }
 
   return (
-    <div>
+    <GlobalProvider>
       <p>Bills! (TBA)</p>
       <>
         <Button variant="primary">To Be Paid</Button>{" "}
         <Button variant="secondary">Already Paid</Button>{" "}
         <Button variant="success">+ Create Bill</Button>
         <AddBill />
+        <BillList />
       </>
-    </div>
+    </GlobalProvider>
   );
 }
 
