@@ -2,6 +2,8 @@ require("dotenv").config();
 
 module.exports = {
   env: {
+    MONGO_URI:
+      "mongodb+srv://spike:spiketest123@cluster0-hphfr.mongodb.net/test?retryWrites=true&w=majority",
     AUTH0_DOMAIN: process.env.AUTH0_DOMAIN,
     AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
     AUTH0_CLIENT_SECRET: process.env.AUTH0_CLIENT_SECRET,

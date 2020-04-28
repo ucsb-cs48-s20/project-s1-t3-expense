@@ -11,3 +11,61 @@
   padding-right: 50px;
   border-radius: 10px;
 }
+
+.navbar {
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #008cba;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar .create {
+  color: #fff;
+  font-size: 2rem;
+}
+
+.navbar-brand:hover,
+.create:hover {
+  color: #fff;
+}
+
+.wrapper {
+  max-width: 1200px;
+  padding: 0 16px;
+  margin: auto;
+}
+
+.grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+.form-container {
+  width: 400px;
+  margin: 20px auto;
+}
+
+h1 {
+  text-align: center;
+}
+
+.bill-container {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 10px;
+}
+
+.create-new-button {
+  width: 120px;
+  margin: 20px auto;
+  font-family: monospace;
+  font-size: large;
+  text-align: center;
+}
