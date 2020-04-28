@@ -7,7 +7,7 @@ import { requiredAuth } from "../utils/ssr";
 import Button from "react-bootstrap/Button";
 import AddBill from "../components/AddBill";
 import BillList from "../components/BillList";
-import { GlobalProvider } from "./context/GlobalState";
+import { GlobalProvider } from "../context/GlobalState";
 
 function RandomDog() {
   const { data } = useSWR("/api/dog-private", fetch, {
