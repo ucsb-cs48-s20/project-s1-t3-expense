@@ -11,7 +11,7 @@ const BillSchema = new mongoose.Schema({
   description: {
     type: String,
     required: true,
-    maxlength: [200, "Title cannot be more than 2000 characters"],
+    maxlength: [200, "Description cannot be more than 200 characters"],
   },
 });
 
