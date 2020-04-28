@@ -51,7 +51,10 @@ export async function getServerSideProps(context) {
   const {
     props: { user },
   } = await requiredAuth(context);
-  const res = await fetch(`http://localhost:3000/api/bills`);
+  const res = await fetch(
+    `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills`
+  );
+  //const res = await fetch(`http://localhost:3000/api/bills`);
   console.log(res);
   const { data } = await res.json();
   return { props: { bills: data, user: user } };
