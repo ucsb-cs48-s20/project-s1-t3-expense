@@ -1,46 +1,60 @@
 import useSWR from "swr";
-import Spinner from "react-bootstrap/Spinner";
 import Image from "react-bootstrap/Image";
-import { fetch } from "../utils/fetch";
+import fetch from "isomorphic-unfetch";
+import Link from "next/link";
 import Layout from "../components/Layout";
 import { requiredAuth } from "../utils/ssr";
-import Button from "react-bootstrap/Button";
+import { Card, Button } from "semantic-ui-react";
+import { useRouter } from "next/router";
 
-function RandomDog() {
-  const { data } = useSWR("/api/dog-private", fetch, {
-    // By default, useSWR will call the endpoint we specified (in this case, /api/dog) every time we click away from
-    // the page. This can be really useful if we want to make sure the web app is always showing the latest data,
-    // but in this case, we don't need that behavior. See what happens if you set these options to true or remove them!
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
-
-  if (!data) {
-    return <Spinner animation="border" />;
-  }
-
-  return (
-    <div>
-      <p>Bills! (TBA)</p>
-      <>
-        <Button variant="primary">To Be Paid</Button>{" "}
-        <Button variant="secondary">Already Paid</Button>{" "}
-        <Button variant="success">+ Create Bill</Button>
-      </>
-    </div>
-  );
-}
-
-export const getServerSideProps = requiredAuth;
-
-function DogPage(props) {
-  const user = props.user;
-
+const BillPrivate = ({ bills, user }) => {
   return (
     <Layout user={user}>
-      <RandomDog />
+      <div className="bill-container">
+        <p>Bills! (TBA)</p>
+        <div className="grid wrapper">
+          {bills?.map((bill) => {
+            return (
+              <div key={bill._id}>
+                <Card>
+                  <Card.Content>
+                    <Card.Header>
+                      <Link href={`/${bill._id}`}>
+                        <a>{bill.title}</a>
+                      </Link>
+                    </Card.Header>
+                  </Card.Content>
+                  <Card.Content extra>
+                    <Link href={`/${bill._id}`}>
+                      <Button primary>View</Button>
+                    </Link>
+                    <Link href={`/${bill._id}/edit`}>
+                      <Button primary>Edit</Button>
+                    </Link>
+                  </Card.Content>
+                </Card>
+              </div>
+            );
+          })}
+        </div>
+        <div className="create-new-button">
+          <Link href="/new">
+            <Button primary>New Bill</Button>
+          </Link>
+        </div>
+      </div>
     </Layout>
   );
+};
+
+export async function getServerSideProps(context) {
+  const {
+    props: { user },
+  } = await requiredAuth(context);
+  const res = await fetch(`http://localhost:3000/api/bills`);
+  console.log(res);
+  const { data } = await res.json();
+  return { props: { bills: data, user: user } };
 }
 
-export default DogPage;
+export default BillPrivate;

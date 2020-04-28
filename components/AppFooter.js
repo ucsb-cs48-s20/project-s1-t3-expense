@@ -14,7 +14,7 @@ function AppFooter() {
         width: "100%",
       }}
     >
-      This is an app to help calculate household espenses. Check out the source
+      This is an app to help calculate household expenses. Check out the source
       code on{" "}
       <a href="https://github.com/ucsb-cs48-s20/project-s1-t3-expense">
         GitHub
