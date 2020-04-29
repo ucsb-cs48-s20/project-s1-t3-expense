@@ -7,10 +7,12 @@ import { useRouter } from "next/router";
 import { requiredAuth } from "../utils/ssr";
 import Layout from "../components/Layout";
 
-export const getServerSideProps = requiredAuth;
-
-const NewBill = () => {
-  const [form, setForm] = useState({ title: "", description: "" });
+const NewBill = ({ user }) => {
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    unique: user.sub,
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
@@ -105,5 +107,12 @@ const NewBill = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  const {
+    props: { user },
+  } = await requiredAuth(context);
+  return { props: { user: user } };
+}
 
 export default NewBill;

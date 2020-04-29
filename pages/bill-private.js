@@ -6,6 +6,7 @@ import Layout from "../components/Layout";
 import { requiredAuth } from "../utils/ssr";
 import { Card, Button } from "semantic-ui-react";
 import { useRouter } from "next/router";
+import { getBill } from "./api/bills/index";
 
 const BillPrivate = ({ bills, user }) => {
   return (
@@ -51,13 +52,11 @@ export async function getServerSideProps(context) {
   const {
     props: { user },
   } = await requiredAuth(context);
-  const res = await fetch(
-    `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills`
-  );
-  //const res = await fetch(`http://localhost:3000/api/bills`);
+  //const res = await fetch(`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills`);
+  const res = await getBill(user);
   console.log(res);
-  const { data } = await res.json();
-  return { props: { bills: data, user: user } };
+  //const { data }= await res.json();
+  return { props: { bills: JSON.parse(JSON.stringify(res)), user: user } };
 }
 
 export default BillPrivate;
