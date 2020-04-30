@@ -89,7 +89,11 @@ const EditBill = ({ bills, user }) => {
                 fluid
                 error={
                   errors.title
-                    ? { content: "Please enter a title", pointing: "below" }
+                    ? {
+                        content:
+                          "Title must not be empty or longer than 40 characters",
+                        pointing: "below",
+                      }
                     : null
                 }
                 label="Title"
@@ -103,7 +107,8 @@ const EditBill = ({ bills, user }) => {
                 error={
                   errors.description
                     ? {
-                        content: "Please enter a description",
+                        content:
+                          "Description must not be empty or longer than 200 characters",
                         pointing: "below",
                       }
                     : null

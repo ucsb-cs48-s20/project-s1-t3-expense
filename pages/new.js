@@ -84,7 +84,11 @@ const NewBill = ({ user }) => {
               fluid
               error={
                 errors.title
-                  ? { content: "Please enter a title", pointing: "below" }
+                  ? {
+                      content:
+                        "Title must not be empty or longer than 40 characters",
+                      pointing: "below",
+                    }
                   : null
               }
               label="Title"
@@ -96,7 +100,11 @@ const NewBill = ({ user }) => {
               fluid
               error={
                 errors.description
-                  ? { content: "Please enter a description", pointing: "below" }
+                  ? {
+                      content:
+                        "Description must not be empty or longer than 200 characters",
+                      pointing: "below",
+                    }
                   : null
               }
               label="Description"
