@@ -15,7 +15,6 @@ const EditBill = ({ bills, user }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-  const [clear, setClear] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -24,24 +23,14 @@ const EditBill = ({ bills, user }) => {
         updateBill();
       } else {
         setIsSubmitting(false);
-        if (Object.keys(errors.title).length > 0) {
-          setForm({
-            title: "",
-            description: form?.description,
-            unique: user.sub,
-          });
-        }
-        if (Object.keys(errors.description).length > 0) {
-          setForm({
-            title: form?.title,
-            description: "",
-            unique: user.sub,
-          });
-        }
-        setClear(true);
+        setForm({
+          title: "",
+          description: "",
+          unique: user.sub,
+        });
       }
     }
-  }, [errors, clear]);
+  }, [errors]);
 
   const updateBill = async () => {
     try {
@@ -67,7 +56,6 @@ const EditBill = ({ bills, user }) => {
     e.preventDefault();
     let errs = validate();
     setErrors(errs);
-    setClear(false);
     setIsSubmitting(true);
   };
   const handleChange = (e) => {
