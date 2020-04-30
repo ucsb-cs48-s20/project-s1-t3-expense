@@ -65,9 +65,13 @@ const EditBill = ({ bills, user }) => {
 
     if (!form.title) {
       err.title = "Title is required";
+    } else if (form.title.length > 40) {
+      err.title = "Title must be less than 40 characters";
     }
     if (!form.description) {
       err.description = "Description is required";
+    } else if (form.description.length > 200) {
+      err.description = "Description must be less taht 200 characters";
     }
     return err;
   };
