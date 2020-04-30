@@ -11,6 +11,7 @@ const EditBill = ({ bills, user }) => {
   const [form, setForm] = useState({
     title: bills.title,
     description: bills.description,
+    unique: user.sub,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
