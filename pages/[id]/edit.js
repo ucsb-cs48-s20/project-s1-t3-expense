@@ -11,6 +11,7 @@ const EditBill = ({ bills, user }) => {
   const [form, setForm] = useState({
     title: bills.title,
     description: bills.description,
+    unique: user.sub,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -22,6 +23,11 @@ const EditBill = ({ bills, user }) => {
         updateBill();
       } else {
         setIsSubmitting(false);
+        setForm({
+          title: "",
+          description: "",
+          unique: user.sub,
+        });
       }
     }
   }, [errors]);
@@ -29,7 +35,7 @@ const EditBill = ({ bills, user }) => {
   const updateBill = async () => {
     try {
       const res = await fetch(
-        // `http://localhost:3000/api/bills/${router.query.id}`,
+        //`http://localhost:3000/api/bills/${router.query.id}`,
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
@@ -64,9 +70,13 @@ const EditBill = ({ bills, user }) => {
 
     if (!form.title) {
       err.title = "Title is required";
+    } else if (form.title.length > 40) {
+      err.title = "Title must be less than 40 characters";
     }
     if (!form.description) {
       err.description = "Description is required";
+    } else if (form.description.length > 200) {
+      err.description = "Description must be less taht 200 characters";
     }
     return err;
   };
@@ -84,7 +94,11 @@ const EditBill = ({ bills, user }) => {
                 fluid
                 error={
                   errors.title
-                    ? { content: "Please enter a title", pointing: "below" }
+                    ? {
+                        content:
+                          "Title must not be empty or longer than 40 characters",
+                        pointing: "below",
+                      }
                     : null
                 }
                 label="Title"
@@ -98,7 +112,8 @@ const EditBill = ({ bills, user }) => {
                 error={
                   errors.description
                     ? {
-                        content: "Please enter a description",
+                        content:
+                          "Description must not be empty or longer than 200 characters",
                         pointing: "below",
                       }
                     : null

@@ -7,10 +7,12 @@ import { useRouter } from "next/router";
 import { requiredAuth } from "../utils/ssr";
 import Layout from "../components/Layout";
 
-export const getServerSideProps = requiredAuth;
-
-const NewBill = () => {
-  const [form, setForm] = useState({ title: "", description: "" });
+const NewBill = ({ user }) => {
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    unique: user.sub,
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const router = useRouter();
@@ -21,6 +23,11 @@ const NewBill = () => {
         createBill();
       } else {
         setIsSubmitting(false);
+        setForm({
+          title: "",
+          description: "",
+          unique: user.sub,
+        });
       }
     }
   }, [errors]);
@@ -59,9 +66,13 @@ const NewBill = () => {
 
     if (!form.title) {
       err.title = "Title is required";
+    } else if (form.title.length > 40) {
+      err.title = "Title must be less than 40 characters";
     }
     if (!form.description) {
       err.description = "Description is required";
+    } else if (form.description.length > 200) {
+      err.description = "Description must be less taht 200 characters";
     }
     return err;
   };
@@ -78,7 +89,11 @@ const NewBill = () => {
               fluid
               error={
                 errors.title
-                  ? { content: "Please enter a title", pointing: "below" }
+                  ? {
+                      content:
+                        "Title must not be empty or longer than 40 characters",
+                      pointing: "below",
+                    }
                   : null
               }
               label="Title"
@@ -90,7 +105,11 @@ const NewBill = () => {
               fluid
               error={
                 errors.description
-                  ? { content: "Please enter a description", pointing: "below" }
+                  ? {
+                      content:
+                        "Description must not be empty or longer than 200 characters",
+                      pointing: "below",
+                    }
                   : null
               }
               label="Description"
@@ -105,5 +124,12 @@ const NewBill = () => {
     </div>
   );
 };
+
+export async function getServerSideProps(context) {
+  const {
+    props: { user },
+  } = await requiredAuth(context);
+  return { props: { user: user } };
+}
 
 export default NewBill;

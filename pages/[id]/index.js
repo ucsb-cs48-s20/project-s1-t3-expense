@@ -33,7 +33,7 @@ const Bills = ({ bills, user }) => {
   const deleteBill = async () => {
     const billId = router.query.id;
     try {
-      //const deleted = await fetch(`http://localhost:3000/api/bills/${billId}`, {
+      //const deleted = await fetch(`http://localhost:3000/api/bills/${billId}`,
       const deleted = await fetch(
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
         {

@@ -13,6 +13,10 @@ const BillSchema = new mongoose.Schema({
     required: true,
     maxlength: [200, "Description cannot be more than 200 characters"],
   },
+  unique: {
+    type: String,
+    required: true,
+  },
 });
 
 module.exports = mongoose.models.Bill || mongoose.model("Bill", BillSchema);
