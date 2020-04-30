@@ -24,11 +24,20 @@ const NewBill = ({ user }) => {
         createBill();
       } else {
         setIsSubmitting(false);
-        setForm({
-          title: "",
-          description: "",
-          unique: user.sub,
-        });
+        if (Object.keys(errors.title).length > 0) {
+          setForm({
+            title: "",
+            description: form.description,
+            unique: user.sub,
+          });
+        }
+        if (Object.keys(errors.description).length > 0) {
+          setForm({
+            title: form.title,
+            description: "",
+            unique: user.sub,
+          });
+        }
         setClear(true);
       }
     }
