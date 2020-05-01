@@ -1,7 +1,7 @@
 # project-s1-t3-expense
 
 # Housing Expenses Splitter
-
+ 
 * A web application to keep track of bills and owed money, can support payments such as rent or one time fees. Users can choose to split the bills evenly or customize by themselves.
 * Will support the users creating additional expenses in the following categories: groceries, food, etc.
 * Support quick calculations & profile systems:
