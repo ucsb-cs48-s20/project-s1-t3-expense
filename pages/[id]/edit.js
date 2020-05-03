@@ -11,6 +11,7 @@ const EditBill = ({ bills, user }) => {
   const [form, setForm] = useState({
     title: bills.title,
     description: bills.description,
+    groupSize: bills.groupSize,
     unique: user.sub,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -26,6 +27,7 @@ const EditBill = ({ bills, user }) => {
         setForm({
           title: "",
           description: "",
+          groupSize: 1,
           unique: user.sub,
         });
       }
@@ -107,6 +109,18 @@ const EditBill = ({ bills, user }) => {
                 value={form.title}
                 onChange={handleChange}
               />
+
+              <Form.Input
+                label="Group Size"
+                placeholder="Enter group size..."
+                name="groupSize"
+                type="number"
+                step="1"
+                min="1"
+                value={form.groupSize}
+                onChange={handleChange}
+              />
+
               <Form.TextArea
                 fluid
                 error={

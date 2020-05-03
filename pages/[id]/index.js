@@ -55,6 +55,7 @@ const Bills = ({ bills, user }) => {
         ) : (
           <>
             <h1>{bills.title}</h1>
+            <h4>Group Size: {bills.groupSize}</h4>
             <p>{bills.description}</p>
             <Button color="red" onClick={open}>
               Delete
