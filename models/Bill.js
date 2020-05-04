@@ -17,6 +17,10 @@ const BillSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  dollarAmount: {
+    type: Number,
+    required: true,
+  },
   unique: {
     type: String,
     required: true,

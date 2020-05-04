@@ -12,6 +12,7 @@ const NewBill = ({ user }) => {
     title: "",
     description: "",
     groupSize: 1,
+    dollarAmount: 0.01,
     unique: user.sub,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,6 +29,7 @@ const NewBill = ({ user }) => {
           title: "",
           description: "",
           groupSize: 1,
+          dollarAmount: 0.01,
           unique: user.sub,
         });
       }
@@ -111,6 +113,16 @@ const NewBill = ({ user }) => {
               type="number"
               step="1"
               min="1"
+              onChange={handleChange}
+            />
+
+            <Form.Input
+              label="Amount"
+              placeholder="Enter amount"
+              name="dollarAmount"
+              type="number"
+              step="0.01"
+              min="0.01"
               onChange={handleChange}
             />
 

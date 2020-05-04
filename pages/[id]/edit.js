@@ -12,6 +12,7 @@ const EditBill = ({ bills, user }) => {
     title: bills.title,
     description: bills.description,
     groupSize: bills.groupSize,
+    dollarAmount: bills.dollarAmount,
     unique: user.sub,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,6 +29,7 @@ const EditBill = ({ bills, user }) => {
           title: "",
           description: "",
           groupSize: 1,
+          dollarAmount: 0.01,
           unique: user.sub,
         });
       }
@@ -37,8 +39,8 @@ const EditBill = ({ bills, user }) => {
   const updateBill = async () => {
     try {
       const res = await fetch(
-        //`http://localhost:3000/api/bills/${router.query.id}`,
-        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        `http://localhost:3000/api/bills/${router.query.id}`,
+        //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -121,6 +123,17 @@ const EditBill = ({ bills, user }) => {
                 onChange={handleChange}
               />
 
+              <Form.Input
+                label="Amount"
+                placeholder="Enter amount"
+                name="dollarAmount"
+                type="number"
+                step="0.01"
+                min="0.01"
+                value={form.dollarAmount}
+                onChange={handleChange}
+              />
+
               <Form.TextArea
                 fluid
                 error={
@@ -153,10 +166,10 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
-  const res = await fetch(
+  const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  /*const res = await fetch(
     `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
-  );
+  );*/
   const { data } = await res.json();
   return { props: { bills: data, user: user } };
 }
