@@ -13,6 +13,7 @@ const NewBill = ({ user }) => {
     description: "",
     groupSize: 1,
     dollarAmount: 0.01,
+    paid: false,
     unique: user.sub,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,6 +31,7 @@ const NewBill = ({ user }) => {
           description: "",
           groupSize: 1,
           dollarAmount: 0.01,
+          paid: false,
           unique: user.sub,
         });
       }
@@ -142,6 +144,16 @@ const NewBill = ({ user }) => {
               name="description"
               onChange={handleChange}
             />
+
+            <Form.Input
+              label="Paid"
+              placeholder="Is the bill paid?"
+              name="paid"
+              type="checkbox"
+              value={form.paid}
+              onChange={handleChange}
+            />
+
             <Button type="submit">Create</Button>
           </Form>
         )}

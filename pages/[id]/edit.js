@@ -13,6 +13,7 @@ const EditBill = ({ bills, user }) => {
     description: bills.description,
     groupSize: bills.groupSize,
     dollarAmount: bills.dollarAmount,
+    paid: bills.paid,
     unique: user.sub,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,6 +31,7 @@ const EditBill = ({ bills, user }) => {
           description: "",
           groupSize: 1,
           dollarAmount: 0.01,
+          paid: false,
           unique: user.sub,
         });
       }
@@ -39,8 +41,8 @@ const EditBill = ({ bills, user }) => {
   const updateBill = async () => {
     try {
       const res = await fetch(
-        //`http://localhost:3000/api/bills/${router.query.id}`,
-        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        `http://localhost:3000/api/bills/${router.query.id}`,
+        //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -151,6 +153,15 @@ const EditBill = ({ bills, user }) => {
                 value={form.description}
                 onChange={handleChange}
               />
+
+              <Form.Input
+                label="Paid"
+                placeholder="Is the bill paid?"
+                name="paid"
+                type="checkbox"
+                value={form.paid}
+                onChange={handleChange}
+              />
               <Button type="submit">Update</Button>
             </Form>
           )}
@@ -166,10 +177,10 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
-  const res = await fetch(
-    `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
-  );
+  const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  // const res = await fetch(
+  //   `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
+  // );
   const { data } = await res.json();
   return { props: { bills: data, user: user } };
 }

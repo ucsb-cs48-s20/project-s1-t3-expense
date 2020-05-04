@@ -21,6 +21,10 @@ const BillSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  paid: {
+    type: Boolean,
+    required: true,
+  },
   unique: {
     type: String,
     required: true,
