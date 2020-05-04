@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import Button from "react-bootstrap/Button";
-import { Form, Loader } from "semantic-ui-react";
+import { Form, Checkbox, Loader } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { requiredAuth } from "../../utils/ssr";
 import Layout from "../../components/Layout";
@@ -154,14 +154,15 @@ const EditBill = ({ bills, user }) => {
                 onChange={handleChange}
               />
 
-              <Form.Input
-                label="Paid"
-                placeholder="Is the bill paid?"
-                name="paid"
-                type="checkbox"
-                value={form.paid}
-                onChange={handleChange}
-              />
+              <Form.Field>
+                <Checkbox
+                  label="Paid?"
+                  name="paid"
+                  //type="checkbox"
+                  //value={form.paid}
+                  onChange={handleChange}
+                />
+              </Form.Field>
               <Button type="submit">Update</Button>
             </Form>
           )}
