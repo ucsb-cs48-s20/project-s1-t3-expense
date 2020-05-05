@@ -12,7 +12,7 @@ const BillPrivate = ({ bills, user }) => {
   return (
     <Layout user={user}>
       <div className="bill-container">
-        <p>Bills! (TBA)</p>
+        <h1> Hello, {user.name}</h1>
         <div className="grid wrapper">
           {bills?.map((bill) => {
             return (
