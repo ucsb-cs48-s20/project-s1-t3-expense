@@ -64,7 +64,6 @@ const Bills = ({ bills, user }) => {
               To split with {bills.groupSize} people evenly, everyone pays: $
               {bills.dollarAmount / bills.groupSize}
             </h5>
-            //<p>Paid Status:</p>
             <Button color="red" onClick={open}>
               Delete
             </Button>
