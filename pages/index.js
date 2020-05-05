@@ -1,4 +1,5 @@
 import MainLayout from "../components/MainLayout";
+import AppFooter from "../components/AppFooter";
 import { optionalAuth } from "../utils/ssr";
 
 export const getServerSideProps = optionalAuth;
@@ -16,6 +17,7 @@ function HomePage(props) {
       ) : (
         <div className="not-log-in-message">You're not logged in!</div>
       )}
+      <AppFooter />
     </MainLayout>
   );
 }
