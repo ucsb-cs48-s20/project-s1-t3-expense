@@ -18,6 +18,7 @@ const EditBill = ({ bills, user }) => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const [check, setCheck] = useState(form.paid);
   const router = useRouter();
 
   useEffect(() => {
@@ -68,6 +69,13 @@ const EditBill = ({ bills, user }) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+    });
+  };
+  const handleCheck = (e) => {
+    setCheck(!check);
+    setForm({
+      ...form,
+      ["paid"]: !check,
     });
   };
 
@@ -154,15 +162,12 @@ const EditBill = ({ bills, user }) => {
                 onChange={handleChange}
               />
 
-              <Form.Field>
-                <Checkbox
-                  label="Paid?"
-                  name="paid"
-                  //type="checkbox"
-                  //value={form.paid}
-                  onChange={handleChange}
-                />
-              </Form.Field>
+              <Form.Checkbox
+                label="Paid?"
+                name="paid"
+                checked={check}
+                onChange={handleCheck}
+              />
               <Button type="submit">Update</Button>
             </Form>
           )}
