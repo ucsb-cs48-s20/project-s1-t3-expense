@@ -53,9 +53,9 @@ const BillPrivate = ({ bills, user }) => {
           </Link>
         </div>
       </div>
-      <div className="paid-bill-container">
+      <div className="bill-container">
         <p>Here are your paid bills:</p>
-        <div className="paid-grid-wrapper">
+        <div className="grid-wrapper">
           {paidBills?.map((bill) => {
             return (
               <div key={bill._id}>
@@ -91,8 +91,6 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
   //const res = await fetch(`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills`);
   const res = await getBill(user);
-  //console.log(res);
-  //const { data }= await res.json();
   return { props: { bills: JSON.parse(JSON.stringify(res)), user: user } };
 }
 

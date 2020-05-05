@@ -62,23 +62,12 @@ h1 {
 
 .bill-container {
   text-align: center;
-  margin: 20px auto;
-}
-
-.paid-bill-container {
-  text-align: center;
-  margin: 20px auto;
+  margin-top: 20px;
 }
 
 .grid-wrapper {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
-  margin: 20px auto;
-}
-.paid-grid-wrapper {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 20px;
-  margin: 20px auto;
+  margin: 50px auto;
 }
