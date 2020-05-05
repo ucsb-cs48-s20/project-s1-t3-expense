@@ -12,6 +12,7 @@ const EditBill = ({ bills, user }) => {
     title: bills.title,
     description: bills.description,
     groupSize: bills.groupSize,
+    dollarAmount: bills.dollarAmount,
     unique: user.sub,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,6 +29,7 @@ const EditBill = ({ bills, user }) => {
           title: "",
           description: "",
           groupSize: 1,
+          dollarAmount: 0.01,
           unique: user.sub,
         });
       }
@@ -118,6 +120,17 @@ const EditBill = ({ bills, user }) => {
                 step="1"
                 min="1"
                 value={form.groupSize}
+                onChange={handleChange}
+              />
+
+              <Form.Input
+                label="Amount"
+                placeholder="Enter amount"
+                name="dollarAmount"
+                type="number"
+                step="0.01"
+                min="0.01"
+                value={form.dollarAmount}
                 onChange={handleChange}
               />
 
