@@ -22,7 +22,7 @@ function AppNavbar(props) {
           <Nav className="mr-auto">
             {user && (
               <Link href="/bill-private" passHref={true}>
-                <Nav.Link>Bill with Auth</Nav.Link>
+                <Nav.Link>My Bills</Nav.Link>
               </Link>
             )}
           </Nav>
