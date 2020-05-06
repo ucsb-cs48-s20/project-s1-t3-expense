@@ -35,10 +35,14 @@ const Bills = ({ bills, user }) => {
     try {
       /*const deleted = await fetch(
        */
-      //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
-      const deleted = await fetch(`http://localhost:3000/api/bills/${billId}`, {
-        method: "DELETE",
-      });
+      //`http://localhost:3000/api/bills/${billId}`,
+
+      const deleted = await fetch(
+        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
+        {
+          method: "DELETE",
+        }
+      );
 
       router.push("/bill-private");
     } catch (error) {
@@ -60,14 +64,14 @@ const Bills = ({ bills, user }) => {
           <Loader active />
         ) : (
           <>
-            <h1>Title: {bills.title}</h1>
+            <h1>{bills.title}</h1>
             <h4>Group Size: {bills.groupSize}</h4>
             <h4>Total Amount: ${bills.dollarAmount?.toFixed(2)}</h4>
             <h5>
               To split with {bills.groupSize} people evenly, everyone pays: $
               {(bills.dollarAmount / bills.groupSize).toFixed(2)}
             </h5>
-            <p>Description: {bills.description}</p>
+            <p>{bills.description}</p>
             <p>Paid Status: {paidStatus}</p>
             <Button color="red" onClick={open}>
               Delete
@@ -89,8 +93,10 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
-  //const res = await fetch(`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`);
+  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  const res = await fetch(
+    `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
+  );
   const { data } = await res.json();
   return { props: { bills: data, user: user } };
 }
