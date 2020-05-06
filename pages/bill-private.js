@@ -9,12 +9,21 @@ import { useRouter } from "next/router";
 import { getBill } from "./api/bills/index";
 
 const BillPrivate = ({ bills, user }) => {
+  let paidBills = [];
+  let activeBills = [];
+  bills?.map((bill) => {
+    if (bill.paid) {
+      paidBills.push(bill);
+    } else if (!bill.paid) {
+      activeBills.push(bill);
+    }
+  });
   return (
     <Layout user={user}>
       <div className="bill-container">
-        <p>Bills! (TBA)</p>
+        <p>Here are your active bills:</p>
         <div className="grid wrapper">
-          {bills?.map((bill) => {
+          {activeBills?.map((bill) => {
             return (
               <div key={bill._id}>
                 <Card>
@@ -44,6 +53,34 @@ const BillPrivate = ({ bills, user }) => {
           </Link>
         </div>
       </div>
+      <div className="bill-container">
+        <p>Here are your paid bills:</p>
+        <div className="grid-wrapper">
+          {paidBills?.map((bill) => {
+            return (
+              <div key={bill._id}>
+                <Card>
+                  <Card.Content>
+                    <Card.Header>
+                      <Link href={`/${bill._id}`}>
+                        <a>{bill.title}</a>
+                      </Link>
+                    </Card.Header>
+                  </Card.Content>
+                  <Card.Content extra>
+                    <Link href={`/${bill._id}`}>
+                      <Button primary>View</Button>
+                    </Link>
+                    <Link href={`/${bill._id}/edit`}>
+                      <Button primary>Edit</Button>
+                    </Link>
+                  </Card.Content>
+                </Card>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </Layout>
   );
 };
@@ -54,8 +91,6 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
   //const res = await fetch(`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills`);
   const res = await getBill(user);
-  //console.log(res);
-  //const { data }= await res.json();
   return { props: { bills: JSON.parse(JSON.stringify(res)), user: user } };
 }
 

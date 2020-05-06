@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import Button from "react-bootstrap/Button";
-import { Form, Loader } from "semantic-ui-react";
+import { Form, Checkbox, Loader } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { requiredAuth } from "../utils/ssr";
 import Layout from "../components/Layout";
@@ -13,10 +13,12 @@ const NewBill = ({ user }) => {
     description: "",
     groupSize: 1,
     dollarAmount: 0.01,
+    paid: false,
     unique: user.sub,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const [check, setCheck] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const NewBill = ({ user }) => {
           description: "",
           groupSize: 1,
           dollarAmount: 0.01,
+          paid: false,
           unique: user.sub,
         });
       }
@@ -62,6 +65,13 @@ const NewBill = ({ user }) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+    });
+  };
+  const handleCheck = (e) => {
+    setCheck(!check);
+    setForm({
+      ...form,
+      ["paid"]: !check,
     });
   };
 
@@ -142,6 +152,9 @@ const NewBill = ({ user }) => {
               name="description"
               onChange={handleChange}
             />
+
+            <Form.Checkbox label="Paid?" name="paid" onChange={handleCheck} />
+
             <Button type="submit">Create</Button>
           </Form>
         )}

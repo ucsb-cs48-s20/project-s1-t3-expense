@@ -56,7 +56,7 @@ const Bills = ({ bills, user }) => {
           <Loader active />
         ) : (
           <>
-            <h1>{bills.title}</h1>
+            <h1>Title: {bills.title}</h1>
             <h4>Group Size: {bills.groupSize}</h4>
             <h4>Total Amount: ${bills.dollarAmount.toFixed(2)}</h4>
             <h5>

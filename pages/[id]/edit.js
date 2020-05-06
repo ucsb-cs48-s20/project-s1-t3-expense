@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import Button from "react-bootstrap/Button";
-import { Form, Loader } from "semantic-ui-react";
+import { Form, Checkbox, Loader } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { requiredAuth } from "../../utils/ssr";
 import Layout from "../../components/Layout";
@@ -13,10 +13,12 @@ const EditBill = ({ bills, user }) => {
     description: bills.description,
     groupSize: bills.groupSize,
     dollarAmount: bills.dollarAmount,
+    paid: bills.paid,
     unique: user.sub,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const [check, setCheck] = useState(form.paid);
   const router = useRouter();
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const EditBill = ({ bills, user }) => {
           description: "",
           groupSize: 1,
           dollarAmount: 0.01,
+          paid: false,
           unique: user.sub,
         });
       }
@@ -66,6 +69,13 @@ const EditBill = ({ bills, user }) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+    });
+  };
+  const handleCheck = (e) => {
+    setCheck(!check);
+    setForm({
+      ...form,
+      ["paid"]: !check,
     });
   };
 
@@ -150,6 +160,13 @@ const EditBill = ({ bills, user }) => {
                 name="description"
                 value={form.description}
                 onChange={handleChange}
+              />
+
+              <Form.Checkbox
+                label="Paid?"
+                name="paid"
+                checked={check}
+                onChange={handleCheck}
               />
               <Button type="submit">Update</Button>
             </Form>
