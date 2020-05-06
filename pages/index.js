@@ -10,12 +10,9 @@ function HomePage(props) {
   return (
     <MainLayout user={user}>
       {user ? (
-        <div>
-          You're logged in! Here's what the server knows about you:
-          <pre>{JSON.stringify(user, null, "\t")}</pre>
-        </div>
+        <div className="log-in-message">You're logged in!</div>
       ) : (
-        <div className="not-log-in-message">You're not logged in!</div>
+        <div className="log-in-message">You're not logged in!</div>
       )}
       <AppFooter />
     </MainLayout>

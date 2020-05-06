@@ -1,4 +1,4 @@
-.not-log-in-message {
+.log-in-message {
   font-size: 30px;
   text-align: center;
 }
@@ -70,4 +70,20 @@ h1 {
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 20px;
   margin: 50px auto;
+}
+
+.visible.transition {
+  margin-top: auto !important;
+  display: inline-block !important;
+  position: fixed;
+  top: 20%;
+  height: 120px;
+}
+
+.modal {
+  height: auto;
+  top: auto;
+  left: auto;
+  bottom: auto;
+  right: auto;
 }

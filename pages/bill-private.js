@@ -21,7 +21,7 @@ const BillPrivate = ({ bills, user }) => {
   return (
     <Layout user={user}>
       <div className="bill-container">
-        <p>Here are your active bills:</p>
+        <h1>Active Bills:</h1>
         <div className="grid wrapper">
           {activeBills?.map((bill) => {
             return (
@@ -54,7 +54,7 @@ const BillPrivate = ({ bills, user }) => {
         </div>
       </div>
       <div className="bill-container">
-        <p>Here are your paid bills:</p>
+        <h1>Paid Bills:</h1>
         <div className="grid-wrapper">
           {paidBills?.map((bill) => {
             return (

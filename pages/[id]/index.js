@@ -34,7 +34,8 @@ const Bills = ({ bills, user }) => {
     const billId = router.query.id;
     try {
       /*const deleted = await fetch(
-        `http://localhost:3000/api/bills/${billId}`, */
+       */
+      //`http://localhost:3000/api/bills/${billId}`,
 
       const deleted = await fetch(
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
@@ -49,6 +50,13 @@ const Bills = ({ bills, user }) => {
     }
   };
 
+  let paidStatus;
+  if (bills.paid) {
+    paidStatus = "Paid";
+  } else if (!bills.paid) {
+    paidStatus = "Not Paid";
+  }
+
   return (
     <Layout user={user}>
       <div className="bill-container">
@@ -56,15 +64,15 @@ const Bills = ({ bills, user }) => {
           <Loader active />
         ) : (
           <>
-            <h1>Title: {bills.title}</h1>
+            <h1>{bills.title}</h1>
             <h4>Group Size: {bills.groupSize}</h4>
-            <h4>Total Amount: ${bills.dollarAmount.toFixed(2)}</h4>
+            <h4>Total Amount: ${bills.dollarAmount?.toFixed(2)}</h4>
             <h5>
               To split with {bills.groupSize} people evenly, everyone pays: $
               {(bills.dollarAmount / bills.groupSize).toFixed(2)}
             </h5>
             <p>{bills.description}</p>
-            <p>Paid Status:</p>
+            <p>Paid Status: {paidStatus}</p>
             <Button color="red" onClick={open}>
               Delete
             </Button>
