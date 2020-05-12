@@ -33,3 +33,28 @@ Support that would be helpful from course staff to completing MVP
 
 ## Support for future iterations
 * How to invite other users (via urls, emails, etc.) and connect them to a group
+
+# Sprint Planning, 05/12/2020
+  
+* Leader: Roberto
+* Present: all
+* Absent: none
+
+## Sprint Goal for 05/12-05/21
+  
+Which of the 10 powerful questions did you ask?
+
+* If we suddenly have half the team available and we can do only half the work required for the Sprint Goal, what should absolutely be in there in order for us to still be okay with the outcome?
+  What can we let go of for now and return to later?
+    
+Describe your sprint goal here.
+
+* Split bills depending on user preferences.
+
+Describe briefly how you came up with that goal.
+  
+* By looking at question 6, we decided that it was important to re-focus on how bill calculations work(as the product was initially described to help calculate bills and expenses).
+  
+## Discussion of previous Sprint Goal
+
+* The previous sprint goal was acheived and it was felt that those additions were useful and necessary for the product to work.
