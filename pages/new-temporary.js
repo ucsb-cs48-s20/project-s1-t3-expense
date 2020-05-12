@@ -13,7 +13,7 @@ const NewBill = () => {
     description: "",
     groupSize: 1,
     dollarAmount: 0.01,
-    paid: false,
+    // paid: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -31,7 +31,7 @@ const NewBill = () => {
           description: "",
           groupSize: 1,
           dollarAmount: 0.01,
-          paid: false,
+          // paid: false,
         });
       }
     }
@@ -58,7 +58,7 @@ const NewBill = () => {
     setCheck(!check);
     setForm({
       ...form,
-      ["paid"]: !check,
+      // ["paid"]: !check,
     });
   };
 
@@ -140,7 +140,7 @@ const NewBill = () => {
               onChange={handleChange}
             />
 
-            <Form.Checkbox label="Paid?" name="paid" onChange={handleCheck} />
+            {/* <Form.Checkbox label="Paid?" name="paid" onChange={handleCheck} /> */}
 
             <Button type="submit">Create</Button>
           </Form>

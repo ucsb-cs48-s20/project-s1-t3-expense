@@ -36,12 +36,12 @@ const BillTemporary = ({ bills }) => {
     router.push("/");
   };
 
-  let paidStatus;
-  if (bills.paid) {
-    paidStatus = "Paid";
-  } else if (!bills.paid) {
-    paidStatus = "Not Paid";
-  }
+  // let paidStatus;
+  // if (bills.paid) {
+  //   paidStatus = "Paid";
+  // } else if (!bills.paid) {
+  //   paidStatus = "Not Paid";
+  // }
 
   return (
     <Layout user={null}>
@@ -60,7 +60,7 @@ const BillTemporary = ({ bills }) => {
               ).toFixed(2)}
             </h5>
             <p>{bills.description}</p>
-            <p>Paid Status: {paidStatus}</p>
+            {/* <p>Paid Status: {paidStatus}</p> */}
             <Button color="red" onClick={open}>
               Delete
             </Button>
