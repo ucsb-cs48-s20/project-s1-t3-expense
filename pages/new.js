@@ -86,7 +86,7 @@ const NewBill = ({ user }) => {
     if (!form.description) {
       err.description = "Description is required";
     } else if (form.description.length > 200) {
-      err.description = "Description must be less taht 200 characters";
+      err.description = "Description must be less than 200 characters";
     }
     return err;
   };
