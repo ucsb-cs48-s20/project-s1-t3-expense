@@ -19,7 +19,6 @@ const NewBill = ({ user }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const [check, setCheck] = useState(false);
-  const [changed, setChanged] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -93,7 +92,7 @@ const NewBill = ({ user }) => {
   const handleMem = (e) => {
     let test = form.members;
     test[e.target.placeholder] = e.target.value;
-    console.log(typeof form.members[0]);
+    console.log(test);
     setForm({
       ...form,
       members: test,
@@ -210,28 +209,3 @@ export async function getServerSideProps(context) {
 }
 
 export default NewBill;
-
-/*<Form.Field>
-            {members.map((mem) => {
-              console.log("dog")
-              return (
-                <Form.Input
-                        label="Group Member(s)"
-                        placeholder="Enter name"
-                        name="groupSize"
-                        onChange={handleChange}
-                  />
-              )
-              })}
-            </Form.Field> 
-            
-            
-            <Form.Input
-              action={{
-                content: "+ Members",
-                onClick: (event,data)=>{console.log(data);}
-              }}
-              actionPosition="left"
-              placeholder="Member Name"
-            />
-*/

@@ -31,7 +31,7 @@ const BillSchema = new mongoose.Schema({
   },
   members: [
     {
-      name: String,
+      type: String,
     },
   ],
 });
