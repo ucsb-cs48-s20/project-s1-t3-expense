@@ -19,6 +19,7 @@ const NewBill = ({ user }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
   const [check, setCheck] = useState(false);
+  const [changed, setChanged] = useState([]);
   const router = useRouter();
 
   useEffect(() => {
@@ -53,7 +54,6 @@ const NewBill = ({ user }) => {
       router.push("/bill-private");
     } catch (error) {
       console.log(error);
-      console.log(form);
     }
   };
 
@@ -63,16 +63,13 @@ const NewBill = ({ user }) => {
     setErrors(errs);
     setIsSubmitting(true);
   };
-  const handleChange = (e) => {
-    // setForm({
-    //   ...form,
-    //   [e.target.name]: e.target.value,
-    // });
 
+  const handleChange = (e) => {
     let test = [];
     if (e.target.name === "groupSize") {
       for (let i = 0; i < e.target.value; i++) {
-        test[i] = i;
+        if (form.members[i]) test[i] = form.members[i];
+        else test[i] = i.toString();
       }
     }
     if (test.length === 0) test = form.members;
@@ -82,8 +79,9 @@ const NewBill = ({ user }) => {
       [e.target.name]: e.target.value,
       members: test,
     });
-    console.log(form.members);
+    //console.log(form.members);
   };
+
   const handleCheck = (e) => {
     setCheck(!check);
     setForm({
@@ -94,7 +92,8 @@ const NewBill = ({ user }) => {
 
   const handleMem = (e) => {
     let test = form.members;
-    test[e.target.index] = e.target.value;
+    test[e.target.placeholder] = e.target.value;
+    console.log(typeof form.members[0]);
     setForm({
       ...form,
       members: test,
@@ -178,7 +177,6 @@ const NewBill = ({ user }) => {
             />
 
             <Form.TextArea
-              fluid
               error={
                 errors.description
                   ? {
