@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useState, useEffect, Component } from "react";
 import fetch from "isomorphic-unfetch";
 import Button from "react-bootstrap/Button";
@@ -176,6 +175,7 @@ const NewBill = ({ user }) => {
             />
 
             <Form.TextArea
+              fluid="true"
               error={
                 errors.description
                   ? {
