@@ -29,6 +29,7 @@ const BillSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  members: [],
 });
 
 module.exports = mongoose.models.Bill || mongoose.model("Bill", BillSchema);

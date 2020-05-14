@@ -1,11 +1,9 @@
-import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Component } from "react";
 import fetch from "isomorphic-unfetch";
 import Button from "react-bootstrap/Button";
 import { Form, Checkbox, Loader } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { requiredAuth } from "../utils/ssr";
-import Layout from "../components/Layout";
 
 const NewBill = ({ user }) => {
   const [form, setForm] = useState({
@@ -15,6 +13,7 @@ const NewBill = ({ user }) => {
     dollarAmount: 0.01,
     paid: false,
     unique: user.sub,
+    members: [],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -34,6 +33,7 @@ const NewBill = ({ user }) => {
           dollarAmount: 0.01,
           paid: false,
           unique: user.sub,
+          members: [],
         });
       }
     }
@@ -61,17 +61,40 @@ const NewBill = ({ user }) => {
     setErrors(errs);
     setIsSubmitting(true);
   };
+
   const handleChange = (e) => {
+    let test = [];
+    if (e.target.name === "groupSize") {
+      for (let i = 0; i < e.target.value; i++) {
+        if (form.members[i]) test[i] = form.members[i];
+        else test[i] = i.toString();
+      }
+    }
+    if (test.length === 0) test = form.members;
+
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+      members: test,
     });
+    //console.log(form.members);
   };
+
   const handleCheck = (e) => {
     setCheck(!check);
     setForm({
       ...form,
       ["paid"]: !check,
+    });
+  };
+
+  const handleMem = (e) => {
+    let test = form.members;
+    test[e.target.placeholder] = e.target.value;
+    console.log(test);
+    setForm({
+      ...form,
+      members: test,
     });
   };
 
@@ -117,14 +140,29 @@ const NewBill = ({ user }) => {
             />
 
             <Form.Input
-              label="Group Size"
-              placeholder="Enter group size..."
+              label="Group"
+              placeholder="Group amount"
               name="groupSize"
               type="number"
               step="1"
               min="1"
               onChange={handleChange}
             />
+            <div className="mem-indent">
+              {form.members?.map((item, index) => {
+                //console.log(index)
+                return (
+                  <Form.Input
+                    key={index}
+                    fluid
+                    label="Members"
+                    placeholder={index}
+                    name="members"
+                    onChange={handleMem}
+                  />
+                );
+              })}
+            </div>
 
             <Form.Input
               label="Amount"
@@ -137,7 +175,7 @@ const NewBill = ({ user }) => {
             />
 
             <Form.TextArea
-              fluid
+              fluid="true"
               error={
                 errors.description
                   ? {

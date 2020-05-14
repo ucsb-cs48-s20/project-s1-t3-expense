@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import Button from "react-bootstrap/Button";
@@ -15,6 +14,7 @@ const EditBill = ({ bills, user }) => {
     dollarAmount: bills.dollarAmount,
     paid: bills.paid,
     unique: user.sub,
+    members: bills.members,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -34,6 +34,7 @@ const EditBill = ({ bills, user }) => {
           dollarAmount: 0.01,
           paid: false,
           unique: user.sub,
+          members: [],
         });
       }
     }
@@ -66,9 +67,19 @@ const EditBill = ({ bills, user }) => {
     setIsSubmitting(true);
   };
   const handleChange = (e) => {
+    let test = [];
+    if (e.target.name === "groupSize") {
+      for (let i = 0; i < e.target.value; i++) {
+        if (form.members[i]) test[i] = form.members[i];
+        else test[i] = i.toString();
+      }
+    }
+    if (test.length === 0) test = form.members;
+
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+      members: test,
     });
   };
   const handleCheck = (e) => {
@@ -93,6 +104,15 @@ const EditBill = ({ bills, user }) => {
       err.description = "Description must be less than 200 characters";
     }
     return err;
+  };
+  const handleMem = (e) => {
+    let test = form.members;
+    test[e.target.placeholder] = e.target.value;
+    console.log(test);
+    setForm({
+      ...form,
+      members: test,
+    });
   };
 
   return (
@@ -133,6 +153,23 @@ const EditBill = ({ bills, user }) => {
                 onChange={handleChange}
               />
 
+              <div className="mem-indent">
+                {form.members?.map((item, index) => {
+                  console.log(item);
+                  return (
+                    <Form.Input
+                      key={index}
+                      fluid
+                      label="Members"
+                      placeholder={index}
+                      name="members"
+                      onChange={handleMem}
+                      defaultValue={item ? item : null}
+                    />
+                  );
+                })}
+              </div>
+
               <Form.Input
                 label="Amount"
                 placeholder="Enter amount"
@@ -145,7 +182,7 @@ const EditBill = ({ bills, user }) => {
               />
 
               <Form.TextArea
-                fluid
+                fluid="true"
                 error={
                   errors.description
                     ? {

@@ -33,11 +33,8 @@ const Bills = ({ bills, user }) => {
   const deleteBill = async () => {
     const billId = router.query.id;
     try {
-      /*const deleted = await fetch(
-       */
-      //`http://localhost:3000/api/bills/${billId}`,
-
       const deleted = await fetch(
+        //`http://localhost:3000/api/bills/${billId}`,
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
         {
           method: "DELETE",
@@ -66,6 +63,17 @@ const Bills = ({ bills, user }) => {
           <>
             <h1>{bills.title}</h1>
             <h4>Group Size: {bills.groupSize}</h4>
+
+            {bills.members ? (
+              <ul>
+                <h4>Members:</h4>
+                {bills.members?.map((mem, index) => {
+                  return <li key={index}>{mem}</li>;
+                })}
+              </ul>
+            ) : (
+              <></>
+            )}
             <h4>Total Amount: ${bills.dollarAmount?.toFixed(2)}</h4>
             <h5>
               To split with {bills.groupSize} people evenly, everyone pays: $
