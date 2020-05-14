@@ -87,3 +87,7 @@ h1 {
   bottom: auto;
   right: auto;
 }
+
+.mem-indent {
+  padding-left: 20px;
+}

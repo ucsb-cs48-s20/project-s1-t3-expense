@@ -1,11 +1,10 @@
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Component } from "react";
 import fetch from "isomorphic-unfetch";
 import Button from "react-bootstrap/Button";
 import { Form, Checkbox, Loader } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { requiredAuth } from "../utils/ssr";
-import Layout from "../components/Layout";
 
 const NewBill = ({ user }) => {
   const [form, setForm] = useState({
@@ -15,6 +14,7 @@ const NewBill = ({ user }) => {
     dollarAmount: 0.01,
     paid: false,
     unique: user.sub,
+    members: [],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -34,6 +34,7 @@ const NewBill = ({ user }) => {
           dollarAmount: 0.01,
           paid: false,
           unique: user.sub,
+          members: [],
         });
       }
     }
@@ -52,6 +53,7 @@ const NewBill = ({ user }) => {
       router.push("/bill-private");
     } catch (error) {
       console.log(error);
+      console.log(form);
     }
   };
 
@@ -62,16 +64,40 @@ const NewBill = ({ user }) => {
     setIsSubmitting(true);
   };
   const handleChange = (e) => {
+    // setForm({
+    //   ...form,
+    //   [e.target.name]: e.target.value,
+    // });
+
+    let test = [];
+    if (e.target.name === "groupSize") {
+      for (let i = 0; i < e.target.value; i++) {
+        test[i] = i;
+      }
+    }
+    if (test.length === 0) test = form.members;
+
     setForm({
       ...form,
       [e.target.name]: e.target.value,
+      members: test,
     });
+    console.log(form.members);
   };
   const handleCheck = (e) => {
     setCheck(!check);
     setForm({
       ...form,
       ["paid"]: !check,
+    });
+  };
+
+  const handleMem = (e) => {
+    let test = form.members;
+    test[e.target.index] = e.target.value;
+    setForm({
+      ...form,
+      members: test,
     });
   };
 
@@ -117,14 +143,29 @@ const NewBill = ({ user }) => {
             />
 
             <Form.Input
-              label="Group Size"
-              placeholder="Enter group size..."
+              label="Group"
+              placeholder="Group amount"
               name="groupSize"
               type="number"
               step="1"
               min="1"
               onChange={handleChange}
             />
+            <div className="mem-indent">
+              {form.members?.map((item, index) => {
+                //console.log(index)
+                return (
+                  <Form.Input
+                    key={index}
+                    fluid
+                    label="Members"
+                    placeholder={index}
+                    name="members"
+                    onChange={handleMem}
+                  />
+                );
+              })}
+            </div>
 
             <Form.Input
               label="Amount"
@@ -171,3 +212,28 @@ export async function getServerSideProps(context) {
 }
 
 export default NewBill;
+
+/*<Form.Field>
+            {members.map((mem) => {
+              console.log("dog")
+              return (
+                <Form.Input
+                        label="Group Member(s)"
+                        placeholder="Enter name"
+                        name="groupSize"
+                        onChange={handleChange}
+                  />
+              )
+              })}
+            </Form.Field> 
+            
+            
+            <Form.Input
+              action={{
+                content: "+ Members",
+                onClick: (event,data)=>{console.log(data);}
+              }}
+              actionPosition="left"
+              placeholder="Member Name"
+            />
+*/

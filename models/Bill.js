@@ -29,6 +29,11 @@ const BillSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  members: [
+    {
+      name: String,
+    },
+  ],
 });
 
 module.exports = mongoose.models.Bill || mongoose.model("Bill", BillSchema);
