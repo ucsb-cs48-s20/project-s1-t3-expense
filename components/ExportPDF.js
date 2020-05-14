@@ -9,7 +9,7 @@ function ExportPDF(props) {
         fileName="Bill.pdf"
       >
         {({ blob, url, loading, error }) =>
-          loading ? "Loading document..." : "Download now!"
+          loading ? "Loading document..." : "Export as a PDF"
         }
       </PDFDownloadLink>
     </div>
