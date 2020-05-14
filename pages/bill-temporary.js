@@ -6,6 +6,10 @@ import Layout from "../components/Layout";
 import Link from "next/link";
 import Cookie from "js-cookie";
 import cookie from "cookie";
+import dynamic from "next/dynamic";
+const ExportPDF = dynamic(() => import("../components/ExportPDF"), {
+  ssr: false,
+});
 
 const BillTemporary = ({ bills }) => {
   const [confirm, setConfirm] = useState(false);
@@ -64,6 +68,7 @@ const BillTemporary = ({ bills }) => {
             <Button color="red" onClick={open}>
               Delete
             </Button>
+            <ExportPDF bills={bills} />
           </>
         )}
         <Confirm open={confirm} onCancel={close} onConfirm={handleDelete} />
