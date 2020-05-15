@@ -68,7 +68,7 @@ const BillTemporary = ({ bills }) => {
             <Button color="red" onClick={open}>
               Delete
             </Button>
-            <ExportPDF bills={bills} />
+            {/* <ExportPDF bills={bills} /> */}
           </>
         )}
         <Confirm open={confirm} onCancel={close} onConfirm={handleDelete} />
