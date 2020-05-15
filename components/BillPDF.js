@@ -1,29 +1,21 @@
 import { Page, Text, View, Document, StyleSheet } from "@react-pdf/renderer";
+import TablePDF from "./TablePDF";
 
 function BillPDF(props) {
   const styles = StyleSheet.create({
     page: {
-      backgroundColor: "#E4E4E4",
+      backgroundColor: "#f2f2f2",
       fontFamily: "Helvetica",
       paddingTop: 30,
-      paddingLeft: 60,
-      paddingRight: 60,
-      lineHeight: 1.5,
-      flexDirection: "column",
     },
     section: {
       margin: 30,
       padding: 10,
-      flexGrow: 1,
-      textAlign: "center",
     },
     date: {
       flexDirection: "row",
       justifyContent: "flex-end",
       fontSize: 12,
-    },
-    body: {
-      fontSize: 16,
     },
   });
 
@@ -38,27 +30,26 @@ function BillPDF(props) {
         </View>
 
         <View style={styles.section}>
-          <Text style={{ fontSize: 24, fontStyle: "bold" }}>
+          <Text
+            style={{ fontSize: 24, fontStyle: "bold", textAlign: "center" }}
+          >
             {props.bills.title}
           </Text>
 
-          <Text style={styles.body}>Group Size: {props.bills.groupSize}</Text>
+          <Text style={{ fontSize: 14, marginTop: 36 }}>
+            Group Size: {props.bills.groupSize}
+          </Text>
 
-          <Text style={styles.body}>
+          <Text style={{ fontSize: 14 }}>
             Total Amount: ${JSON.parse(props.bills.dollarAmount)?.toFixed(2)}
           </Text>
 
-          <Text style={styles.body}>
-            To split with {props.bills.groupSize} people evenly, everyone pays:
-            $
-            {(
-              JSON.parse(props.bills.dollarAmount) /
-              JSON.parse(props.bills.groupSize)
-            ).toFixed(2)}
+          <Text style={{ fontSize: 12, textAlign: "center", marginTop: 24 }}>
+            {props.bills.description}
           </Text>
-
-          <Text style={{ fontSize: 12 }}>{props.bills.description}</Text>
         </View>
+
+        <TablePDF bills={props.bills} />
       </Page>
     </Document>
   );
