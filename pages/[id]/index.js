@@ -5,6 +5,10 @@ import { Confirm, Button, Loader } from "semantic-ui-react";
 import { requiredAuth } from "../../utils/ssr";
 import Layout from "../../components/Layout";
 import Link from "next/link";
+import dynamic from "next/dynamic";
+const ExportPDF = dynamic(() => import("../../components/ExportPDF"), {
+  ssr: false,
+});
 
 const Bills = ({ bills, user }) => {
   const [confirm, setConfirm] = useState(false);
@@ -87,6 +91,7 @@ const Bills = ({ bills, user }) => {
             <Link href="/bill-private">
               <Button color="grey">Go Back</Button>
             </Link>
+            <ExportPDF bills={bills} />
           </>
         )}
         <Confirm open={confirm} onCancel={close} onConfirm={handleDelete} />

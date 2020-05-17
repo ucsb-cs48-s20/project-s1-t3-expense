@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@auth0/nextjs-auth0": "^0.11.0",
+    "@react-pdf/renderer": "^1.6.8",
     "bootstrap": "^4.4.1",
     "cookie": "^0.4.1",
     "dotenv": "^8.2.0",
