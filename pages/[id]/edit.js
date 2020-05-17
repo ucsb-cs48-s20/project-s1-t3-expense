@@ -43,8 +43,8 @@ const EditBill = ({ bills, user }) => {
   const updateBill = async () => {
     try {
       const res = await fetch(
-        //`http://localhost:3000/api/bills/${router.query.id}`,
-        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        `http://localhost:3000/api/bills/${router.query.id}`,
+        //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -69,7 +69,7 @@ const EditBill = ({ bills, user }) => {
   const handleChange = (e) => {
     let test = [];
     if (e.target.name === "groupSize") {
-      for (let i = 0; i < e.target.value; i++) {
+      for (let i = 1; i <= e.target.value; i++) {
         if (form.members[i]) test[i] = form.members[i];
         else test[i] = i.toString();
       }
@@ -157,15 +157,17 @@ const EditBill = ({ bills, user }) => {
                 {form.members?.map((item, index) => {
                   console.log(item);
                   return (
-                    <Form.Input
-                      key={index}
-                      fluid
-                      label="Members"
-                      placeholder={index}
-                      name="members"
-                      onChange={handleMem}
-                      defaultValue={item ? item : null}
-                    />
+                    !index || (
+                      <Form.Input
+                        key={index}
+                        fluid
+                        label="Member"
+                        placeholder={index}
+                        name="members"
+                        onChange={handleMem}
+                        defaultValue={item === index.toString() ? null : item}
+                      />
+                    )
                   );
                 })}
               </div>
@@ -220,10 +222,8 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
-  const res = await fetch(
-    `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
-  );
+  const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  //const res = await fetch(`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`);
   const { data } = await res.json();
   return { props: { bills: data, user: user } };
 }
