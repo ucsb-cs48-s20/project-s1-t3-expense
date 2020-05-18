@@ -65,7 +65,7 @@ const NewBill = ({ user }) => {
   const handleChange = (e) => {
     let test = [];
     if (e.target.name === "groupSize") {
-      for (let i = 0; i < e.target.value; i++) {
+      for (let i = 1; i <= e.target.value; i++) {
         if (form.members[i]) test[i] = form.members[i];
         else test[i] = i.toString();
       }
@@ -152,13 +152,15 @@ const NewBill = ({ user }) => {
               {form.members?.map((item, index) => {
                 //console.log(index)
                 return (
+                  // !item ||
                   <Form.Input
                     key={index}
                     fluid
-                    label="Members"
+                    label="Member"
                     placeholder={index}
                     name="members"
                     onChange={handleMem}
+                    //defaultValue={"Person "+(index+1)}
                   />
                 );
               })}

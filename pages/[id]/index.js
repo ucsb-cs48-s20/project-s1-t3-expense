@@ -72,7 +72,7 @@ const Bills = ({ bills, user }) => {
               <ul>
                 <h4>Members:</h4>
                 {bills.members?.map((mem, index) => {
-                  return <li key={index}>{mem}</li>;
+                  return !index || <li key={index}>{mem}</li>;
                 })}
               </ul>
             ) : (

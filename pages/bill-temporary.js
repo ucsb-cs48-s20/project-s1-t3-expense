@@ -56,6 +56,16 @@ const BillTemporary = ({ bills }) => {
           <>
             <h1>{bills.title}</h1>
             <h4>Group Size: {bills.groupSize}</h4>
+            {bills.members ? (
+              <ul>
+                <h4>Members:</h4>
+                {bills.members?.map((mem, index) => {
+                  return <li key={index}>{mem}</li>;
+                })}
+              </ul>
+            ) : (
+              <></>
+            )}
             <h4>Total Amount: ${JSON.parse(bills.dollarAmount)?.toFixed(2)}</h4>
             <h5>
               To split with {bills.groupSize} people evenly, everyone pays: $
@@ -68,7 +78,7 @@ const BillTemporary = ({ bills }) => {
             <Button color="red" onClick={open}>
               Delete
             </Button>
-            {/* <ExportPDF bills={bills} /> */}
+            {<ExportPDF bills={bills} />}
           </>
         )}
         <Confirm open={confirm} onCancel={close} onConfirm={handleDelete} />
