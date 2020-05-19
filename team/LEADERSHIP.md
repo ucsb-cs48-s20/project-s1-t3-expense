@@ -8,3 +8,4 @@
 | Thu 05/07 | Dylan Lin         | Did MVP demo                                           |
 | Mon 05/11 | Helen Huang       | Led the second Retro                                   | 
 | Tue 05/12 | Roberto Gutierrez | Will lead sprint goal discussion                       |
+| Thu 05/21 | Gregory Baroni    |2nd Iteration Demo Video                                |
