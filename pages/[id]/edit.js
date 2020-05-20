@@ -178,12 +178,16 @@ const EditBill = ({ bills, user }) => {
     }
     return err;
   };
-  const handleMemberName = (e) => {
-    let memberObject = form.members;
-    memberObject[e.target.placeholder] = {
+  const handleMemberName = (e, index) => {
+    const newName = e.target.value;
+
+    const memberObject = form.members;
+
+    memberObject[index] = {
       name: e.target.value,
-      cost: memberObject[e.target.placeholder].cost,
+      cost: memberObject[index].cost,
     };
+
     setForm({
       ...form,
       members: memberObject,
@@ -229,11 +233,6 @@ const EditBill = ({ bills, user }) => {
               />
 
               <div className="mem-indent">
-                {form.splitWay === "equal" ? (
-                  <p>Remaining Balance: 0</p>
-                ) : (
-                  <p>Remaining Balance: {form.remainingAmount}</p>
-                )}
                 {form.members?.map((item, index) => {
                   return (
                     <div>
@@ -241,9 +240,11 @@ const EditBill = ({ bills, user }) => {
                         key={index}
                         fluid
                         label="Member"
-                        placeholder={index}
+                        placeholder={index + 1}
                         name="members"
-                        onChange={handleMemberName}
+                        onChange={(e) => {
+                          handleMemberName(e, index);
+                        }}
                         value={form.members[index].name}
                       />
                       {form.splitWay === "equal" ? (
@@ -267,8 +268,14 @@ const EditBill = ({ bills, user }) => {
                 })}
               </div>
 
+              {form.splitWay === "equal" ? (
+                <p>Remaining Balance: 0</p>
+              ) : (
+                <p>Remaining Balance: {form.remainingAmount}</p>
+              )}
+
               <Form.Input
-                label="Amount"
+                label="Total Amount"
                 placeholder="Enter amount"
                 name="dollarAmount"
                 type="number"

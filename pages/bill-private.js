@@ -26,8 +26,6 @@ const BillPrivate = ({ bills, user }) => {
           {activeBills?.map((bill) => {
             return (
               <div key={bill._id}>
-                {bill.splitWay}
-                {bill.dollarAmount}
                 <Card>
                   <Card.Content>
                     <Card.Header>

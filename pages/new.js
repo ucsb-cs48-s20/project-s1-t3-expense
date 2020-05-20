@@ -231,11 +231,6 @@ const NewBill = ({ user }) => {
             />
 
             <div className="mem-indent">
-              {form.splitWay === "equal" ? (
-                <p>Remaining Balance: 0</p>
-              ) : (
-                <p>Remaining Balance: {form.remainingAmount}</p>
-              )}
               {form.members?.map((item, index) => {
                 return (
                   <div>
@@ -243,7 +238,7 @@ const NewBill = ({ user }) => {
                       key={index}
                       fluid
                       label="Member Name"
-                      placeholder={index}
+                      placeholder={index + 1}
                       name="members"
                       onChange={(e) => {
                         handleMemberName(e, index);
@@ -268,9 +263,14 @@ const NewBill = ({ user }) => {
                 );
               })}
             </div>
+            {form.splitWay === "equal" ? (
+              <p>Remaining Balance: 0</p>
+            ) : (
+              <p>Remaining Balance: {form.remainingAmount}</p>
+            )}
 
             <Form.Input
-              label="Amount"
+              label="Total Amount"
               placeholder="Enter amount"
               name="dollarAmount"
               type="number"

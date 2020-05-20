@@ -68,7 +68,7 @@ const Bills = ({ bills, user }) => {
             <h1>{bills.title}</h1>
             <h4>Group Size: {bills.groupSize}</h4>
             <h4>Total Amount: ${bills.dollarAmount?.toFixed(2)}</h4>
-            <h4>Remaining Amount: {bills.remainingAmount}</h4>
+            <h4>Remaining Balance: ${bills.remainingAmount}</h4>
             <h4>Members:</h4>
             {bills.members?.map((mem, index) => {
               return (
