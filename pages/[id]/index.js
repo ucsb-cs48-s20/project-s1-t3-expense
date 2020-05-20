@@ -38,8 +38,8 @@ const Bills = ({ bills, user }) => {
     const billId = router.query.id;
     try {
       const deleted = await fetch(
-        //`http://localhost:3000/api/bills/${billId}`,
-        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
+        `http://localhost:3000/api/bills/${billId}`,
+        //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
         {
           method: "DELETE",
         }
@@ -67,22 +67,16 @@ const Bills = ({ bills, user }) => {
           <>
             <h1>{bills.title}</h1>
             <h4>Group Size: {bills.groupSize}</h4>
-
-            {bills.members ? (
-              <ul>
-                <h4>Members:</h4>
-                {bills.members?.map((mem, index) => {
-                  return !index || <li key={index}>{mem}</li>;
-                })}
-              </ul>
-            ) : (
-              <></>
-            )}
             <h4>Total Amount: ${bills.dollarAmount?.toFixed(2)}</h4>
-            <h5>
-              To split with {bills.groupSize} people evenly, everyone pays: $
-              {(bills.dollarAmount / bills.groupSize).toFixed(2)}
-            </h5>
+            <h4>Remaining Amount: {bills.remainingAmount}</h4>
+            <h4>Members:</h4>
+            {bills.members?.map((mem, index) => {
+              return (
+                <p key={index}>
+                  {mem.name} : ${mem.cost}
+                </p>
+              );
+            })}
             <p>{bills.description}</p>
             <p>Paid Status: {paidStatus}</p>
             <Button color="red" onClick={open}>
@@ -91,7 +85,6 @@ const Bills = ({ bills, user }) => {
             <Link href="/bill-private">
               <Button color="grey">Go Back</Button>
             </Link>
-            <ExportPDF bills={bills} />
           </>
         )}
         <Confirm open={confirm} onCancel={close} onConfirm={handleDelete} />
@@ -106,10 +99,10 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
-  const res = await fetch(
+  const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  /*const res = await fetch(
     `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
-  );
+  );*/
   const { data } = await res.json();
   return { props: { bills: data, user: user } };
 }
