@@ -81,6 +81,19 @@ const EditBill = ({ bills, user }) => {
   };
 
   const handleSubmit = (e) => {
+    let test = [];
+    if (form.splitWay === "equal") {
+      for (let i = 0; i < form.members.length; i++) {
+        test[i] = {
+          name: form.members[i].name,
+          cost: equalCostPerMemberString(),
+        };
+      }
+      setForm({
+        ...form,
+        members: test,
+      });
+    }
     e.preventDefault();
     let errs = validate();
     setErrors(errs);

@@ -36,7 +36,7 @@ function TablePDF({ bills }) {
           { textAlign: "left", paddingLeft: 8, fontSize: 14 },
         ]}
       >
-        {mem}
+        {mem.name}
       </Text>
       <Text
         style={[
@@ -44,7 +44,7 @@ function TablePDF({ bills }) {
           { textAlign: "right", paddingRight: 8, fontSize: 14 },
         ]}
       >
-        ${(bills.dollarAmount / bills.groupSize).toFixed(2)}
+        ${mem.cost}
       </Text>
     </View>
   ));

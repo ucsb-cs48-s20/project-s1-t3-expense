@@ -85,6 +85,7 @@ const Bills = ({ bills, user }) => {
             <Link href="/bill-private">
               <Button color="grey">Go Back</Button>
             </Link>
+            <ExportPDF bills={bills} />
           </>
         )}
         <Confirm open={confirm} onCancel={close} onConfirm={handleDelete} />
