@@ -46,9 +46,7 @@ const NewBill = () => {
   }, [errors]);
 
   const calculateRemainingAmount = (e) => {
-    console.log("calcualte");
     let remainingAmount = e;
-    console.log(e);
     form.members.forEach((member) => {
       remainingAmount = remainingAmount - member.cost;
     });
@@ -96,17 +94,14 @@ const NewBill = () => {
     let test = [];
     if (e.target.name === "groupSize") {
       for (let i = 0; i < e.target.value; i++) {
-        console.log("HELLO");
         if (form.members[i]) {
           test[i] = { name: form.members[i].name, cost: form.members[i].cost };
         } else {
-          console.log("HI");
           test[i] = { name: "", cost: 0 };
         }
       }
     }
     if (test.length === 0) test = form.members;
-    //console.log(test)
     setForm({
       ...form,
       [e.target.name]: e.target.value,
@@ -128,7 +123,6 @@ const NewBill = () => {
       remainingAmount: calculateRemainingAmount(e.target.value),
       dollarAmount: e.target.value,
     });
-    //console.log(form.members)
   };
 
   const handleMemberCost = (e, index) => {
@@ -145,7 +139,6 @@ const NewBill = () => {
       members: newMemberList,
       remainingAmount: calculateRemainingAmount(form.dollarAmount),
     });
-    //console.log(form.members)
   };
 
   const handleMemberName = (e, index) => {
@@ -162,7 +155,6 @@ const NewBill = () => {
       ...form,
       members: memberObject,
     });
-    //console.log(form.members)
   };
 
   const validate = () => {

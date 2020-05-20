@@ -20,8 +20,6 @@ export default auth0.requireAuthentication(async function (req, res) {
     case "POST":
       try {
         const bill = await Bill.create(req.body);
-        console.log(req.body);
-        console.log(bill);
         res.status(201).json({ success: true, data: bill });
       } catch (error) {
         res.status(400).json({ success: false });

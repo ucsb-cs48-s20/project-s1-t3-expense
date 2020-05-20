@@ -22,7 +22,6 @@ const EditBill = ({ bills, user }) => {
   const [errors, setErrors] = useState({});
   const [check, setCheck] = useState(form.paid);
   const router = useRouter();
-  console.log(form);
 
   useEffect(() => {
     if (isSubmitting) {
@@ -48,8 +47,8 @@ const EditBill = ({ bills, user }) => {
   const updateBill = async () => {
     try {
       const res = await fetch(
-        `http://localhost:3000/api/bills/${router.query.id}`,
-        //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        //`http://localhost:3000/api/bills/${router.query.id}`,
+        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -71,9 +70,7 @@ const EditBill = ({ bills, user }) => {
   };
 
   const calculateRemainingAmount = (e) => {
-    console.log("calcualte");
     let remainingAmount = e;
-    console.log(e);
     form.members.forEach((member) => {
       remainingAmount = remainingAmount - member.cost;
     });
@@ -106,7 +103,6 @@ const EditBill = ({ bills, user }) => {
       remainingAmount: calculateRemainingAmount(e.target.value),
       dollarAmount: e.target.value,
     });
-    //console.log(form.members)
   };
 
   const handleMemberCost = (e, index) => {
@@ -123,18 +119,14 @@ const EditBill = ({ bills, user }) => {
       members: newMemberList,
       remainingAmount: calculateRemainingAmount(form.dollarAmount),
     });
-    //console.log(form.members)
   };
 
   const handleStyle = (e, { value }) => {
-    console.log(e.target.label);
     setForm({
       ...form,
       splitWay: value,
     });
-    console.log(form.dollarAmount);
   };
-  console.log(form.splitWay);
 
   const handleChange = (e) => {
     let test = [];
@@ -344,10 +336,10 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
-  /*const res = await fetch(
+  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  const res = await fetch(
     `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
-  );*/
+  );
   const { data } = await res.json();
   return { props: { bills: data, user: user } };
 }
