@@ -1,5 +1,6 @@
 import Jumbotron from "react-bootstrap/Jumbotron";
 import Container from "react-bootstrap/Container";
+import React from "react";
 
 function AppJumbotron(props) {
   const user = props.user;

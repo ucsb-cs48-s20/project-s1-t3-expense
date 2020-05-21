@@ -12,7 +12,9 @@
     "test": "npm-run-all test:*",
     "test:format": "prettier --check \"**/*.{js,json}\" --ignore-path .gitignore",
     "test:cypress": "start-server-and-test dev 3000 cy:run",
-    "danger": "danger"
+    "danger": "danger",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook -c .storybook -o ../cs48-s20-nextjs-tutorial-storybook/docs"
   },
   "husky": {
     "hooks": {
@@ -28,16 +30,27 @@
     "isomorphic-unfetch": "^3.0.0",
     "js-cookie": "^2.2.1",
     "mongoose": "^5.9.10",
-    "next": "9.3.2",
+    "next": "^9.4.1",
     "react": "16.13.1",
     "react-bootstrap": "^1.0.0",
+    "react-bootstrap-table-next": "^4.0.1",
     "react-dom": "16.13.1",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.88.2",
     "swr": "^0.1.18"
   },
   "devDependencies": {
+    "@babel/core": "^7.9.6",
     "@rckeller/cypress-unfetch": "^1.0.1",
+    "@storybook/addon-a11y": "^5.3.18",
+    "@storybook/addon-actions": "^5.3.18",
+    "@storybook/addon-knobs": "^5.3.18",
+    "@storybook/addon-links": "^5.3.18",
+    "@storybook/addon-storysource": "^5.3.18",
+    "@storybook/addon-viewport": "^5.3.18",
+    "@storybook/addons": "^5.3.18",
+    "@storybook/react": "^5.3.18",
+    "babel-loader": "^8.1.0",
     "cypress": "^4.4.1",
     "danger": "^10.0.0",
     "heroku-dotenv": "^0.4.1",
@@ -47,6 +60,7 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^2.0.2",
     "pretty-quick": "^2.0.1",
-    "start-server-and-test": "^1.10.11"
+    "start-server-and-test": "^1.10.11",
+    "terser-webpack-plugin": "^2.3.5"
   }
 }

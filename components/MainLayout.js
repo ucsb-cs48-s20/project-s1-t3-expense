@@ -19,7 +19,7 @@ function MainLayout(props) {
         />
       </Head>
       <AppNavbar user={user} />
-      <AppJumbotron uers={user} />
+      <AppJumbotron user={user} />
       <Container>{props.children}</Container>
       <AppFooter />
     </>
