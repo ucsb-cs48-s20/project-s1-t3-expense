@@ -24,3 +24,6 @@
 * Kaylee Nguyen, kayleenguyen
 * Dylan Lin, DylanLin29
 * Greg Baroni, gbaroni888
+
+# Deployment
+* [Deployment Instructions](./docs/DEPLOY.md)
