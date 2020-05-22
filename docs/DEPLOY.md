@@ -61,24 +61,34 @@ Set MONGODB_URI_PRODUCTION to the uri string obtained from _Setting up MongoDB_ 
 
 To run on localhost, you must first modify two files: pages/[id]/edit.js and pages/[id]/index.js
 Change these bits of code from edit.js
+
 from this (heroku set up)
-![1st change to edit.js](./images/edit1heroku.png)
+![1st change to edit.js](./images/edit1heroku .PNG)
 to this (localhost set up)
-![1st change to edit.js](./images/edit1local.png)
+![1st change to edit.js](./images/edit1local.PNG)
 and from this (heroku set up)
-![2nd change to edit.js](./images/edit2heroku.png)
+![2nd change to edit.js](./images/edit2heroku.PNG)
 to this (localhost set up)
-![2nd change to edit.js](./images/edit2local.png)
+![2nd change to edit.js](./images/edit2local.PNG)
 
 Change these bits of code from index.js
+
 from this (heroku set up)
-![1st change to index.js](./images/index1heroku.png)
+
+![1st change to index.js](./images/index1heroku.PNG)
+
 to this (localhost set up)
-![1st change to index.js](./images/index1local.png)
+
+![1st change to index.js](./images/index1local.PNG)
+
 and from this (heroku set up)
-![2nd change to index.js](./images/index2heroku.png)
+
+![2nd change to index.js](./images/index2heroku.PNG)
+
 to this (localhost set up)
-![2nd change to index.js](./images/index2local.png)
+
+![2nd change to index.js](./images/index2local.PNG)
+
 Note: You must do this if you plan to first run in local host. This means that if you plan on deploying on heroku first, you can skip this step.
 
 Execute the following command to run on localhost:
