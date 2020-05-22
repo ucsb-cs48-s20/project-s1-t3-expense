@@ -51,8 +51,11 @@ All of these instructions can be found in this file (Don't worry about the fact 
 
 Follow _all_ of the instructions in that file _before_ continuing on to the next step.
 At this point the only blank vars in your .env should be the following:
+
 MONGODB_URI_PRODUCTION=
+
 NODE_ENV=
+
 Set MONGODB_URI_PRODUCTION to the uri string obtained from _Setting up MongoDB_ and set NODE_ENV to _production_
 ## Running on localhost
 
