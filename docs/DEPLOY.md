@@ -63,12 +63,19 @@ To run on localhost, you must first modify two files: pages/[id]/edit.js and pag
 Change these bits of code from edit.js
 
 from this (heroku set up)
-![1st change to edit.js](./images/edit1heroku .PNG)
+
+![1st change to edit.js](./images/edit1heroku.PNG)
+
 to this (localhost set up)
+
 ![1st change to edit.js](./images/edit1local.PNG)
+
 and from this (heroku set up)
+
 ![2nd change to edit.js](./images/edit2heroku.PNG)
+
 to this (localhost set up)
+
 ![2nd change to edit.js](./images/edit2local.PNG)
 
 Change these bits of code from index.js
