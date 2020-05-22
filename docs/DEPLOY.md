@@ -64,7 +64,7 @@ Change these bits of code from edit.js
 
 from this (heroku set up)
 
-![1st change to edit.js](./images/edit1heroku .PNG)
+![1st change to edit.js](./images/edit1heroku.PNG)
 
 to this (localhost set up)
 
