@@ -1,3 +1,4 @@
+/*
 import React from "react";
 import ExportPDF from "../components/ExportPDF";
 
@@ -15,3 +16,4 @@ export const exportPDF = () => {
   };
   return <ExportPDF bills={bills} />;
 };
+*/
