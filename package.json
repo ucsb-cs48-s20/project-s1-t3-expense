@@ -14,7 +14,7 @@
     "test:cypress": "start-server-and-test dev 3000 cy:run",
     "danger": "danger",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook -c .storybook -o ../cs48-s20-nextjs-tutorial-storybook/docs"
+    "build-storybook": "build-storybook -c .storybook -o ../project-s1-t3-expense-storybook/docs"
   },
   "husky": {
     "hooks": {
