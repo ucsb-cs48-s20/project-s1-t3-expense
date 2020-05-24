@@ -51,8 +51,8 @@ const EditBill = ({ bills, user }) => {
     try {
       const res = await fetch(
         // `http://localhost:3000/api/bills/${router.query.id}`,
-        // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
-        `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
+        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -68,8 +68,8 @@ const EditBill = ({ bills, user }) => {
         prevMembers[i].email !== form.members[i].email
           ? await fetch(
               // `http://localhost:3000/api/sendEmail`,
-              // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
-              `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
+              `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
+              // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -395,12 +395,12 @@ export async function getServerSideProps(context) {
 
   let queryIdBills = context.query.id;
   // const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
-  // const res = await fetch(
-  //   `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
-  // );
   const res = await fetch(
-    `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${queryIdBills}`
+    `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
   );
+  // const res = await fetch(
+  //   `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${queryIdBills}`
+  // );
   const { data } = await res.json();
   return { props: { bills: data, user: user } };
 }
