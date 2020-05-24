@@ -63,7 +63,7 @@ const EditBill = ({ bills, user }) => {
       for (let i = 0; i < form.members.length; i++) {
         form.members[i].email &&
         prevForm.members.length > i &&
-        prevForm.members[i].email === form.members[i].email
+        prevForm.members[i].email !== form.members[i].email
           ? await fetch(
               // `http://localhost:3000/api/sendEmail`,
               // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
