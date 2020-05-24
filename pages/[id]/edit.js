@@ -22,6 +22,7 @@ const EditBill = ({ bills, user }) => {
   const [errors, setErrors] = useState({});
   const [check, setCheck] = useState(form.paid);
   const router = useRouter();
+  const prevForm = form;
 
   useEffect(() => {
     if (isSubmitting) {
@@ -38,7 +39,7 @@ const EditBill = ({ bills, user }) => {
           splitWay: "equal",
           paid: false,
           unique: user.sub,
-          members: [{ name: "", cost: 0 }],
+          members: [{ name: "", cost: 0, email: "" }],
         });
       }
     }
@@ -59,6 +60,28 @@ const EditBill = ({ bills, user }) => {
           body: JSON.stringify(form),
         }
       );
+      for (let i = 0; i < form.members.length; i++) {
+        form.members[i].email &&
+        prevForm.members.length > i &&
+        prevForm.members[i].email === form.members[i].email
+          ? await fetch(
+              // `http://localhost:3000/api/sendEmail`,
+              // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
+              `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  title: form.title,
+                  name: form.members[i].name,
+                  email: form.members[i].email,
+                  cost: form.members[i].cost,
+                  sender: user.name,
+                }),
+              }
+            )
+          : null;
+      }
       router.push("/bill-private");
     } catch (error) {
       console.log(error);
@@ -85,6 +108,7 @@ const EditBill = ({ bills, user }) => {
         test[i] = {
           name: form.members[i].name,
           cost: equalCostPerMemberString(),
+          email: form.members[i].email,
         };
       }
       setForm({
@@ -113,6 +137,7 @@ const EditBill = ({ bills, user }) => {
     newMemberList[index] = {
       name: newMemberList[index].name,
       cost: e.target.value,
+      email: newMemberList[index].email,
     };
 
     setForm({
@@ -134,9 +159,13 @@ const EditBill = ({ bills, user }) => {
     if (e.target.name === "groupSize") {
       for (let i = 0; i < e.target.value; i++) {
         if (form.members[i]) {
-          test[i] = { name: form.members[i].name, cost: form.members[i].cost };
+          test[i] = {
+            name: form.members[i].name,
+            cost: form.members[i].cost,
+            email: form.members.email,
+          };
         } else {
-          test[i] = { name: "", cost: 0 };
+          test[i] = { name: "", cost: 0, email: "" };
         }
       }
     }
@@ -179,6 +208,21 @@ const EditBill = ({ bills, user }) => {
     memberObject[index] = {
       name: e.target.value,
       cost: memberObject[index].cost,
+      email: memberObject[index].email,
+    };
+
+    setForm({
+      ...form,
+      members: memberObject,
+    });
+  };
+  const handleMemberEmail = (e, index) => {
+    const memberObject = form.members;
+
+    memberObject[index] = {
+      name: memberObject[index].name,
+      cost: memberObject[index].cost,
+      email: e.target.value,
     };
 
     setForm({
@@ -239,6 +283,17 @@ const EditBill = ({ bills, user }) => {
                           handleMemberName(e, index);
                         }}
                         value={form.members[index].name}
+                      />
+                      <Form.Input
+                        key={index}
+                        fluid
+                        label="Member Email"
+                        placeholder={index + 1 + "@gmail.com"}
+                        name="emails"
+                        onChange={(e) => {
+                          handleMemberEmail(e, index);
+                        }}
+                        value={form.members[index].email}
                       />
                       {form.splitWay === "equal" ? (
                         equalCostPerMemberString()

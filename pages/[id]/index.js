@@ -74,7 +74,14 @@ const Bills = ({ bills, user }) => {
             {bills.members?.map((mem, index) => {
               return (
                 <p key={index}>
-                  {mem.name} : ${mem.cost}
+                  {/* remove : when member name is empty */}
+                  {mem.name ? (
+                    <span>{mem.name}: </span>
+                  ) : (
+                    <span>member {index + 1}: </span>
+                  )}
+                  ${mem.cost}
+                  {mem.email ? <span> (email: {mem.email})</span> : null}
                 </p>
               );
             })}

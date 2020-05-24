@@ -68,17 +68,19 @@ const NewBill = ({ user }) => {
         body: JSON.stringify(form),
       });
       for (let i = 0; i < form.members.length; i++) {
-        await fetch("api/sendEmail", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            title: form.title,
-            name: form.members[i].name,
-            email: form.members[i].email,
-            cost: form.members[i].cost,
-            sender: user.name,
-          }),
-        });
+        form.members[i].email
+          ? await fetch("api/sendEmail", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                title: form.title,
+                name: form.members[i].name,
+                email: form.members[i].email,
+                cost: form.members[i].cost,
+                sender: user.name,
+              }),
+            })
+          : null;
       }
       router.push("/bill-private");
     } catch (error) {
