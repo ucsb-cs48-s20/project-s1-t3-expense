@@ -49,7 +49,6 @@ const EditBill = ({ bills, user }) => {
 
   const updateBill = async () => {
     try {
-      console.log("enter");
       const res = await fetch(
         // `http://localhost:3000/api/bills/${router.query.id}`,
         // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
@@ -63,16 +62,14 @@ const EditBill = ({ bills, user }) => {
           body: JSON.stringify(form),
         }
       );
-      console.log(form);
-      console.log(prevMembers);
       for (let i = 0; i < form.members.length; i++) {
         form.members[i].email &&
         prevMembers.length > i &&
         prevMembers[i].email !== form.members[i].email
           ? await fetch(
-              `http://localhost:3000/api/sendEmail`,
+              // `http://localhost:3000/api/sendEmail`,
               // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
-              // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
+              `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
