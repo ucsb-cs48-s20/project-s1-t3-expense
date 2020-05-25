@@ -1,5 +1,5 @@
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import BillPDF from "./BillPDF";
+import BillPDF from "../docs/BillPDF";
 
 function ExportPDF(props) {
   const title = props.bills.title + ".pdf";
