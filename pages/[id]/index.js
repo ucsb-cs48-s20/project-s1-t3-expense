@@ -38,8 +38,9 @@ const Bills = ({ bills, user }) => {
     const billId = router.query.id;
     try {
       const deleted = await fetch(
-        //`http://localhost:3000/api/bills/${billId}`,
+        // `http://localhost:3000/api/bills/${billId}`,
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
+        // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${billId}`,
         {
           method: "DELETE",
         }
@@ -73,7 +74,14 @@ const Bills = ({ bills, user }) => {
             {bills.members?.map((mem, index) => {
               return (
                 <p key={index}>
-                  {mem.name} : ${mem.cost}
+                  {/* remove : when member name is empty */}
+                  {mem.name ? (
+                    <span>{mem.name}: </span>
+                  ) : (
+                    <span>member {index + 1}: </span>
+                  )}
+                  ${mem.cost}
+                  {mem.email ? <span> (email: {mem.email})</span> : null}
                 </p>
               );
             })}
@@ -100,10 +108,13 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  // const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
   const res = await fetch(
     `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
   );
+  // const res = await fetch(
+  //   `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${queryIdBills}`
+  // );
   const { data } = await res.json();
   return { props: { bills: data, user: user } };
 }

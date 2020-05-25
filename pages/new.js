@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import { Form, Checkbox, Loader, Radio } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { requiredAuth } from "../utils/ssr";
-import { set } from "mongoose";
+import { set, STATES } from "mongoose";
 
 const NewBill = ({ user }) => {
   const [form, setForm] = useState({
@@ -16,7 +16,7 @@ const NewBill = ({ user }) => {
     splitWay: "equal",
     paid: false,
     unique: user.sub,
-    members: [{ name: "", cost: 0 }],
+    members: [{ name: "", cost: 0, email: "" }],
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -38,7 +38,7 @@ const NewBill = ({ user }) => {
           splitWay: "equal",
           paid: false,
           unique: user.sub,
-          members: [{ name: "", cost: 0 }],
+          members: [{ name: "", cost: 0, email: "" }],
         });
       }
     }
@@ -67,6 +67,21 @@ const NewBill = ({ user }) => {
         },
         body: JSON.stringify(form),
       });
+      for (let i = 0; i < form.members.length; i++) {
+        form.members[i].email
+          ? await fetch("api/sendEmail", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                title: form.title,
+                name: form.members[i].name,
+                email: form.members[i].email,
+                cost: form.members[i].cost,
+                sender: user.name,
+              }),
+            })
+          : null;
+      }
       router.push("/bill-private");
     } catch (error) {
       console.log(error);
@@ -80,6 +95,7 @@ const NewBill = ({ user }) => {
         test[i] = {
           name: form.members[i].name,
           cost: equalCostPerMemberString(),
+          email: form.members[i].email,
         };
       }
       setForm({
@@ -105,9 +121,13 @@ const NewBill = ({ user }) => {
     if (e.target.name === "groupSize") {
       for (let i = 0; i < e.target.value; i++) {
         if (form.members[i]) {
-          test[i] = { name: form.members[i].name, cost: form.members[i].cost };
+          test[i] = {
+            name: form.members[i].name,
+            cost: form.members[i].cost,
+            email: form.members[i].email,
+          };
         } else {
-          test[i] = { name: "", cost: 0 };
+          test[i] = { name: "", cost: 0, email: "" };
         }
       }
     }
@@ -142,6 +162,7 @@ const NewBill = ({ user }) => {
     newMemberList[index] = {
       name: newMemberList[index].name,
       cost: e.target.value,
+      email: newMemberList[index].email,
     };
 
     setForm({
@@ -159,6 +180,22 @@ const NewBill = ({ user }) => {
     memberObject[index] = {
       name: e.target.value,
       cost: memberObject[index].cost,
+      email: memberObject[index].name,
+    };
+
+    setForm({
+      ...form,
+      members: memberObject,
+    });
+  };
+
+  const handleMemberEmail = (e, index) => {
+    const memberObject = form.members;
+
+    memberObject[index] = {
+      name: memberObject[index].name,
+      cost: memberObject[index].cost,
+      email: e.target.value,
     };
 
     setForm({
@@ -232,6 +269,16 @@ const NewBill = ({ user }) => {
                       name="members"
                       onChange={(e) => {
                         handleMemberName(e, index);
+                      }}
+                    />
+                    <Form.Input
+                      key={index}
+                      fluid
+                      label="Member Email"
+                      placeholder={index + 1 + "@gmail.com"}
+                      name="emails"
+                      onChange={(e) => {
+                        handleMemberEmail(e, index);
                       }}
                     />
                     {form.splitWay === "equal" ? (
