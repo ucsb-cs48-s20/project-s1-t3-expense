@@ -16,7 +16,7 @@ export const loggedOut = () => {
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
         crossOrigin="anonymous"
       />
-      <MainLayout />;
+      <MainLayout />
     </>
   );
 };
@@ -35,7 +35,7 @@ export const loggedIn = () => {
         integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
         crossOrigin="anonymous"
       />
-      <MainLayout user={user} />;
+      <MainLayout user={user} />
     </>
   );
 };
