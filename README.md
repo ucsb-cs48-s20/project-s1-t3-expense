@@ -27,3 +27,4 @@
 
 # Deployment
 * [Deployment Instructions](./docs/DEPLOY.md)
+* [Video](https://drive.google.com/open?id=1RYRhRH_2tTJ5RGw2EEmhO3AEBZGAFRpJ) (View with UCSB Google account)
