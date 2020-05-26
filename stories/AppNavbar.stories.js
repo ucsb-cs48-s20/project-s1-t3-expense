@@ -8,7 +8,17 @@ export default {
 };
 
 export const loggedOut = () => {
-  return <AppNavbar />;
+  return (
+    <>
+      <link
+        rel="stylesheet"
+        href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+        crossOrigin="anonymous"
+      />
+      <AppNavbar />;
+    </>
+  );
 };
 
 export const loggedIn = () => {
@@ -20,5 +30,15 @@ export const loggedIn = () => {
   );
   //const user = { name, role, picture };
   const user = { name, picture };
-  return <AppNavbar user={user} />;
+  return (
+    <>
+      <link
+        rel="stylesheet"
+        href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+        crossOrigin="anonymous"
+      />
+      <AppNavbar user={user} />;
+    </>
+  );
 };
