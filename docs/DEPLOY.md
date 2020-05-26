@@ -47,7 +47,7 @@ This involves:
 - Copying the value of three "secrets" into a file called `.env`
 
 All of these instructions can be found in this file (Don't worry about the fact that .env.SAMPLE isn't the same as the one in the instructions, this will be addressed later):
-[docs/auth0-localhost.md](docs/auth0-localhost.md)
+[docs/auth0-localhost.md](https://github.com/ucsb-cs48-s20/demo-nextjs-app/blob/master/docs/auth0-localhost.md)
 
 Follow _all_ of the instructions in that file _before_ continuing on to the next step.
 At this point the only blank vars in your .env should be the following:
@@ -113,7 +113,7 @@ the codebase will automatically be reflected in the browser.
 
 If the test cases were passing on the starter code repo, but are now
 failing, it is likely because you need to configure the secrets
-for Github Actions. That process is explained here: [docs/auth0-github-actions.md](./docs/auth0-github-actions.md).
+for Github Actions. That process is explained here: [docs/auth0-github-actions.md](https://github.com/ucsb-cs48-s20/demo-nextjs-app/blob/master/docs/auth0-github-actions.md).
 
 ## Deployment to Production
 
@@ -122,7 +122,7 @@ so that real users can access it: we call this a _production_ deployment
 of your app.
 
 There are a variety of cloud-based platforms where we can deploy our
-applications. The file [docs/platforms.md](./docs/platforms.md) describes
+applications. The file [docs/platforms.md](https://github.com/ucsb-cs48-s20/demo-nextjs-app/blob/master/docs/platform.md) describes
 the pros/cons of Heroku vs. now.sh and Amazon Web Services. The summary
 is that we've chosen Heroku for it's easy of user for beginners
 and the ability for a team to collaborate on managing a deployment.
@@ -133,7 +133,7 @@ are properly configured for heroku. All this means is that the code in these fil
 cs48-s20-s1-t3-prod.herokuapp.com
 to the whatever the url of your heroku app is.
 Further instructions for configuring your app for Heroku are listed in the file
-[docs/heroku.md](./docs/heroku.md)
+[docs/heroku.md](https://github.com/ucsb-cs48-s20/demo-nextjs-app/blob/master/docs/heroku.md)
 
 ## The value of `SESSION_COOKIE_SECRET`
 
@@ -141,4 +141,4 @@ For deployments to localhost and now.sh, the value of `SESSION_COOKIE_SECRET` is
 
 For Heroku deployments, this value needs to be set by hand in the .env file.
 
-The purpose of this value is described in the file [docs/session-cookie-secret.md](./docs/session-cookie-secret.md)
+The purpose of this value is described in the file [docs/session-cookie-secret.md](https://github.com/ucsb-cs48-s20/demo-nextjs-app/blob/master/docs/session-cookie-secret.md)
