@@ -220,6 +220,7 @@ const NewBill = () => {
                       label="Member Name"
                       placeholder={index + 1}
                       name="members"
+                      value={form.members[index]?.name}
                       onChange={(e) => {
                         handleMemberName(e, index);
                       }}
@@ -229,10 +230,12 @@ const NewBill = () => {
                     ) : (
                       <div>
                         <Form.Input
+                          label="Cost"
                           name="expense"
                           type="number"
                           step="1"
                           min="0"
+                          value={form.members[index]?.cost}
                           onChange={(e) => {
                             handleMemberCost(e, index);
                           }}

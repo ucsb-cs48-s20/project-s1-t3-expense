@@ -46,19 +46,6 @@ const NewBill = ({ user }) => {
             ...form,
             title: "",
           });
-        } else {
-          /* Here is a worst case form reset for any uncaught errors */
-          setForm({
-            title: "",
-            description: "",
-            groupSize: 1,
-            dollarAmount: 0,
-            remainingAmount: 0,
-            splitWay: "equal",
-            paid: false,
-            unique: user.sub,
-            members: [{ name: "", cost: 0, email: "" }],
-          });
         }
       }
     }
@@ -289,6 +276,7 @@ const NewBill = ({ user }) => {
                       label="Member Name"
                       placeholder={index + 1}
                       name="members"
+                      value={form.members[index]?.name}
                       onChange={(e) => {
                         handleMemberName(e, index);
                       }}
@@ -309,9 +297,11 @@ const NewBill = ({ user }) => {
                       <div>
                         <Form.Input
                           name="expense"
+                          label="Cost"
                           type="number"
                           step="1"
                           min="0"
+                          value={form.members[index]?.cost}
                           onChange={(e) => {
                             handleMemberCost(e, index);
                           }}
