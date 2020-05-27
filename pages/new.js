@@ -7,6 +7,7 @@ import { requiredAuth } from "../utils/ssr";
 import { set, STATES } from "mongoose";
 
 const NewBill = ({ user }) => {
+  /* An empty form is created here to be filled in by the user and eventually become a bill */
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -28,18 +29,37 @@ const NewBill = ({ user }) => {
       if (Object.keys(errors).length === 0) {
         createBill();
       } else {
+        /* If we have reached here, then we have an error so we cannot submit
+        and we reset the form with the proper error field reset */
         setIsSubmitting(false);
-        setForm({
-          title: "",
-          description: "",
-          groupSize: 1,
-          dollarAmount: 0,
-          remainingAmount: 0,
-          splitWay: "equal",
-          paid: false,
-          unique: user.sub,
-          members: [{ name: "", cost: 0, email: "" }],
-        });
+        if (errors.description) {
+          /* Here we check if the descrition field isn't
+          correct and reset if needed */
+          setForm({
+            ...form,
+            description: "",
+          });
+        } else if (errors.title) {
+          /* Here we check if the title field isn't
+        correct and reset if needed */
+          setForm({
+            ...form,
+            title: "",
+          });
+        } else {
+          /* Here is a worst case form reset for any uncaught errors */
+          setForm({
+            title: "",
+            description: "",
+            groupSize: 1,
+            dollarAmount: 0,
+            remainingAmount: 0,
+            splitWay: "equal",
+            paid: false,
+            unique: user.sub,
+            members: [{ name: "", cost: 0, email: "" }],
+          });
+        }
       }
     }
   }, [errors]);
@@ -118,9 +138,11 @@ const NewBill = ({ user }) => {
 
   const handleChange = (e) => {
     let test = [];
+    /* If we changed the groupSize field, we then updated the member list to either increase/decrease accordingly */
     if (e.target.name === "groupSize") {
       for (let i = 0; i < e.target.value; i++) {
         if (form.members[i]) {
+          /* Here we check if the bill has any value in it or is it null,  if null we set an 'empty' object*/
           test[i] = {
             name: form.members[i].name,
             cost: form.members[i].cost,

@@ -30,17 +30,17 @@ const NewBill = () => {
         createBill();
       } else {
         setIsSubmitting(false);
-        setForm({
-          title: "",
-          description: "",
-          groupSize: 1,
-          dollarAmount: 0,
-          remainingAmount: 0,
-          splitWay: "equal",
-          paid: false,
-          members: [{ name: "", cost: 0 }],
-          // paid: false,
-        });
+        if (errors.description) {
+          setForm({
+            ...form,
+            description: "",
+          });
+        } else if (errors.title) {
+          setForm({
+            ...form,
+            title: "",
+          });
+        }
       }
     }
   }, [errors]);
@@ -195,6 +195,7 @@ const NewBill = () => {
               label="Title"
               placeholder="Title"
               name="title"
+              value={form.title}
               onChange={handleChange}
             />
 
@@ -205,6 +206,7 @@ const NewBill = () => {
               type="number"
               step="1"
               min="1"
+              value={form.groupSize}
               onChange={handleChange}
             />
 
@@ -279,7 +281,7 @@ const NewBill = () => {
             </Form.Group>
 
             <Form.TextArea
-              fluid
+              fluid="true"
               error={
                 errors.description
                   ? {
@@ -292,6 +294,7 @@ const NewBill = () => {
               label="Description"
               placeholder="Description"
               name="description"
+              value={form.description}
               onChange={handleChange}
             />
 
