@@ -1,6 +1,6 @@
-import equalCostPerMemberString from "../utils/costPerMember";
+import { equalCostPerMemberString } from "../utils/calculations";
 
-describe("util/costPerMember", () => {
+describe("util/calculations", () => {
   describe("equalCostPerMemberString", () => {
     it("calculates the average cost per member", () => {
       expect(equalCostPerMemberString(10, 2, ["member1", "member2"])).toBe(

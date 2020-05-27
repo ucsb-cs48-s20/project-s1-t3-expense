@@ -40,13 +40,6 @@ const BillTemporary = ({ bills }) => {
     router.push("/");
   };
 
-  // let paidStatus;
-  // if (bills.paid) {
-  //   paidStatus = "Paid";
-  // } else if (!bills.paid) {
-  //   paidStatus = "Not Paid";
-  // }
-
   return (
     <Layout user={null}>
       <div className="bill-container">

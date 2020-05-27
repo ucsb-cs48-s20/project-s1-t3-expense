@@ -1,6 +1,6 @@
-import calculateRemainingAmount from "../utils/remainingAmount";
+import { calculateRemainingAmount } from "../utils/calculations";
 
-describe("util/remainingAmount", () => {
+describe("util/calculations", () => {
   describe("calculateRemainingAmount", () => {
     it("calculate the remaining amount after subtracting the cost of each member", () => {
       const members = [{ cost: 2 }, { cost: 5 }];
