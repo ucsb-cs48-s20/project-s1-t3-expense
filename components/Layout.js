@@ -2,6 +2,7 @@ import Container from "react-bootstrap/Container";
 import AppNavbar from "./AppNavbar";
 import AppFooter from "./AppFooter";
 import Head from "next/head";
+import React from "react";
 
 // Layout without Jumbotron
 function Layout(props) {

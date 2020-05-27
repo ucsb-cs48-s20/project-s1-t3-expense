@@ -3,7 +3,7 @@ import AppNavbar from "./AppNavbar";
 import AppFooter from "./AppFooter";
 import AppJumbotron from "./AppJumbotron";
 import Head from "next/head";
-
+import React from "react";
 // Layout with Jumbotron
 function MainLayout(props) {
   const user = props.user;
@@ -19,7 +19,7 @@ function MainLayout(props) {
         />
       </Head>
       <AppNavbar user={user} />
-      <AppJumbotron uers={user} />
+      <AppJumbotron user={user} />
       <Container>{props.children}</Container>
       <AppFooter />
     </>
