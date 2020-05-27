@@ -6,6 +6,11 @@ import { Form, Checkbox, Loader, Radio } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { requiredAuth } from "../utils/ssr";
 import Cookie from "js-cookie";
+import {
+  equalCostPerMemberString,
+  calculateRemainingAmount,
+} from "../utils/calculations";
+import validateForm from "../utils/validateForm";
 
 const NewBill = () => {
   const [form, setForm] = useState({
@@ -30,33 +35,20 @@ const NewBill = () => {
         createBill();
       } else {
         setIsSubmitting(false);
-        setForm({
-          title: "",
-          description: "",
-          groupSize: 1,
-          dollarAmount: 0,
-          remainingAmount: 0,
-          splitWay: "equal",
-          paid: false,
-          members: [{ name: "", cost: 0 }],
-          // paid: false,
-        });
+        if (errors.description) {
+          setForm({
+            ...form,
+            description: "",
+          });
+        } else if (errors.title) {
+          setForm({
+            ...form,
+            title: "",
+          });
+        }
       }
     }
   }, [errors]);
-
-  const calculateRemainingAmount = (e) => {
-    let remainingAmount = e;
-    form.members.forEach((member) => {
-      remainingAmount = remainingAmount - member.cost;
-    });
-    return remainingAmount;
-  };
-
-  const equalCostPerMemberString = () => {
-    const costPerMember = (form.dollarAmount / form.groupSize).toFixed(2);
-    return form.members?.length > 0 ? costPerMember : "";
-  };
 
   const createBill = async () => {
     Cookie.set("form", JSON.stringify(form));
@@ -69,7 +61,7 @@ const NewBill = () => {
       for (let i = 0; i < form.members.length; i++) {
         test[i] = {
           name: form.members[i].name,
-          cost: equalCostPerMemberString(),
+          cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
         };
       }
       setForm({
@@ -78,7 +70,7 @@ const NewBill = () => {
       });
     }
     e.preventDefault();
-    let errs = validate();
+    let errs = validateForm(form.title, form.description);
     setErrors(errs);
     setIsSubmitting(true);
   };
@@ -120,7 +112,7 @@ const NewBill = () => {
   const handleMoney = (e) => {
     setForm({
       ...form,
-      remainingAmount: calculateRemainingAmount(e.target.value),
+      remainingAmount: calculateRemainingAmount(e.target.value, form.members),
       dollarAmount: e.target.value,
     });
   };
@@ -137,7 +129,10 @@ const NewBill = () => {
     setForm({
       ...form,
       members: newMemberList,
-      remainingAmount: calculateRemainingAmount(form.dollarAmount),
+      remainingAmount: calculateRemainingAmount(
+        form.dollarAmount,
+        form.members
+      ),
     });
   };
 
@@ -155,22 +150,6 @@ const NewBill = () => {
       ...form,
       members: memberObject,
     });
-  };
-
-  const validate = () => {
-    let err = {};
-
-    if (!form.title) {
-      err.title = "Title is required";
-    } else if (form.title.length > 40) {
-      err.title = "Title must be less than 40 characters";
-    }
-    if (!form.description) {
-      err.description = "Description is required";
-    } else if (form.description.length > 200) {
-      err.description = "Description must be less taht 200 characters";
-    }
-    return err;
   };
 
   return (
@@ -195,6 +174,7 @@ const NewBill = () => {
               label="Title"
               placeholder="Title"
               name="title"
+              value={form.title}
               onChange={handleChange}
             />
 
@@ -205,6 +185,7 @@ const NewBill = () => {
               type="number"
               step="1"
               min="1"
+              value={form.groupSize}
               onChange={handleChange}
             />
 
@@ -218,19 +199,26 @@ const NewBill = () => {
                       label="Member Name"
                       placeholder={index + 1}
                       name="members"
+                      value={form.members[index]?.name}
                       onChange={(e) => {
                         handleMemberName(e, index);
                       }}
                     />
                     {form.splitWay === "equal" ? (
-                      equalCostPerMemberString()
+                      // equalCostPerMemberString()
+                      equalCostPerMemberString(
+                        form.dollarAmount,
+                        form.groupSize
+                      )
                     ) : (
                       <div>
                         <Form.Input
+                          label="Cost"
                           name="expense"
                           type="number"
                           step="1"
                           min="0"
+                          value={form.members[index]?.cost}
                           onChange={(e) => {
                             handleMemberCost(e, index);
                           }}
@@ -279,7 +267,7 @@ const NewBill = () => {
             </Form.Group>
 
             <Form.TextArea
-              fluid
+              fluid="true"
               error={
                 errors.description
                   ? {
@@ -292,6 +280,7 @@ const NewBill = () => {
               label="Description"
               placeholder="Description"
               name="description"
+              value={form.description}
               onChange={handleChange}
             />
 

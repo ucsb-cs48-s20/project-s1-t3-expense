@@ -4,6 +4,10 @@ import Button from "react-bootstrap/Button";
 import { Form, Checkbox, Loader, Radio } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { requiredAuth } from "../utils/ssr";
+import {
+  equalCostPerMemberString,
+  calculateRemainingAmount,
+} from "../utils/calculations";
 import { set, STATES } from "mongoose";
 
 const NewBill = ({ user }) => {
@@ -28,34 +32,27 @@ const NewBill = ({ user }) => {
       if (Object.keys(errors).length === 0) {
         createBill();
       } else {
+        /* If we have reached here, then we have an error so we cannot submit
+        and we reset the form with the proper error field reset */
         setIsSubmitting(false);
-        setForm({
-          title: "",
-          description: "",
-          groupSize: 1,
-          dollarAmount: 0,
-          remainingAmount: 0,
-          splitWay: "equal",
-          paid: false,
-          unique: user.sub,
-          members: [{ name: "", cost: 0, email: "" }],
-        });
+        if (errors.description) {
+          /* Here we check if the descrition field isn't
+          correct and reset if needed */
+          setForm({
+            ...form,
+            description: "",
+          });
+        } else if (errors.title) {
+          /* Here we check if the title field isn't
+        correct and reset if needed */
+          setForm({
+            ...form,
+            title: "",
+          });
+        }
       }
     }
   }, [errors]);
-
-  const calculateRemainingAmount = (e) => {
-    let remainingAmount = e;
-    form.members.forEach((member) => {
-      remainingAmount = remainingAmount - member.cost;
-    });
-    return remainingAmount;
-  };
-
-  const equalCostPerMemberString = () => {
-    const costPerMember = (form.dollarAmount / form.groupSize).toFixed(2);
-    return form.members?.length > 0 ? costPerMember : "";
-  };
 
   const createBill = async () => {
     try {
@@ -94,7 +91,7 @@ const NewBill = ({ user }) => {
       for (let i = 0; i < form.members.length; i++) {
         test[i] = {
           name: form.members[i].name,
-          cost: equalCostPerMemberString(),
+          cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
           email: form.members[i].email,
         };
       }
@@ -150,7 +147,7 @@ const NewBill = ({ user }) => {
   const handleMoney = (e) => {
     setForm({
       ...form,
-      remainingAmount: calculateRemainingAmount(e.target.value),
+      remainingAmount: calculateRemainingAmount(e.target.value, form.members),
       dollarAmount: e.target.value,
     });
   };
@@ -168,7 +165,10 @@ const NewBill = ({ user }) => {
     setForm({
       ...form,
       members: newMemberList,
-      remainingAmount: calculateRemainingAmount(form.dollarAmount),
+      remainingAmount: calculateRemainingAmount(
+        form.dollarAmount,
+        form.members
+      ),
     });
   };
 
@@ -282,14 +282,19 @@ const NewBill = ({ user }) => {
                       }}
                     />
                     {form.splitWay === "equal" ? (
-                      equalCostPerMemberString()
+                      equalCostPerMemberString(
+                        form.dollarAmount,
+                        form.groupSize
+                      )
                     ) : (
                       <div>
                         <Form.Input
                           name="expense"
+                          label="Cost"
                           type="number"
                           step="1"
                           min="0"
+                          value={form.members[index]?.cost}
                           onChange={(e) => {
                             handleMemberCost(e, index);
                           }}

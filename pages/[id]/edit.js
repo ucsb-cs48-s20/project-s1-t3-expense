@@ -5,6 +5,11 @@ import { Form, Checkbox, Loader, Radio } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { requiredAuth } from "../../utils/ssr";
 import Layout from "../../components/Layout";
+import {
+  equalCostPerMemberString,
+  calculateRemainingAmount,
+} from "../../utils/calculations";
+import validateForm from "../../utils/validateForm";
 
 const EditBill = ({ bills, user }) => {
   const [form, setForm] = useState({
@@ -31,27 +36,33 @@ const EditBill = ({ bills, user }) => {
       if (Object.keys(errors).length === 0) {
         updateBill();
       } else {
+        /* If there was an error (long description, no title, etc.), the bill is reset */
         setIsSubmitting(false);
-        setForm({
-          title: "",
-          description: "",
-          groupSize: 1,
-          dollarAmount: 0,
-          remainingAmount: 0,
-          splitWay: "equal",
-          paid: false,
-          unique: user.sub,
-          members: [{ name: "", cost: 0, email: "" }],
-        });
+        if (errors.description) {
+          /* Here we check if the descrition field isn't
+          correct and reset if needed */
+          setForm({
+            ...form,
+            description: "",
+          });
+        } else if (errors.title) {
+          /* Here we check if the title field isn't
+          correct and reset if needed */
+          setForm({
+            ...form,
+            title: "",
+          });
+        }
       }
     }
   }, [errors]);
 
   const updateBill = async () => {
+    /* Try catch here to try and updated the changed we made to the bill on the database */
     try {
       const res = await fetch(
-        // `http://localhost:3000/api/bills/${router.query.id}`,
-        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        `http://localhost:3000/api/bills/${router.query.id}`,
+        // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
@@ -67,8 +78,8 @@ const EditBill = ({ bills, user }) => {
         prevMembers.length > i &&
         prevMembers[i].email !== form.members[i].email
           ? await fetch(
-              // `http://localhost:3000/api/sendEmail`,
-              `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
+              `http://localhost:3000/api/sendEmail`,
+              // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
               // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
                 method: "POST",
@@ -84,23 +95,11 @@ const EditBill = ({ bills, user }) => {
             )
           : null;
       }
+      /* After the bill is posted, we route the user to the home bill page */
       router.push("/bill-private");
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const equalCostPerMemberString = () => {
-    const costPerMember = (form.dollarAmount / form.groupSize).toFixed(2);
-    return form.members?.length > 0 ? costPerMember : "";
-  };
-
-  const calculateRemainingAmount = (e) => {
-    let remainingAmount = e;
-    form.members.forEach((member) => {
-      remainingAmount = remainingAmount - member.cost;
-    });
-    return remainingAmount;
   };
 
   const handleSubmit = (e) => {
@@ -109,7 +108,7 @@ const EditBill = ({ bills, user }) => {
       for (let i = 0; i < form.members.length; i++) {
         test[i] = {
           name: form.members[i].name,
-          cost: equalCostPerMemberString(),
+          cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
           email: form.members[i].email,
         };
       }
@@ -119,7 +118,7 @@ const EditBill = ({ bills, user }) => {
       });
     }
     e.preventDefault();
-    let errs = validate();
+    let errs = validate(form.title, form.description);
     setErrors(errs);
     setIsSubmitting(true);
   };
@@ -127,7 +126,7 @@ const EditBill = ({ bills, user }) => {
   const handleMoney = (e) => {
     setForm({
       ...form,
-      remainingAmount: calculateRemainingAmount(e.target.value),
+      remainingAmount: calculateRemainingAmount(e.target.value, form.members),
       dollarAmount: e.target.value,
     });
   };
@@ -145,7 +144,10 @@ const EditBill = ({ bills, user }) => {
     setForm({
       ...form,
       members: newMemberList,
-      remainingAmount: calculateRemainingAmount(form.dollarAmount),
+      remainingAmount: calculateRemainingAmount(
+        form.dollarAmount,
+        form.members
+      ),
     });
   };
 
@@ -187,21 +189,6 @@ const EditBill = ({ bills, user }) => {
     });
   };
 
-  const validate = () => {
-    let err = {};
-
-    if (!form.title) {
-      err.title = "Title is required";
-    } else if (form.title.length > 40) {
-      err.title = "Title must be less than 40 characters";
-    }
-    if (!form.description) {
-      err.description = "Description is required";
-    } else if (form.description.length > 200) {
-      err.description = "Description must be less than 200 characters";
-    }
-    return err;
-  };
   const handleMemberName = (e, index) => {
     const newName = e.target.value;
 
@@ -284,7 +271,7 @@ const EditBill = ({ bills, user }) => {
                         onChange={(e) => {
                           handleMemberName(e, index);
                         }}
-                        value={form.members[index].name}
+                        value={form.members[index]?.name}
                       />
                       <Form.Input
                         key={index}
@@ -295,18 +282,22 @@ const EditBill = ({ bills, user }) => {
                         onChange={(e) => {
                           handleMemberEmail(e, index);
                         }}
-                        value={form.members[index].email}
+                        value={form.members[index]?.email}
                       />
                       {form.splitWay === "equal" ? (
-                        equalCostPerMemberString()
+                        equalCostPerMemberString(
+                          form.dollarAmount,
+                          form.groupSize
+                        )
                       ) : (
                         <div>
                           <Form.Input
                             name="expense"
+                            label="Cost"
                             type="number"
                             step="1"
                             min="0"
-                            value={form.members[index].cost}
+                            value={form.members[index]?.cost}
                             onChange={(e) => {
                               handleMemberCost(e, index);
                             }}
@@ -394,10 +385,10 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  // const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
-  const res = await fetch(
-    `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
-  );
+  const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  // const res = await fetch(
+  //   `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
+  // );
   // const res = await fetch(
   //   `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${queryIdBills}`
   // );
