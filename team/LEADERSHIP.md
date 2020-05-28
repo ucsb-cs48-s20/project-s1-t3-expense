@@ -11,3 +11,4 @@
 | Thu 05/21 | Gregory Baroni    | 2nd Iteration Demo Video                               |
 | Tue 05/26 | Kobe Shavolian    | Led the third Retro                                    |
 | Tue 05/26 | Helen Huang       | Led second sprint goal discussion                      |
+| Wed 06/10 | Kaylee Nguyen     | Will lead final presentation                           |
