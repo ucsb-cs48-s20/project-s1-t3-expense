@@ -88,15 +88,3 @@ Then, when you are ready to update the static storybook published to GitHub page
   This will wipe out the directory `../project-s1-t3-expense-storybook/docs` in the other repo, and populate
   it with new content based on the current source code.
 
-# Why not just host the storybook inside the `docs` directory of the main repo?
-
-The storybook could be hosted inside the `docs` directory of the main repo; you might think this would
-simplify things.
-
-The problem is that this can makes reviewing pull requests quite complicated, since a small change to
-a "story" or a dependency could cascade into many "apparent changes" to the generated HTML/CSS/JS files under
-the `docs` subdirectory. This clutter could interfere with the ability of the team to review changes
-and identify potential issues/problems/bugs.
-
-\*If there is a way to configure GitHub to ignore the contents of the `docs` directory when presenting
-PR diffs, that could be another way to address this.)
