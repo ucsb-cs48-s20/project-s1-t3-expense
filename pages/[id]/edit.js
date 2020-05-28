@@ -5,6 +5,11 @@ import { Form, Checkbox, Loader, Radio } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { requiredAuth } from "../../utils/ssr";
 import Layout from "../../components/Layout";
+import {
+  equalCostPerMemberString,
+  calculateRemainingAmount,
+} from "../../utils/calculations";
+import { validateForm } from "../../utils/validateForm";
 
 const EditBill = ({ bills, user }) => {
   /* this sets the form to the most updated version of the bill on the database */
@@ -98,26 +103,13 @@ const EditBill = ({ bills, user }) => {
     }
   };
 
-  const equalCostPerMemberString = () => {
-    const costPerMember = (form.dollarAmount / form.groupSize).toFixed(2);
-    return form.members?.length > 0 ? costPerMember : "";
-  };
-
-  const calculateRemainingAmount = (e) => {
-    let remainingAmount = e;
-    form.members.forEach((member) => {
-      remainingAmount = remainingAmount - member.cost;
-    });
-    return remainingAmount;
-  };
-
   const handleSubmit = (e) => {
     let test = [];
     if (form.splitWay === "equal") {
       for (let i = 0; i < form.members.length; i++) {
         test[i] = {
           name: form.members[i].name,
-          cost: equalCostPerMemberString(),
+          cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
           email: form.members[i].email,
         };
       }
@@ -127,7 +119,7 @@ const EditBill = ({ bills, user }) => {
       });
     }
     e.preventDefault();
-    let errs = validate();
+    let errs = validateForm(form.title, form.description);
     setErrors(errs);
     setIsSubmitting(true);
   };
@@ -135,7 +127,7 @@ const EditBill = ({ bills, user }) => {
   const handleMoney = (e) => {
     setForm({
       ...form,
-      remainingAmount: calculateRemainingAmount(e.target.value),
+      remainingAmount: calculateRemainingAmount(e.target.value, form.members),
       dollarAmount: e.target.value,
     });
   };
@@ -153,7 +145,10 @@ const EditBill = ({ bills, user }) => {
     setForm({
       ...form,
       members: newMemberList,
-      remainingAmount: calculateRemainingAmount(form.dollarAmount),
+      remainingAmount: calculateRemainingAmount(
+        form.dollarAmount,
+        form.members
+      ),
     });
   };
 
@@ -198,22 +193,6 @@ const EditBill = ({ bills, user }) => {
     });
   };
 
-  const validate = () => {
-    let err = {};
-
-    /* This is where errors are checked for, and if any errors are detected then they are added to the err variable and returned */
-    if (!form.title) {
-      err.title = "Title is required";
-    } else if (form.title.length > 40) {
-      err.title = "Title must be less than 40 characters";
-    }
-    if (!form.description) {
-      err.description = "Description is required";
-    } else if (form.description.length > 200) {
-      err.description = "Description must be less than 200 characters";
-    }
-    return err;
-  };
   const handleMemberName = (e, index) => {
     const newName = e.target.value;
 
@@ -310,7 +289,10 @@ const EditBill = ({ bills, user }) => {
                         value={form.members[index]?.email}
                       />
                       {form.splitWay === "equal" ? (
-                        equalCostPerMemberString()
+                        equalCostPerMemberString(
+                          form.dollarAmount,
+                          form.groupSize
+                        )
                       ) : (
                         <div>
                           <Form.Input
