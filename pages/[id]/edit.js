@@ -7,6 +7,7 @@ import { requiredAuth } from "../../utils/ssr";
 import Layout from "../../components/Layout";
 
 const EditBill = ({ bills, user }) => {
+  /* this sets the form to the most updated version of the bill on the database */
   const [form, setForm] = useState({
     title: bills.title,
     description: bills.description,
@@ -31,26 +32,32 @@ const EditBill = ({ bills, user }) => {
       if (Object.keys(errors).length === 0) {
         updateBill();
       } else {
+        /* If there was an error (long description, no title, etc.), the bill is reset */
         setIsSubmitting(false);
-        setForm({
-          title: "",
-          description: "",
-          groupSize: 1,
-          dollarAmount: 0,
-          remainingAmount: 0,
-          splitWay: "equal",
-          paid: false,
-          unique: user.sub,
-          members: [{ name: "", cost: 0, email: "" }],
-        });
+        if (errors.description) {
+          /* Here we check if the descrition field isn't
+          correct and reset if needed */
+          setForm({
+            ...form,
+            description: "",
+          });
+        } else if (errors.title) {
+          /* Here we check if the title field isn't
+          correct and reset if needed */
+          setForm({
+            ...form,
+            title: "",
+          });
+        }
       }
     }
   }, [errors]);
 
   const updateBill = async () => {
+    /* Try catch here to try and updated the changed we made to the bill on the database */
     try {
       const res = await fetch(
-        // `http://localhost:3000/api/bills/${router.query.id}`,
+        //`http://localhost:3000/api/bills/${router.query.id}`,
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
         {
@@ -67,7 +74,7 @@ const EditBill = ({ bills, user }) => {
         prevMembers.length > i &&
         prevMembers[i].email !== form.members[i].email
           ? await fetch(
-              // `http://localhost:3000/api/sendEmail`,
+              //`http://localhost:3000/api/sendEmail`,
               `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
               // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
@@ -84,6 +91,7 @@ const EditBill = ({ bills, user }) => {
             )
           : null;
       }
+      /* After the bill is posted, we route the user to the home bill page */
       router.push("/bill-private");
     } catch (error) {
       console.log(error);
@@ -157,9 +165,11 @@ const EditBill = ({ bills, user }) => {
   };
 
   const handleChange = (e) => {
+    /* If we changed the groupSize field, we then updated the member list to either increase/decrease accordingly */
     let test = [];
     if (e.target.name === "groupSize") {
       for (let i = 0; i < e.target.value; i++) {
+        /* Here we check if the bill has any value in it or is it null,  if null we set an 'empty' object*/
         if (form.members[i]) {
           test[i] = {
             name: form.members[i].name,
@@ -179,6 +189,7 @@ const EditBill = ({ bills, user }) => {
       members: test,
     });
   };
+  /* Here is a simple update for the 'paid' checkbox attribute */
   const handleCheck = (e) => {
     setCheck(!check);
     setForm({
@@ -190,6 +201,7 @@ const EditBill = ({ bills, user }) => {
   const validate = () => {
     let err = {};
 
+    /* This is where errors are checked for, and if any errors are detected then they are added to the err variable and returned */
     if (!form.title) {
       err.title = "Title is required";
     } else if (form.title.length > 40) {
@@ -284,7 +296,7 @@ const EditBill = ({ bills, user }) => {
                         onChange={(e) => {
                           handleMemberName(e, index);
                         }}
-                        value={form.members[index].name}
+                        value={form.members[index]?.name}
                       />
                       <Form.Input
                         key={index}
@@ -295,7 +307,7 @@ const EditBill = ({ bills, user }) => {
                         onChange={(e) => {
                           handleMemberEmail(e, index);
                         }}
-                        value={form.members[index].email}
+                        value={form.members[index]?.email}
                       />
                       {form.splitWay === "equal" ? (
                         equalCostPerMemberString()
@@ -303,10 +315,11 @@ const EditBill = ({ bills, user }) => {
                         <div>
                           <Form.Input
                             name="expense"
+                            label="Cost"
                             type="number"
                             step="1"
                             min="0"
-                            value={form.members[index].cost}
+                            value={form.members[index]?.cost}
                             onChange={(e) => {
                               handleMemberCost(e, index);
                             }}
@@ -345,6 +358,7 @@ const EditBill = ({ bills, user }) => {
                   checked={form.splitWay === "equal"}
                   onChange={handleStyle}
                 />
+
                 <Form.Field
                   name="splitWay"
                   control={Radio}
@@ -394,7 +408,7 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  // const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
   const res = await fetch(
     `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
   );

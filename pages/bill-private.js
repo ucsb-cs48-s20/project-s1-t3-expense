@@ -9,6 +9,12 @@ import { useRouter } from "next/router";
 import { getBill } from "./api/bills/index";
 
 const BillPrivate = ({ bills, user }) => {
+  /* We must anticipate for different types of bills when
+     we get them from the data base (paid/unpaid), so we 
+     make an empty array for each possible type, maps through
+     the main bills array and assign each main bill to a sub-
+     array based on a boolean attribute each bill has
+   */
   let paidBills = [];
   let activeBills = [];
   bills?.map((bill) => {
