@@ -1,3 +1,5 @@
+/* This is where errors are checked for, and if any errors are detected 
+   then they are added to the err variable and returned */
 export const validateForm = (title, description) => {
   let err = {};
 

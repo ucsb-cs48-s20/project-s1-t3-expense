@@ -2,17 +2,20 @@ import { Loader } from "semantic-ui-react";
 import { requiredAuth } from "../utils/ssr";
 import Bill from "../components/Bill";
 import { useState, useEffect } from "react";
+import Layout from "../components/Layout";
 
 const NewBill = ({ user }) => {
   //  const [isSubmitting, setIsSubmitting] = useState(false);
 
   return (
-    <div className="form-container">
-      <h1>Create Bill</h1>
-      <div>
-        <Bill user={user} />
+    <Layout user={user}>
+      <div className="form-container">
+        <h1>Create Bill</h1>
+        <div>
+          <Bill user={user} />
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

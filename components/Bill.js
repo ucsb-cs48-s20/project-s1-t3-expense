@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
 import { useRouter } from "next/router";
-import { Form, Checkbox, Loader, Radio } from "semantic-ui-react";
+import { Form, Loader, Radio } from "semantic-ui-react";
 import {
   equalCostPerMemberString,
   calculateRemainingAmount,
@@ -12,37 +12,39 @@ import Button from "react-bootstrap/Button";
 export default function Bill(props) {
   const user = props.user;
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    groupSize: 1,
-    dollarAmount: 0,
-    remainingAmount: 0,
-    splitWay: "equal",
-    paid: false,
-    unique: user.sub,
-    members: [{ name: "", cost: 0, email: "" }],
-  });
-  let newBill = true;
-  if (props.form) {
-    /* There is a pre existing values for the props.form */
-    setForm(props.form);
-    newBill = false;
-  }
+  const [form, setForm] = useState(
+    props.oldForm
+      ? props.oldForm
+      : {
+          title: "",
+          description: "",
+          groupSize: 1,
+          dollarAmount: 0,
+          remainingAmount: 0,
+          splitWay: "equal",
+          paid: false,
+          unique: user.sub,
+          members: [{ name: "", cost: 0, email: "" }],
+        }
+  );
+  const [newBill, setIsNewBill] = useState(props.oldForm ? false : true);
   const [errors, setErrors] = useState({});
-  const [check, setCheck] = useState(false);
+  const [check, setCheck] = useState(form.paid);
+  const [prevMembers, setPrevMembers] = useState(
+    JSON.parse(JSON.stringify(form.members))
+  );
   const router = useRouter();
 
   useEffect(() => {
     if (isSubmitting) {
-      if (Object.keys(errors).length === 0) {
+      if (Object.keys(errors)?.length === 0) {
         {
           newBill ? createBill() : updateBill();
         }
       } else {
         /* If we have reached here, then we have an error so we cannot submit
         and we reset the form with the proper error field reset */
-        setIsSubmitting(false);
+        setIsSubmitting(!isSubmitting);
         if (errors.description) {
           /* Here we check if the descrition field isn't
             correct and reset if needed */
@@ -78,9 +80,10 @@ export default function Bill(props) {
           body: JSON.stringify(form),
         }
       );
-      for (let i = 0; i < form.members.length; i++) {
+      /* Call sendEmail api for each member*/
+      for (let i = 0; i < form.members?.length; i++) {
         form.members[i].email &&
-        prevMembers.length > i &&
+        prevMembers?.length > i &&
         prevMembers[i].email !== form.members[i].email
           ? await fetch(
               `http://localhost:3000/api/sendEmail`,
@@ -117,7 +120,7 @@ export default function Bill(props) {
         },
         body: JSON.stringify(form),
       });
-      for (let i = 0; i < form.members.length; i++) {
+      for (let i = 0; i < form.members?.length; i++) {
         form.members[i].email
           ? await fetch("api/sendEmail", {
               method: "POST",
@@ -141,7 +144,7 @@ export default function Bill(props) {
   const handleSubmit = (e) => {
     let test = [];
     if (form.splitWay === "equal") {
-      for (let i = 0; i < form.members.length; i++) {
+      for (let i = 0; i < form.members?.length; i++) {
         test[i] = {
           name: form.members[i].name,
           cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
@@ -165,6 +168,13 @@ export default function Bill(props) {
       remainingAmount: calculateRemainingAmount(e.target.value, form.members),
       dollarAmount: e.target.value,
     });
+    if (form.splitWay === "equal") {
+      setForm({
+        ...form,
+        remainingAmount: 0,
+        dollarAmount: e.target.value,
+      });
+    }
   };
 
   const handleMemberCost = (e, index) => {
@@ -192,6 +202,15 @@ export default function Bill(props) {
       ...form,
       splitWay: value,
     });
+    if (value === "equal") {
+      setForm({
+        ...form,
+        splitWay: value,
+        remainingAmount: 0,
+      });
+    }
+
+    console.log(form.remainingAmount);
   };
 
   const handleChange = (e) => {
@@ -211,7 +230,7 @@ export default function Bill(props) {
         }
       }
     }
-    if (test.length === 0) test = form.members;
+    if (test?.length === 0) test = form.members;
 
     setForm({
       ...form,
@@ -281,7 +300,7 @@ export default function Bill(props) {
 
       <Form.Input
         label="Group Size"
-        placeholder="Group amount"
+        placeholder="Enter group size..."
         name="groupSize"
         type="number"
         step="1"
@@ -314,6 +333,7 @@ export default function Bill(props) {
                 onChange={(e) => {
                   handleMemberEmail(e, index);
                 }}
+                value={form.members[index]?.email}
               />
               {form.splitWay === "equal" ? (
                 equalCostPerMemberString(form.dollarAmount, form.groupSize)
@@ -323,7 +343,7 @@ export default function Bill(props) {
                     name="expense"
                     label="Cost"
                     type="number"
-                    step="1"
+                    step=".01"
                     min="0"
                     value={form.members[index]?.cost}
                     onChange={(e) => {
@@ -398,7 +418,11 @@ export default function Bill(props) {
         onChange={handleCheck}
       />
 
-      <Button type="submit">Create</Button>
+      {newBill ? (
+        <Button type="submit">Create</Button>
+      ) : (
+        <Button type="submit">Update</Button>
+      )}
     </Form>
   );
 }

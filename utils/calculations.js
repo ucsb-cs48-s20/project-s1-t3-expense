@@ -7,5 +7,5 @@ export const calculateRemainingAmount = (remainingAmount, members) => {
   members.forEach((member) => {
     remainingAmount = remainingAmount - member.cost;
   });
-  return remainingAmount;
+  return remainingAmount.toFixed(2);
 };

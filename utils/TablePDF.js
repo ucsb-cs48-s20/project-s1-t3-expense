@@ -28,7 +28,7 @@ function TablePDF({ bills }) {
     },
   });
 
-  const rows = bills.members.map((mem, index) => (
+  const rows = bills.members?.map((mem, index) => (
     <View style={styles.container} key={index}>
       <Text
         style={[
@@ -36,7 +36,7 @@ function TablePDF({ bills }) {
           { textAlign: "left", paddingLeft: 8, fontSize: 14 },
         ]}
       >
-        {mem.name}
+        {mem?.name}
       </Text>
       <Text
         style={[
@@ -44,7 +44,7 @@ function TablePDF({ bills }) {
           { textAlign: "right", paddingRight: 8, fontSize: 14 },
         ]}
       >
-        ${mem.cost}
+        ${mem?.cost}
       </Text>
     </View>
   ));
