@@ -23,9 +23,89 @@ export default function Bill(props) {
     unique: user.sub,
     members: [{ name: "", cost: 0, email: "" }],
   });
+  let newBill = true;
+  if (props.form) {
+    /* There is a pre existing values for the props.form */
+    setForm(props.form);
+    newBill = false;
+  }
   const [errors, setErrors] = useState({});
   const [check, setCheck] = useState(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if (isSubmitting) {
+      if (Object.keys(errors).length === 0) {
+        {
+          newBill ? createBill() : updateBill();
+        }
+      } else {
+        /* If we have reached here, then we have an error so we cannot submit
+        and we reset the form with the proper error field reset */
+        setIsSubmitting(false);
+        if (errors.description) {
+          /* Here we check if the descrition field isn't
+            correct and reset if needed */
+          setForm({
+            ...form,
+            description: "",
+          });
+        } else if (errors.title) {
+          /* Here we check if the title field isn't
+        correct and reset if needed */
+          setForm({
+            ...form,
+            title: "",
+          });
+        }
+      }
+    }
+  }, [errors]);
+
+  const updateBill = async () => {
+    /* Try catch here to try and updated the changed we made to the bill on the database */
+    try {
+      const res = await fetch(
+        `http://localhost:3000/api/bills/${router.query.id}`,
+        //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        }
+      );
+      for (let i = 0; i < form.members.length; i++) {
+        form.members[i].email &&
+        prevMembers.length > i &&
+        prevMembers[i].email !== form.members[i].email
+          ? await fetch(
+              `http://localhost:3000/api/sendEmail`,
+              //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
+              // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  title: form.title,
+                  name: form.members[i].name,
+                  email: form.members[i].email,
+                  cost: form.members[i].cost,
+                  sender: user.name,
+                }),
+              }
+            )
+          : null;
+      }
+      /* After the bill is posted, we route the user to the home bill page */
+      router.push("/bill-private");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const createBill = async () => {
     try {
@@ -58,33 +138,6 @@ export default function Bill(props) {
     }
   };
 
-  useEffect(() => {
-    if (isSubmitting) {
-      if (Object.keys(errors).length === 0) {
-        createBill();
-      } else {
-        /* If we have reached here, then we have an error so we cannot submit
-        and we reset the form with the proper error field reset */
-        setIsSubmitting(false);
-        if (errors.description) {
-          /* Here we check if the descrition field isn't
-            correct and reset if needed */
-          setForm({
-            ...form,
-            description: "",
-          });
-        } else if (errors.title) {
-          /* Here we check if the title field isn't
-        correct and reset if needed */
-          setForm({
-            ...form,
-            title: "",
-          });
-        }
-      }
-    }
-  }, [errors]);
-
   const handleSubmit = (e) => {
     let test = [];
     if (form.splitWay === "equal") {
@@ -104,46 +157,6 @@ export default function Bill(props) {
     let errs = validateForm(form.title, form.description);
     setErrors(errs);
     setIsSubmitting(true);
-  };
-
-  const handleStyle = (e, { value }) => {
-    setForm({
-      ...form,
-      splitWay: value,
-    });
-  };
-
-  const handleChange = (e) => {
-    let test = [];
-    /* If we changed the groupSize field, we then updated the member list to either increase/decrease accordingly */
-    if (e.target.name === "groupSize") {
-      for (let i = 0; i < e.target.value; i++) {
-        if (form.members[i]) {
-          /* Here we check if the bill has any value in it or is it null,  if null we set an 'empty' object*/
-          test[i] = {
-            name: form.members[i].name,
-            cost: form.members[i].cost,
-            email: form.members[i].email,
-          };
-        } else {
-          test[i] = { name: "", cost: 0, email: "" };
-        }
-      }
-    }
-    if (test.length === 0) test = form.members;
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-      members: test,
-    });
-  };
-
-  const handleCheck = (e) => {
-    setCheck(!check);
-    setForm({
-      ...form,
-      ["paid"]: !check,
-    });
   };
 
   const handleMoney = (e) => {
@@ -174,6 +187,47 @@ export default function Bill(props) {
     });
   };
 
+  const handleStyle = (e, { value }) => {
+    setForm({
+      ...form,
+      splitWay: value,
+    });
+  };
+
+  const handleChange = (e) => {
+    let test = [];
+    /* If we changed the groupSize field, we then updated the member list to either increase/decrease accordingly */
+    if (e.target.name === "groupSize") {
+      for (let i = 0; i < e.target.value; i++) {
+        if (form.members[i]) {
+          /* Here we check if the bill has any value in it or is it null,  if null we set an 'empty' object*/
+          test[i] = {
+            name: form.members[i].name,
+            cost: form.members[i].cost,
+            email: form.members[i].email,
+          };
+        } else {
+          test[i] = { name: "", cost: 0, email: "" };
+        }
+      }
+    }
+    if (test.length === 0) test = form.members;
+
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+      members: test,
+    });
+  };
+
+  const handleCheck = (e) => {
+    setCheck(!check);
+    setForm({
+      ...form,
+      ["paid"]: !check,
+    });
+  };
+
   const handleMemberName = (e, index) => {
     const newName = e.target.value;
 
@@ -182,7 +236,7 @@ export default function Bill(props) {
     memberObject[index] = {
       name: e.target.value,
       cost: memberObject[index].cost,
-      email: memberObject[index].name,
+      email: memberObject[index].email,
     };
 
     setForm({
@@ -208,7 +262,6 @@ export default function Bill(props) {
 
   return (
     <Form onSubmit={handleSubmit}>
-      {console.log(form)}
       <Form.Input
         fluid
         error={
@@ -253,7 +306,7 @@ export default function Bill(props) {
                 }}
               />
               <Form.Input
-                key={index}
+                key={index - form.members?.length}
                 fluid
                 label="Member Email"
                 placeholder={index + 1 + "@gmail.com"}
@@ -341,7 +394,7 @@ export default function Bill(props) {
       <Form.Checkbox
         label="Paid?"
         name="paid"
-        value={form.paid}
+        value={form.paid?.toString()}
         onChange={handleCheck}
       />
 

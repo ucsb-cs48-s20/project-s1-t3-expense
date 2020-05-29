@@ -209,6 +209,7 @@ const EditBill = ({ bills, user }) => {
       members: memberObject,
     });
   };
+
   const handleMemberEmail = (e, index) => {
     const memberObject = form.members;
 
