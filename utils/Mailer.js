@@ -1,5 +1,5 @@
+/* Use sendGrid API to send email to user */
 const Mailer = async ({ name, email, cost, sender, title }) => {
-  console.log(name, email, cost, sender, title);
   await fetch("https://api.sendgrid.com/v3/mail/send", {
     method: "POST",
     headers: {
