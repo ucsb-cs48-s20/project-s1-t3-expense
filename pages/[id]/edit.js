@@ -74,6 +74,8 @@ const EditBill = ({ bills, user }) => {
           body: JSON.stringify(form),
         }
       );
+      /* when the bill is updated, check if the email is changed. 
+         If the email is changed, another notification will be sent */
       for (let i = 0; i < form.members.length; i++) {
         form.members[i].email &&
         prevMembers.length > i &&

@@ -66,6 +66,7 @@ const NewBill = ({ user }) => {
         },
         body: JSON.stringify(form),
       });
+      /* Call sendEmail api for each member*/
       for (let i = 0; i < form.members.length; i++) {
         form.members[i].email
           ? await fetch("api/sendEmail", {
@@ -184,7 +185,7 @@ const NewBill = ({ user }) => {
     memberObject[index] = {
       name: e.target.value,
       cost: memberObject[index].cost,
-      email: memberObject[index].name,
+      email: memberObject[index].email,
     };
 
     setForm({
