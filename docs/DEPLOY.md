@@ -23,13 +23,7 @@ Do this:
 - Any time you switch branches
 - Any time you pull new changes from GitHub
 
-Also make sure you run the following commands as well
 
-*Not sure if the following commands are actually necessary, but I suppose doing them wouldn't hurt*
-```
-npm install mongoose
-npm add semantic-ui-react
-```
 ## Setting up MongoDb
 
 You're gonna have to set up a database in MongoDB in order to store user data. Instructions on how to do this can be found here <https://ucsb-cs48.github.io/topics/mongodb_cloud_atlas_setup/>
@@ -56,7 +50,7 @@ MONGODB_URI_PRODUCTION=
 
 NODE_ENV=
 
-Set MONGODB_URI_PRODUCTION to the uri string obtained from _Setting up MongoDB_ and set NODE_ENV to _production_
+Set MONGODB_URI_PRODUCTION to the uri string obtained from _Setting up MongoDB_ and set NODE_ENV to _"production"_
 ## Running on localhost
 
 To run on localhost, you must first modify two files: pages/[id]/edit.js and pages/[id]/index.js
@@ -109,23 +103,7 @@ The app will run on <http://localhost:3000>.
 While the app is running in development mode, any changes you make to
 the codebase will automatically be reflected in the browser.
 
-## Configuring secrets for GitHub Actions
-
-If the test cases were passing on the starter code repo, but are now
-failing, it is likely because you need to configure the secrets
-for Github Actions. That process is explained here: [docs/auth0-github-actions.md](https://github.com/ucsb-cs48-s20/demo-nextjs-app/blob/master/docs/auth0-github-actions.md).
-
-## Deployment to Production
-
-At some point, you'll want to deploy your application to the public internet
-so that real users can access it: we call this a _production_ deployment
-of your app.
-
-There are a variety of cloud-based platforms where we can deploy our
-applications. The file [docs/platforms.md](https://github.com/ucsb-cs48-s20/demo-nextjs-app/blob/master/docs/platform.md) describes
-the pros/cons of Heroku vs. now.sh and Amazon Web Services. The summary
-is that we've chosen Heroku for it's easy of user for beginners
-and the ability for a team to collaborate on managing a deployment.
+## Deployment to Heroku
 
 Before setting up heroku, assure that  the following two files: 
 pages/[id]/edit.js and pages/[id]/index.js
@@ -133,11 +111,12 @@ are properly configured for heroku. All this means is that the code in these fil
 cs48-s20-s1-t3-prod.herokuapp.com
 to the whatever the url of your heroku app is.
 Further instructions for configuring your app for Heroku are listed in the file
+Note: `SESSION_COOKIE_SECRET` mentioned in the heroku instructions must be at least 32 characters long
 [docs/heroku.md](https://github.com/ucsb-cs48-s20/demo-nextjs-app/blob/master/docs/heroku.md)
 
 ## The value of `SESSION_COOKIE_SECRET`
 
-For deployments to localhost and now.sh, the value of `SESSION_COOKIE_SECRET` is automatically determined by the files `next.config.js` and `setup_now.js`, respectively.
+For deployments to localhost, the value of `SESSION_COOKIE_SECRET` is automatically determined by the files `next.config.js` and `setup_now.js`, respectively.
 
 For Heroku deployments, this value needs to be set by hand in the .env file.
 
