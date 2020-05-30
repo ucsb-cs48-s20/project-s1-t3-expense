@@ -80,7 +80,7 @@ const Bills = ({ bills, user }) => {
                   ) : (
                     <span>member {index + 1}: </span>
                   )}
-                  ${mem?.cost}
+                  ${mem?.cost ? mem.cost : 0}
                   {mem?.email ? <span> (email: {mem?.email})</span> : null}
                 </p>
               );
