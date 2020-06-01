@@ -12,6 +12,8 @@ import Button from "react-bootstrap/Button";
 export default function Bill(props) {
   const user = props.user;
   const [isSubmitting, setIsSubmitting] = useState(false);
+  /* Depending on whether a previous form is passed through or not, we either use the
+  previous form (update a bill) or create a brand new one (create a bill) */
   const [form, setForm] = useState(
     props.oldForm
       ? props.oldForm
@@ -111,6 +113,7 @@ export default function Bill(props) {
   };
 
   const createBill = async () => {
+    /* Try to post the bill, and send emails if the member has the form field filled out */
     try {
       const res = await fetch("api/bills", {
         method: "POST",
@@ -135,6 +138,7 @@ export default function Bill(props) {
             })
           : null;
       }
+      /* User is then routed to the bill-private page if there are no errors thrown */
       router.push("/bill-private");
     } catch (error) {
       console.log(error);
@@ -142,10 +146,11 @@ export default function Bill(props) {
   };
 
   const handleSubmit = (e) => {
-    let test = [];
+    let tempMemberArray = [];
+    /* If the bill is split equally,  then the cost of each member is set to totalAmount/groupSize */
     if (form.splitWay === "equal") {
       for (let i = 0; i < form.members?.length; i++) {
-        test[i] = {
+        tempMemberArray[i] = {
           name: form.members[i].name,
           cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
           email: form.members[i].email,
@@ -153,16 +158,19 @@ export default function Bill(props) {
       }
       setForm({
         ...form,
-        members: test,
+        members: tempMemberArray,
       });
     }
     e.preventDefault();
+    /* We validate the form by checking if title/description is empty or too long */
     let errs = validateForm(form.title, form.description);
     setErrors(errs);
     setIsSubmitting(true);
   };
 
   const handleMoney = (e) => {
+    /* We calculate the remaining amount based off assumption that it is custom split,
+    then if it is equal then we set remaining amount to 0 */
     setForm({
       ...form,
       remainingAmount: calculateRemainingAmount(e.target.value, form.members),
@@ -177,6 +185,7 @@ export default function Bill(props) {
     }
   };
 
+  /* Find member index in member array, and change cost of individual member */
   const handleMemberCost = (e, index) => {
     const newCost = e.target.value;
 
@@ -239,6 +248,8 @@ export default function Bill(props) {
     });
   };
 
+  /* If the checkbox is clicked, then the boolean is flipped compared to
+  whatever is was before and updated */
   const handleCheck = (e) => {
     setCheck(!check);
     setForm({
@@ -247,6 +258,7 @@ export default function Bill(props) {
     });
   };
 
+  /* Same as handleMemberCost but with names */
   const handleMemberName = (e, index) => {
     const newName = e.target.value;
 
@@ -264,6 +276,7 @@ export default function Bill(props) {
     });
   };
 
+  /* Same as handleMemberCost but with emails */
   const handleMemberEmail = (e, index) => {
     const memberObject = form.members;
 
