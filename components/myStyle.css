@@ -1,6 +1,6 @@
 .log-in-message {
-  font-size: 30px;
-  text-align: center;
+  font-size: 20px;
+  text-align: right;
 }
 
 .Jumbotron {
@@ -90,4 +90,8 @@ h1 {
 
 .mem-indent {
   padding-left: 20px;
+}
+
+.myfont {
+  font-family: Verdana, Geneva, sans-serif;
 }
