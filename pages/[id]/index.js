@@ -69,19 +69,19 @@ const Bills = ({ bills, user }) => {
             <h1>{bills.title}</h1>
             <h4>Group Size: {bills.groupSize}</h4>
             <h4>Total Amount: ${bills.dollarAmount?.toFixed(2)}</h4>
-            <h4>Remaining Balance: ${bills.remainingAmount}</h4>
+            <h4>Remaining Balance: ${bills?.remainingAmount.toFixed(2)}</h4>
             <h4>Members:</h4>
             {bills.members?.map((mem, index) => {
               return (
                 <p key={index}>
                   {/* remove : when member name is empty */}
-                  {mem.name ? (
-                    <span>{mem.name}: </span>
+                  {mem?.name ? (
+                    <span>{mem?.name}: </span>
                   ) : (
                     <span>member {index + 1}: </span>
                   )}
-                  ${mem.cost}
-                  {mem.email ? <span> (email: {mem.email})</span> : null}
+                  ${mem?.cost ? mem.cost : 0}
+                  {mem?.email ? <span> (email: {mem?.email})</span> : null}
                 </p>
               );
             })}
