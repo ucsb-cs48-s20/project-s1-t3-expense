@@ -38,8 +38,8 @@ const Bills = ({ bills, user }) => {
     const billId = router.query.id;
     try {
       const deleted = await fetch(
-        //`http://localhost:3000/api/bills/${billId}`,
-        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
+        `http://localhost:3000/api/bills/${billId}`,
+        //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
         // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${billId}`,
         {
           method: "DELETE",
@@ -70,23 +70,24 @@ const Bills = ({ bills, user }) => {
             <h4>Group Size: {bills.groupSize}</h4>
             <h4>Total Amount: ${bills.dollarAmount?.toFixed(2)}</h4>
             <h4>Remaining Balance: ${bills?.remainingAmount.toFixed(2)}</h4>
-            <h4>Members:</h4>
+            <h4>Member | Amount | Email</h4>
             {bills.members?.map((mem, index) => {
               return (
                 <p key={index}>
                   {/* remove : when member name is empty */}
                   {mem?.name ? (
-                    <span>{mem?.name}: </span>
+                    <span>{mem?.name} | </span>
                   ) : (
                     <span>member {index + 1}: </span>
                   )}
-                  ${mem?.cost ? mem.cost : 0}
-                  {mem?.email ? <span> (email: {mem?.email})</span> : null}
+                  ${mem?.cost ? mem.cost : 0} |
+                  {mem?.email ? <span> {mem?.email}</span> : null}
                 </p>
               );
             })}
+            <h4>Description: </h4>
             <p>{bills.description}</p>
-            <p>Paid Status: {paidStatus}</p>
+            <h4>Paid Status: {paidStatus}</h4>
             <Button color="red" onClick={open}>
               Delete
             </Button>
@@ -108,10 +109,12 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
-  const res = await fetch(
+  const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  /*
+      const res = await fetch(
     `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
   );
+   **/
   // const res = await fetch(
   //   `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${queryIdBills}`
   // );
