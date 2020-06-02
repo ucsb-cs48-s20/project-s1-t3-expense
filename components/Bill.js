@@ -223,28 +223,28 @@ export default function Bill(props) {
   };
 
   const handleChange = (e) => {
-    let test = [];
+    let tempMemberArray = [];
     /* If we changed the groupSize field, we then updated the member list to either increase/decrease accordingly */
     if (e.target.name === "groupSize") {
       for (let i = 0; i < e.target.value; i++) {
         if (form.members[i]) {
           /* Here we check if the bill has any value in it or is it null,  if null we set an 'empty' object*/
-          test[i] = {
+          tempMemberArray[i] = {
             name: form.members[i].name,
             cost: form.members[i].cost,
             email: form.members[i].email,
           };
         } else {
-          test[i] = { name: "", cost: 0, email: "" };
+          tempMemberArray[i] = { name: "", cost: 0, email: "" };
         }
       }
     }
-    if (test?.length === 0) test = form.members;
+    if (tempMemberArray?.length === 0) tempMemberArray = form.members;
 
     setForm({
       ...form,
       [e.target.name]: e.target.value,
-      members: test,
+      members: tempMemberArray,
     });
   };
 
