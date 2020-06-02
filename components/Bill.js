@@ -207,10 +207,16 @@ export default function Bill(props) {
   };
 
   const handleStyle = (e, { value }) => {
-    setForm({
-      ...form,
-      splitWay: value,
-    });
+    if (value === "custom") {
+      setForm({
+        ...form,
+        splitWay: value,
+        remainingAmount: calculateRemainingAmount(
+          form.dollarAmount,
+          form.members
+        ),
+      });
+    }
     if (value === "equal") {
       setForm({
         ...form,
