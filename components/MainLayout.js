@@ -19,11 +19,6 @@ function MainLayout(props) {
         />
       </Head>
       <AppNavbar user={user} />
-      {user ? (
-        <div className="log-in-message">You're logged in!</div>
-      ) : (
-        <div className="log-in-message">You're not logged in!</div>
-      )}
       <AppJumbotron user={user} />
       <Container>{props.children}</Container>
       <AppFooter />
