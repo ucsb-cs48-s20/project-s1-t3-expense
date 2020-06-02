@@ -19,14 +19,17 @@ function AppJumbotron(props) {
         <div className="row">
           <div className="col-sm-4">
             <h3>Create And Edit Bills</h3>
+            <img src="/images/bill.png" alt="Bill" />
             <p>To keep track of whos paying who as expenses pile up</p>
           </div>
           <div className="col-sm-4">
             <h3>Invite Others To Bills</h3>
+            <img src="/images/members.png" alt="Members" />
             <p>To keep everyone posted on whos paying what</p>
           </div>
           <div className="col-sm-4">
             <h3>Export Reciept PDFs</h3>
+            <img src="/images/pdflogo.png" alt="PDFlogo" />
             <p>To keep a nice summary of all your bills</p>
           </div>
         </div>
