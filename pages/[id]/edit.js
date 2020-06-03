@@ -18,7 +18,7 @@ const EditBill = ({ bills, user }) => {
               title: bills.title,
               description: bills.description,
               groupSize: bills.groupSize,
-              dollarAmount: bills.dollarAmount,
+              dollarAmount: bills.dollarAmount / 100,
               splitWay: bills.splitWay,
               remainingAmount: bills.remainingAmount,
               paid: bills.paid,
