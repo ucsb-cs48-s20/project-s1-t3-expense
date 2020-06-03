@@ -51,7 +51,7 @@ export default function Bill(props) {
         and we reset the form with the proper error field reset */
         setIsSubmitting(!isSubmitting);
         if (errors.description) {
-          /* Here we check if the descrition field isn't
+          /* Here we check if the description field isn't
             correct and reset if needed */
           setForm({
             ...form,
@@ -72,6 +72,7 @@ export default function Bill(props) {
   const updateBill = async () => {
     /* Try catch here to try and updated the changed we made to the bill on the database */
     try {
+      form.dollarAmount = form.dollarAmount * 100;
       const res = await fetch(
         // `http://localhost:3000/api/bills/${router.query.id}`,
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
@@ -128,6 +129,7 @@ export default function Bill(props) {
   const createBill = async () => {
     /* Try to post the bill, and send emails if the member has the form field filled out */
     try {
+      form.dollarAmount = form.dollarAmount * 100;
       const res = await fetch("api/bills", {
         method: "POST",
         headers: {

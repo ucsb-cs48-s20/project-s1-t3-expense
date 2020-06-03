@@ -17,10 +17,12 @@ const BillSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+  //In cents
   dollarAmount: {
     type: Number,
     required: true,
   },
+  //In cents
   remainingAmount: {
     type: Number,
     required: true,
