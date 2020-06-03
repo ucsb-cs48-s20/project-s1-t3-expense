@@ -38,7 +38,8 @@ export async function getBill(user) {
   // user.nickname is the email address without the info after @
   return Bill.find({
     $or: [
-      { "members.email": { $regex: user.nickname, $options: "i" } },
+      // { "members.email": { $regex: user.nickname, $options: "i" } },
+      { "members.email": user.email },
       { unique: user.sub },
     ],
   });
