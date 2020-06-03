@@ -56,13 +56,15 @@ const BillTemporary = ({ bills }) => {
           <>
             <h1>{bills.title}</h1>
             <h4>Group Size: {bills.groupSize}</h4>
-            <h4>Total Amount: ${bills.dollarAmount}</h4>
-            <h4>Remaining Balance: ${bills.remainingAmount}</h4>
+            <h4>Total Amount: ${(bills.dollarAmount / 100).toFixed(2)}</h4>
+            <h4>
+              Remaining Balance: ${(bills.remainingAmount / 100).toFixed(2)}
+            </h4>
             <h4>Members:</h4>
             {bills.members?.map((mem, index) => {
               return (
                 <p key={index}>
-                  {mem.name} : ${mem.cost}
+                  {mem.name} : ${(mem.cost / 100).toFixed(2)}
                 </p>
               );
             })}

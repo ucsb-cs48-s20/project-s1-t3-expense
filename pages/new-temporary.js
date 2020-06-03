@@ -51,6 +51,11 @@ const NewBill = () => {
   }, [errors]);
 
   const createBill = async () => {
+    form.dollarAmount = Math.floor(form.dollarAmount * 100);
+    form.remainingAmount = Math.floor(form.remainingAmount * 100);
+    form.members.forEach((member) => {
+      member.cost = Math.floor(member.cost * 100);
+    });
     Cookie.set("form", JSON.stringify(form));
     router.push("/bill-temporary");
   };
@@ -61,7 +66,12 @@ const NewBill = () => {
       for (let i = 0; i < form.members.length; i++) {
         test[i] = {
           name: form.members[i].name,
-          cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
+          cost: (
+            equalCostPerMemberString(
+              Math.floor(form.dollarAmount * 100),
+              form.groupSize
+            ) / 100
+          ).toFixed(2),
         };
       }
       setForm({
@@ -110,10 +120,21 @@ const NewBill = () => {
   };
 
   const handleMoney = (e) => {
+    form.members.forEach((member) => {
+      member.cost = Math.floor(member.cost * 100);
+    });
     setForm({
       ...form,
-      remainingAmount: calculateRemainingAmount(e.target.value, form.members),
+      remainingAmount: (
+        calculateRemainingAmount(
+          Math.floor(e.target.value * 100),
+          form.members
+        ) / 100
+      ).toFixed(2),
       dollarAmount: e.target.value,
+    });
+    form.members.forEach((member) => {
+      member.cost = (member.cost / 100).toFixed(2);
     });
   };
 
@@ -126,13 +147,21 @@ const NewBill = () => {
       cost: e.target.value,
     };
 
+    form.members.forEach((member) => {
+      member.cost = Math.floor(member.cost * 100);
+    });
     setForm({
       ...form,
       members: newMemberList,
-      remainingAmount: calculateRemainingAmount(
-        form.dollarAmount,
-        form.members
-      ),
+      remainingAmount: (
+        calculateRemainingAmount(
+          Math.floor(form.dollarAmount * 100),
+          form.members
+        ) / 100
+      ).toFixed(2),
+    });
+    form.members.forEach((member) => {
+      member.cost = (member.cost / 100).toFixed(2);
     });
   };
 
@@ -205,17 +234,19 @@ const NewBill = () => {
                       }}
                     />
                     {form.splitWay === "equal" ? (
-                      equalCostPerMemberString(
-                        form.dollarAmount,
-                        form.groupSize
-                      )
+                      (
+                        equalCostPerMemberString(
+                          Math.floor(form.dollarAmount * 100),
+                          form.groupSize
+                        ) / 100
+                      ).toFixed(2)
                     ) : (
                       <div>
                         <Form.Input
                           label="Cost"
                           name="expense"
                           type="number"
-                          step="1"
+                          step="0.01"
                           min="0"
                           value={form.members[index]?.cost}
                           onChange={(e) => {
