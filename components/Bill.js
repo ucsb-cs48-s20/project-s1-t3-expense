@@ -71,8 +71,8 @@ export default function Bill(props) {
     try {
       const res = await fetch(
         // `http://localhost:3000/api/bills/${router.query.id}`,
-        // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
-        `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
+        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
           headers: {
@@ -89,8 +89,8 @@ export default function Bill(props) {
         prevMembers[i].email !== form.members[i].email
           ? await fetch(
               // `http://localhost:3000/api/sendEmail`,
-              // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
-              `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
+              `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
+              // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
