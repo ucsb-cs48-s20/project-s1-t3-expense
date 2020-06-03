@@ -5,8 +5,9 @@ import Layout from "../../components/Layout";
 import Bill from "../../components/Bill";
 
 const EditBill = ({ bills, user }) => {
-  /* this sets the form to the most updated version of the bill on the database */
-
+  bills.members.forEach((member) => {
+    member.cost = (member.cost / 10).toFixed(2);
+  });
   return (
     <Layout user={user}>
       <div className="form-container">
@@ -18,9 +19,9 @@ const EditBill = ({ bills, user }) => {
               title: bills.title,
               description: bills.description,
               groupSize: bills.groupSize,
-              dollarAmount: bills.dollarAmount / 100,
+              dollarAmount: (bills.dollarAmount / 100).toFixed(2),
               splitWay: bills.splitWay,
-              remainingAmount: bills.remainingAmount,
+              remainingAmount: (bills.remainingAmount / 100).toFixed(2),
               paid: bills.paid,
               unique: user.sub,
               members: bills.members,

@@ -39,6 +39,7 @@ const BillSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  //members[i].cost is in cents
   members: [],
 });
 

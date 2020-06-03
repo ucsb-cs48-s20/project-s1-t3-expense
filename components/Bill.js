@@ -72,7 +72,11 @@ export default function Bill(props) {
   const updateBill = async () => {
     /* Try catch here to try and updated the changed we made to the bill on the database */
     try {
-      form.dollarAmount = form.dollarAmount * 100;
+      form.dollarAmount = Math.floor(form.dollarAmount * 100);
+      form.remainingAmount = Math.floor(form.remainingAmount * 100);
+      form.members.forEach((member) => {
+        member.cost = Math.floor(member.cost * 100);
+      });
       const res = await fetch(
         // `http://localhost:3000/api/bills/${router.query.id}`,
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
@@ -107,7 +111,7 @@ export default function Bill(props) {
                   title: form.title,
                   name: form.members[i].name,
                   email: form.members[i].email,
-                  cost: form.members[i].cost,
+                  cost: (form.members[i].cost / 100).toFixed(2),
                   sender: user.name,
                   // Send a different email when the amount is changed
                   amountChanged:
@@ -129,7 +133,11 @@ export default function Bill(props) {
   const createBill = async () => {
     /* Try to post the bill, and send emails if the member has the form field filled out */
     try {
-      form.dollarAmount = form.dollarAmount * 100;
+      form.dollarAmount = Math.floor(form.dollarAmount * 100);
+      form.remainingAmount = Math.floor(form.remainingAmount * 100);
+      form.members.forEach((member) => {
+        member.cost = Math.floor(member.cost * 100);
+      });
       const res = await fetch("api/bills", {
         method: "POST",
         headers: {
@@ -148,7 +156,7 @@ export default function Bill(props) {
                 title: form.title,
                 name: form.members[i].name,
                 email: form.members[i].email,
-                cost: form.members[i].cost,
+                cost: (form.members[i].cost / 100).toFixed(2),
                 sender: user.name,
               }),
             })
@@ -168,7 +176,12 @@ export default function Bill(props) {
       for (let i = 0; i < form.members?.length; i++) {
         tempMemberArray[i] = {
           name: form.members[i].name,
-          cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
+          cost: (
+            equalCostPerMemberString(
+              Math.floor(form.dollarAmount * 100),
+              form.groupSize
+            ) / 100
+          ).toFixed(2),
           email: form.members[i].email,
         };
       }
@@ -187,10 +200,21 @@ export default function Bill(props) {
   const handleMoney = (e) => {
     /* We calculate the remaining amount based off assumption that it is custom split,
     then if it is equal then we set remaining amount to 0 */
+    form.members.forEach((member) => {
+      member.cost = Math.floor(member.cost * 100);
+    });
     setForm({
       ...form,
-      remainingAmount: calculateRemainingAmount(e.target.value, form.members),
+      remainingAmount: (
+        calculateRemainingAmount(
+          Math.floor(e.target.value * 100),
+          form.members
+        ) / 100
+      ).toFixed(2),
       dollarAmount: e.target.value,
+    });
+    form.members.forEach((member) => {
+      member.cost = (member.cost / 100).toFixed(2);
     });
     if (form.splitWay === "equal") {
       setForm({
@@ -211,26 +235,41 @@ export default function Bill(props) {
       cost: e.target.value,
       email: newMemberList[index].email,
     };
-
+    form.members.forEach((member) => {
+      member.cost = Math.floor(member.cost * 100);
+    });
     setForm({
       ...form,
       members: newMemberList,
-      remainingAmount: calculateRemainingAmount(
-        form.dollarAmount,
-        form.members
-      ),
+      remainingAmount: (
+        calculateRemainingAmount(
+          Math.floor(form.dollarAmount * 100),
+          form.members
+        ) / 100
+      ).toFixed(2),
+    });
+    form.members.forEach((member) => {
+      member.cost = (member.cost / 100).toFixed(2);
     });
   };
 
   const handleStyle = (e, { value }) => {
     if (value === "custom") {
+      form.members.forEach((member) => {
+        member.cost = Math.floor(member.cost * 100);
+      });
       setForm({
         ...form,
         splitWay: value,
-        remainingAmount: calculateRemainingAmount(
-          form.dollarAmount,
-          form.members
-        ),
+        remainingAmount: (
+          calculateRemainingAmount(
+            Math.floor(form.dollarAmount * 100),
+            form.members
+          ) / 100
+        ).toFixed(2),
+      });
+      form.members.forEach((member) => {
+        member.cost = (member.cost / 100).toFixed(2);
       });
     }
     if (value === "equal") {
@@ -349,9 +388,41 @@ export default function Bill(props) {
             onChange={handleChange}
           />
 
-          <div className="mem-indent">
-            {form.members?.map((item, index) => {
-              return (
+      <div className="mem-indent">
+        {form.members?.map((item, index) => {
+          return (
+            <div>
+              <Form.Input
+                key={index}
+                fluid
+                label="Member Name"
+                placeholder={index + 1}
+                name="members"
+                value={form.members[index]?.name}
+                onChange={(e) => {
+                  handleMemberName(e, index);
+                }}
+              />
+              <Form.Input
+                key={index - form.members?.length}
+                fluid
+                label="Member Email"
+                placeholder={index + 1 + "@gmail.com"}
+                name="emails"
+                onChange={(e) => {
+                  handleMemberEmail(e, index);
+                }}
+                value={form.members[index]?.email}
+              />
+              {form.splitWay === "equal" ? (
+                (
+                  equalCostPerMemberString(
+                    Math.floor(form.dollarAmount * 100),
+                    form.groupSize
+                  ) / 100
+                ).toFixed(2)
+              ) : (
+>>>>>>> gb-changed more files to account for the money being in cents
                 <div>
                   <Form.Input
                     key={index}

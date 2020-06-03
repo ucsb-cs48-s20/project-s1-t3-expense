@@ -42,7 +42,7 @@ function BillPDF(props) {
 
           <Text style={{ fontSize: 14 }}>
             Total Amount: $
-            {JSON.parse(props.bills.dollarAmount / 100)?.toFixed(2)}
+            {JSON.parse(props.bills.dollarAmount / 100).toFixed(2)}
           </Text>
 
           <Text style={{ fontSize: 12, textAlign: "center", marginTop: 24 }}>
