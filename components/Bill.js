@@ -260,7 +260,7 @@ export default function Bill(props) {
     setCheck(!check);
     setForm({
       ...form,
-      ["paid"]: !check,
+      paid: !check,
     });
   };
 
@@ -299,149 +299,158 @@ export default function Bill(props) {
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Input
-        fluid
-        error={
-          errors.title
-            ? {
-                content: "Title must not be empty or longer than 40 characters",
-                pointing: "below",
-              }
-            : null
-        }
-        label="Title"
-        placeholder="Title"
-        name="title"
-        value={form.title}
-        onChange={handleChange}
-      />
+    <div>
+      {isSubmitting ? (
+        <Loader active inline="centered" />
+      ) : (
+        <Form onSubmit={handleSubmit}>
+          <Form.Input
+            fluid
+            error={
+              errors.title
+                ? {
+                    content:
+                      "Title must not be empty or longer than 40 characters",
+                    pointing: "below",
+                  }
+                : null
+            }
+            label="Title"
+            placeholder="Title"
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+          />
 
-      <Form.Input
-        label="Group Size"
-        placeholder="Enter group size..."
-        name="groupSize"
-        type="number"
-        step="1"
-        min="1"
-        value={form.groupSize}
-        onChange={handleChange}
-      />
+          <Form.Input
+            label="Group Size"
+            placeholder="Enter group size..."
+            name="groupSize"
+            type="number"
+            step="1"
+            min="1"
+            value={form.groupSize}
+            onChange={handleChange}
+          />
 
-      <div className="mem-indent">
-        {form.members?.map((item, index) => {
-          return (
-            <div>
-              <Form.Input
-                key={index}
-                fluid
-                label="Member Name"
-                placeholder={index + 1}
-                name="members"
-                value={form.members[index]?.name}
-                onChange={(e) => {
-                  handleMemberName(e, index);
-                }}
-              />
-              <Form.Input
-                key={index - form.members?.length}
-                fluid
-                label="Member Email"
-                placeholder={index + 1 + "@gmail.com"}
-                name="emails"
-                onChange={(e) => {
-                  handleMemberEmail(e, index);
-                }}
-                value={form.members[index]?.email}
-              />
-              {form.splitWay === "equal" ? (
-                equalCostPerMemberString(form.dollarAmount, form.groupSize)
-              ) : (
+          <div className="mem-indent">
+            {form.members?.map((item, index) => {
+              return (
                 <div>
                   <Form.Input
-                    name="expense"
-                    label="Cost"
-                    type="number"
-                    step=".01"
-                    min="0"
-                    value={form.members[index]?.cost}
+                    key={index}
+                    fluid
+                    label="Member Name"
+                    placeholder={index + 1}
+                    name="members"
+                    value={form.members[index]?.name}
                     onChange={(e) => {
-                      handleMemberCost(e, index);
+                      handleMemberName(e, index);
                     }}
                   />
+                  <Form.Input
+                    key={index - form.members?.length}
+                    fluid
+                    label="Member Email"
+                    placeholder={index + 1 + "@gmail.com"}
+                    name="emails"
+                    onChange={(e) => {
+                      handleMemberEmail(e, index);
+                    }}
+                    value={form.members[index]?.email}
+                  />
+                  {form.splitWay === "equal" ? (
+                    equalCostPerMemberString(form.dollarAmount, form.groupSize)
+                  ) : (
+                    <div>
+                      <Form.Input
+                        key={2 * (index + 1 + form.members?.length)}
+                        name="expense"
+                        label="Cost"
+                        type="number"
+                        step=".01"
+                        min="0"
+                        value={form.members[index]?.cost}
+                        onChange={(e) => {
+                          handleMemberCost(e, index);
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          );
-        })}
-      </div>
-      {form.splitWay === "equal" ? (
-        <p>Remaining Balance: 0</p>
-      ) : (
-        <p>Remaining Balance: {form.remainingAmount}</p>
+              );
+            })}
+          </div>
+          {form.splitWay === "equal" ? (
+            <p>Remaining Balance: 0</p>
+          ) : (
+            <p>Remaining Balance: {form.remainingAmount}</p>
+          )}
+
+          <Form.Input
+            label="Total Amount"
+            placeholder="Enter amount"
+            name="dollarAmount"
+            type="number"
+            step="0.01"
+            min="0.01"
+            value={form.dollarAmount}
+            onChange={handleMoney}
+          />
+
+          <Form.Group inline>
+            <label>Split Method</label>
+            <Form.Field
+              name="splitWay"
+              control={Radio}
+              label="Equal"
+              value="equal"
+              checked={form.splitWay === "equal"}
+              onChange={handleStyle}
+            />
+            <Form.Field
+              name="splitWay"
+              control={Radio}
+              label="Custom"
+              value="custom"
+              checked={form.splitWay === "custom"}
+              onChange={handleStyle}
+            />
+          </Form.Group>
+
+          <Form.TextArea
+            fluid="true"
+            error={
+              errors.description
+                ? {
+                    content:
+                      "Description must not be empty or longer than 200 characters",
+                    pointing: "below",
+                  }
+                : null
+            }
+            label="Description"
+            placeholder="Description"
+            value={form.description}
+            name="description"
+            onChange={handleChange}
+          />
+
+          <Form.Checkbox
+            label="Paid?"
+            name="paid"
+            value={form.paid?.toString()}
+            checked={form.paid}
+            onChange={handleCheck}
+          />
+
+          {newBill ? (
+            <Button type="submit">Create</Button>
+          ) : (
+            <Button type="submit">Update</Button>
+          )}
+        </Form>
       )}
-
-      <Form.Input
-        label="Total Amount"
-        placeholder="Enter amount"
-        name="dollarAmount"
-        type="number"
-        step="0.01"
-        min="0.01"
-        value={form.dollarAmount}
-        onChange={handleMoney}
-      />
-
-      <Form.Group inline>
-        <label>Split Method</label>
-        <Form.Field
-          name="splitWay"
-          control={Radio}
-          label="Equal"
-          value="equal"
-          checked={form.splitWay === "equal"}
-          onChange={handleStyle}
-        />
-        <Form.Field
-          name="splitWay"
-          control={Radio}
-          label="Custom"
-          value="custom"
-          checked={form.splitWay === "custom"}
-          onChange={handleStyle}
-        />
-      </Form.Group>
-
-      <Form.TextArea
-        fluid="true"
-        error={
-          errors.description
-            ? {
-                content:
-                  "Description must not be empty or longer than 200 characters",
-                pointing: "below",
-              }
-            : null
-        }
-        label="Description"
-        placeholder="Description"
-        value={form.description}
-        name="description"
-        onChange={handleChange}
-      />
-
-      <Form.Checkbox
-        label="Paid?"
-        name="paid"
-        value={form.paid?.toString()}
-        onChange={handleCheck}
-      />
-
-      {newBill ? (
-        <Button type="submit">Create</Button>
-      ) : (
-        <Button type="submit">Update</Button>
-      )}
-    </Form>
+    </div>
   );
 }

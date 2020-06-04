@@ -6,6 +6,7 @@ import { requiredAuth } from "../../utils/ssr";
 import Layout from "../../components/Layout";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import BillInfo from "../../components/BillInfo";
 const ExportPDF = dynamic(() => import("../../components/ExportPDF"), {
   ssr: false,
 });
@@ -66,27 +67,7 @@ const Bills = ({ bills, user }) => {
           <Loader active />
         ) : (
           <>
-            <h1>{bills.title}</h1>
-            <h4>Group Size: {bills.groupSize}</h4>
-            <h4>Total Amount: ${bills.dollarAmount?.toFixed(2)}</h4>
-            <h4>Remaining Balance: ${bills?.remainingAmount.toFixed(2)}</h4>
-            <h4>Members:</h4>
-            {bills.members?.map((mem, index) => {
-              return (
-                <p key={index}>
-                  {/* remove : when member name is empty */}
-                  {mem?.name ? (
-                    <span>{mem?.name}: </span>
-                  ) : (
-                    <span>member {index + 1}: </span>
-                  )}
-                  ${mem?.cost ? mem.cost : 0}
-                  {mem?.email ? <span> (email: {mem?.email})</span> : null}
-                </p>
-              );
-            })}
-            <p>{bills.description}</p>
-            <p>Paid Status: {paidStatus}</p>
+            <BillInfo form={bills} user={user} />
             <Button color="red" onClick={open}>
               Delete
             </Button>
