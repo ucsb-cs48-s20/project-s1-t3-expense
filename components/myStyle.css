@@ -45,7 +45,17 @@
 h1 {
   text-align: center;
 }
-
+h3 {
+  text-align: center;
+}
+.center-text {
+  text-align: center;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
