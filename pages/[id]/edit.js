@@ -22,9 +22,7 @@ const EditBill = ({ bills, user }) => {
               splitWay: bills.splitWay,
               remainingAmount: bills.remainingAmount,
               paid: bills.paid,
-              // Use previous user's bills, so the bill owner can still see
-              // the bill when bill is updated by other users
-              unique: bills.unique,
+              unique: user.sub,
               members: bills.members,
             }}
           />
@@ -40,7 +38,7 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  // const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
   const res = await fetch(
     `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
   );
