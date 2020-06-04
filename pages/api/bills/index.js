@@ -32,5 +32,15 @@ export default auth0.requireAuthentication(async function (req, res) {
 });
 
 export async function getBill(user) {
-  return Bill.find({ unique: user.sub });
+  // The returned bills can be either created by yourself or shared by others
+  // "$regex": user.nickname, "$options": "i" means do a partial search using
+  // user.nickname
+  // user.nickname is the email address without the info after @
+  return Bill.find({
+    $or: [
+      // { "members.email": { $regex: user.nickname, $options: "i" } },
+      { "members.email": user.email },
+      { unique: user.sub },
+    ],
+  });
 }
