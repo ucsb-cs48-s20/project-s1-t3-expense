@@ -9,6 +9,7 @@ import Cookie from "js-cookie";
 import {
   equalCostPerMemberString,
   calculateRemainingAmount,
+  convertMemberCoststoCents,
 } from "../utils/calculations";
 import { validateForm } from "../utils/validateForm";
 
@@ -120,21 +121,15 @@ const NewBill = () => {
   };
 
   const handleMoney = (e) => {
-    form.members.forEach((member) => {
-      member.cost = Math.floor(member.cost * 100);
-    });
     setForm({
       ...form,
       remainingAmount: (
         calculateRemainingAmount(
           Math.floor(e.target.value * 100),
-          form.members
+          convertMemberCoststoCents(form.members)
         ) / 100
       ).toFixed(2),
       dollarAmount: e.target.value,
-    });
-    form.members.forEach((member) => {
-      member.cost = (member.cost / 100).toFixed(2);
     });
   };
 
@@ -147,21 +142,15 @@ const NewBill = () => {
       cost: e.target.value,
     };
 
-    form.members.forEach((member) => {
-      member.cost = Math.floor(member.cost * 100);
-    });
     setForm({
       ...form,
       members: newMemberList,
       remainingAmount: (
         calculateRemainingAmount(
           Math.floor(form.dollarAmount * 100),
-          form.members
+          convertMemberCoststoCents(form.members)
         ) / 100
       ).toFixed(2),
-    });
-    form.members.forEach((member) => {
-      member.cost = (member.cost / 100).toFixed(2);
     });
   };
 

@@ -5,6 +5,7 @@ import { Form, Loader, Radio } from "semantic-ui-react";
 import {
   equalCostPerMemberString,
   calculateRemainingAmount,
+  convertMemberCoststoCents,
 } from "../utils/calculations";
 import { validateForm } from "../utils/validateForm";
 import Button from "react-bootstrap/Button";
@@ -200,21 +201,15 @@ export default function Bill(props) {
   const handleMoney = (e) => {
     /* We calculate the remaining amount based off assumption that it is custom split,
     then if it is equal then we set remaining amount to 0 */
-    form.members.forEach((member) => {
-      member.cost = Math.floor(member.cost * 100);
-    });
     setForm({
       ...form,
       remainingAmount: (
         calculateRemainingAmount(
           Math.floor(e.target.value * 100),
-          form.members
+          convertMemberCoststoCents(form.members)
         ) / 100
       ).toFixed(2),
       dollarAmount: e.target.value,
-    });
-    form.members.forEach((member) => {
-      member.cost = (member.cost / 100).toFixed(2);
     });
     if (form.splitWay === "equal") {
       setForm({
@@ -235,41 +230,29 @@ export default function Bill(props) {
       cost: e.target.value,
       email: newMemberList[index].email,
     };
-    form.members.forEach((member) => {
-      member.cost = Math.floor(member.cost * 100);
-    });
     setForm({
       ...form,
       members: newMemberList,
       remainingAmount: (
         calculateRemainingAmount(
           Math.floor(form.dollarAmount * 100),
-          form.members
+          convertMemberCoststoCents(form.members)
         ) / 100
       ).toFixed(2),
-    });
-    form.members.forEach((member) => {
-      member.cost = (member.cost / 100).toFixed(2);
     });
   };
 
   const handleStyle = (e, { value }) => {
     if (value === "custom") {
-      form.members.forEach((member) => {
-        member.cost = Math.floor(member.cost * 100);
-      });
       setForm({
         ...form,
         splitWay: value,
         remainingAmount: (
           calculateRemainingAmount(
             Math.floor(form.dollarAmount * 100),
-            form.members
+            convertMemberCoststoCents(form.members)
           ) / 100
         ).toFixed(2),
-      });
-      form.members.forEach((member) => {
-        member.cost = (member.cost / 100).toFixed(2);
       });
     }
     if (value === "equal") {
@@ -391,7 +374,7 @@ export default function Bill(props) {
       <div className="mem-indent">
         {form.members?.map((item, index) => {
           return (
-            <div>
+            <div key={index}>
               <Form.Input
                 key={index}
                 fluid

@@ -3,11 +3,9 @@ import fetch from "isomorphic-unfetch";
 import { requiredAuth } from "../../utils/ssr";
 import Layout from "../../components/Layout";
 import Bill from "../../components/Bill";
-
+import { convertMemberCoststoDollars } from "../../utils/calculations";
+/* this sets the form to the most updated version of the bill on the database */
 const EditBill = ({ bills, user }) => {
-  bills.members.forEach((member) => {
-    member.cost = (member.cost / 10).toFixed(2);
-  });
   return (
     <Layout user={user}>
       <div className="form-container">
@@ -24,7 +22,7 @@ const EditBill = ({ bills, user }) => {
               remainingAmount: (bills.remainingAmount / 100).toFixed(2),
               paid: bills.paid,
               unique: user.sub,
-              members: bills.members,
+              members: convertMemberCoststoDollars(bills.members),
             }}
           />
         </div>
