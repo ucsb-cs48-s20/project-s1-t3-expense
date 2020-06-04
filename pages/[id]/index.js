@@ -67,7 +67,7 @@ const Bills = ({ bills, user }) => {
           <Loader active />
         ) : (
           <>
-            <BillInfo form={bills} />
+            <BillInfo form={bills} user={user} />
             <Button color="red" onClick={open}>
               Delete
             </Button>
