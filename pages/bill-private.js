@@ -44,9 +44,12 @@ const BillPrivate = ({ bills, user }) => {
                     <Link href={`/${bill._id}`}>
                       <Button primary>View</Button>
                     </Link>
-                    <Link href={`/${bill._id}/edit`}>
-                      <Button primary>Edit</Button>
-                    </Link>
+                    {/* Only show the edit button for the bill owner */}
+                    {user.sub === bill.unique ? (
+                      <Link href={`/${bill._id}/edit`}>
+                        <Button primary>Edit</Button>
+                      </Link>
+                    ) : null}
                   </Card.Content>
                 </Card>
               </div>

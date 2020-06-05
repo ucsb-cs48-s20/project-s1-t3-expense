@@ -46,6 +46,12 @@ export async function getServerSideProps(context) {
   //   `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${queryIdBills}`
   // );
   const { data } = await res.json();
+  // Redirect the users to auth0 login page when they are trying to
+  // enter the edit page by changing the url
+  if (data.unique !== user.sub) {
+    context.res.writeHead(302, { Location: "/api/login" });
+    context.res.end();
+  }
   return { props: { bills: data, user: user } };
 }
 

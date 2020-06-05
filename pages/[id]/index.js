@@ -68,9 +68,12 @@ const Bills = ({ bills, user }) => {
         ) : (
           <>
             <BillInfo form={bills} user={user} />
-            <Button color="red" onClick={open}>
-              Delete
-            </Button>
+            {/* When the user is not the bill owner, they cannot delete the bill */}
+            {bills.unique === user.sub ? (
+              <Button color="red" onClick={open}>
+                Delete
+              </Button>
+            ) : null}
             <Link href="/bill-private">
               <Button color="grey">Go Back</Button>
             </Link>
