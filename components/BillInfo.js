@@ -5,19 +5,20 @@ export default function BillInfo({ form }) {
   return (
     <>
       <h1>{form.title}</h1>
-      <h2>Total Amount: ${form.dollarAmount?.toFixed(2)}</h2>
+      <h2>Total Amount: ${(form.dollarAmount / 100).toFixed(2)}</h2>
       <h2>
         Remaining Balance:{" "}
         {form?.remainingAmount < 0 ? (
           <>
-            <span>-${Math.abs(form?.remainingAmount.toFixed(2))}</span>
+            <span>-${Math.abs((form?.remainingAmount / 100).toFixed(2))}</span>
             <h4>
               {" "}
-              (${Math.abs(form?.remainingAmount.toFixed(2))} was overpaid)
+              (${Math.abs((form?.remainingAmount / 100).toFixed(2))} was
+              overpaid)
             </h4>
           </>
         ) : (
-          <span>${form?.remainingAmount.toFixed(2)} </span>
+          <span>${(form?.remainingAmount / 100).toFixed(2)} </span>
         )}
       </h2>
       <h1>Members:</h1>
@@ -42,7 +43,7 @@ export default function BillInfo({ form }) {
                     <span>Member {index + 1} </span>
                   )}
                 </Table.Cell>
-                <Table.Cell>${item?.cost ? item.cost : 0}</Table.Cell>
+                <Table.Cell>${item?.cost ? item.cost / 100 : 0}</Table.Cell>
                 <Table.Cell>
                   {item?.email ? (
                     <span> Email: {item?.email}</span>
