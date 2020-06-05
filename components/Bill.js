@@ -26,7 +26,10 @@ export default function Bill(props) {
           splitWay: "equal",
           paid: false,
           unique: user.sub,
-          members: [{ name: "", cost: 0, email: "" }],
+          // The initial name is set to be user's first name, email is user's login email
+          members: [
+            { name: user.name.split(" ")[0], cost: 0, email: user.email },
+          ],
         }
   );
   const [newBill, setIsNewBill] = useState(props.oldForm ? false : true);
@@ -85,7 +88,8 @@ export default function Bill(props) {
       /* Call sendEmail api for each member
          Notifications will be resent when either email is updated or 
          the amount for the member is updated */
-      for (let i = 0; i < form.members?.length; i++) {
+      // Loop from index 1 to avoid send notification to bill owner
+      for (let i = 1; i < form.members?.length; i++) {
         (form.members[i].email &&
           prevMembers?.length > i &&
           (prevMembers[i].email !== form.members[i].email ||
