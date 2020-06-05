@@ -70,8 +70,8 @@ export default function Bill(props) {
     /* Try catch here to try and updated the changed we made to the bill on the database */
     try {
       const res = await fetch(
-        //`http://localhost:3000/api/bills/${router.query.id}`,
-        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        `http://localhost:3000/api/bills/${router.query.id}`,
+        // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
@@ -82,14 +82,18 @@ export default function Bill(props) {
           body: JSON.stringify(form),
         }
       );
-      /* Call sendEmail api for each member*/
+      /* Call sendEmail api for each member
+         Notifications will be resent when either email is updated or 
+         the amount for the member is updated */
       for (let i = 0; i < form.members?.length; i++) {
-        form.members[i].email &&
-        prevMembers?.length > i &&
-        prevMembers[i].email !== form.members[i].email
+        (form.members[i].email &&
+          prevMembers?.length > i &&
+          (prevMembers[i].email !== form.members[i].email ||
+            prevMembers[i].cost !== form.members[i].cost)) ||
+        prevMembers?.length <= i
           ? await fetch(
-              //`http://localhost:3000/api/sendEmail`,
-              `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
+              `http://localhost:3000/api/sendEmail`,
+              // `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
               // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
                 method: "POST",
@@ -100,6 +104,11 @@ export default function Bill(props) {
                   email: form.members[i].email,
                   cost: form.members[i].cost,
                   sender: user.name,
+                  // Send a different email when the amount is changed
+                  amountChanged:
+                    prevMembers?.length > i
+                      ? prevMembers[i].cost !== form.members[i].cost
+                      : false,
                 }),
               }
             )

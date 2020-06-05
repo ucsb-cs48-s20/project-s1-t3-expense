@@ -1,5 +1,5 @@
 /* Use sendGrid API to send email to user */
-const Mailer = async ({ name, email, cost, sender, title }) => {
+const Mailer = async ({ name, email, cost, sender, title, amountChanged }) => {
   await fetch("https://api.sendgrid.com/v3/mail/send", {
     method: "POST",
     headers: {
@@ -24,7 +24,9 @@ const Mailer = async ({ name, email, cost, sender, title }) => {
       content: [
         {
           type: "text/html",
-          value: `Hi ${name}, you are asked to pay $${cost} by ${sender} for ${title}`,
+          value: amountChanged
+            ? `Hi ${name}, the bill "${title}" is updated to $${cost}`
+            : `Hi ${name}, you are asked to pay $${cost} by ${sender} for ${title}`,
         },
       ],
     }),
