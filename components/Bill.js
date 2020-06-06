@@ -136,7 +136,8 @@ export default function Bill(props) {
         },
         body: JSON.stringify(form),
       });
-      for (let i = 0; i < form.members?.length; i++) {
+      /* Avoid send notification to the bill owner */
+      for (let i = 1; i < form.members?.length; i++) {
         form.members[i].email
           ? await fetch("api/sendEmail", {
               method: "POST",
