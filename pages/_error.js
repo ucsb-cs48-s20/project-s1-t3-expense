@@ -5,7 +5,7 @@ function Error({ statusCode }) {
   return (
     <div className="errorPage">
       <p>
-        <span className="errorPageStatus">500</span> This bill is not exists
+        <span className="errorPageStatus">500</span> This bill does not exist
       </p>
       <Link href="/">
         <Button color="grey">Go Back</Button>
