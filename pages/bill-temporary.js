@@ -54,19 +54,7 @@ const BillTemporary = ({ bills }) => {
           <Loader active />
         ) : (
           <>
-            <h1>{bills.title}</h1>
-            <h4>Group Size: {bills.groupSize}</h4>
-            <h4>Total Amount: ${bills.dollarAmount}</h4>
-            <h4>Remaining Balance: ${bills.remainingAmount}</h4>
-            <h4>Members:</h4>
-            {bills.members?.map((mem, index) => {
-              return (
-                <p key={index}>
-                  {mem.name} : ${mem.cost}
-                </p>
-              );
-            })}
-            <p>{bills.description}</p>
+            <BillInfo form={bills} />
             <Button color="red" onClick={open}>
               Delete
             </Button>
