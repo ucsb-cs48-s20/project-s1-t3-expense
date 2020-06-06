@@ -91,3 +91,17 @@ h1 {
 .mem-indent {
   padding-left: 20px;
 }
+
+.errorPage {
+  text-align: center;
+  /* margin:auto; */
+  /* margin-right:20px; */
+  padding: 40% 23px 10px 0;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.errorPageStatus {
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+  padding-right: 5px;
+}

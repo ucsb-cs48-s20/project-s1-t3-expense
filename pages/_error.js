@@ -1,11 +1,16 @@
+import { Button } from "semantic-ui-react";
+import Link from "next/link";
 // Overide the default error code
 function Error({ statusCode }) {
   return (
-    <p>
-      {statusCode
-        ? `An error ${statusCode} occurred on server`
-        : "An error occurred on client"}
-    </p>
+    <div className="errorPage">
+      <p>
+        <span className="errorPageStatus">500</span> This bill is not exists
+      </p>
+      <Link href="/">
+        <Button color="grey">Go Back</Button>
+      </Link>
+    </div>
   );
 }
 
