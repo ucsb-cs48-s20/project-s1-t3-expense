@@ -20,13 +20,10 @@ const NewBill = () => {
     dollarAmount: 0,
     remainingAmount: 0,
     splitWay: "equal",
-    paid: false,
     members: [{ name: "", cost: 0 }],
-    // paid: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-  const [check, setCheck] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -56,11 +53,15 @@ const NewBill = () => {
   };
 
   const handleSubmit = (e) => {
-    let test = [];
+    let tempMemberArray = [];
     if (form.splitWay === "equal") {
       for (let i = 0; i < form.members.length; i++) {
-        test[i] = {
-          name: form.members[i].name,
+        let newName = form.members[i].name;
+        if (!form.members[i].name) {
+          newName = "Member " + (i + 1);
+        }
+        tempMemberArray[i] = {
+          name: newName,
           cost: (
             equalCostPerMemberString(
               Math.floor(form.dollarAmount * 100),
@@ -71,7 +72,7 @@ const NewBill = () => {
       }
       setForm({
         ...form,
-        members: test,
+        members: tempMemberArray,
       });
     }
     e.preventDefault();
@@ -270,8 +271,6 @@ const NewBill = () => {
                 onChange={handleStyle}
               />
             </Form.Group>
-
-            {/* <Form.Checkbox label="Paid?" name="paid" onChange={handleCheck} /> */}
 
             <Button type="submit">Create</Button>
           </Form>

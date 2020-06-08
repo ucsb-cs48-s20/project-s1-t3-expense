@@ -15,8 +15,5 @@ export const validateForm = (title, description = null) => {
       err.description = "Description must be less than 200 characters";
     }
   }
-  console.log(description);
-  console.log(err);
-
   return err;
 };

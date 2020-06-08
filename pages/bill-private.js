@@ -42,7 +42,7 @@ const BillPrivate = ({ bills, user }) => {
                     <Card.Description>
                       Bill Amount: ${(bill.dollarAmount / 100).toFixed(2)}
                       <Card.Description>
-                        Number of People Paying Bill: {bill.groupSize}
+                        Owner: {bill?.members[0].name}
                       </Card.Description>
                     </Card.Description>
                   </Card.Content>

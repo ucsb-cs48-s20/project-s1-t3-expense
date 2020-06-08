@@ -79,8 +79,8 @@ export default function Bill(props) {
         member.cost = Math.floor(member.cost * 100);
       });
       const res = await fetch(
-        `http://localhost:3000/api/bills/${router.query.id}`,
-        //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        //`http://localhost:3000/api/bills/${router.query.id}`,
+        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
@@ -102,8 +102,8 @@ export default function Bill(props) {
             prevMembers[i].cost !== form.members[i].cost)) ||
         prevMembers?.length <= i
           ? await fetch(
-              `http://localhost:3000/api/sendEmail`,
-              //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
+              //`http://localhost:3000/api/sendEmail`,
+              `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
               // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
                 method: "POST",
@@ -175,8 +175,12 @@ export default function Bill(props) {
     /* If the bill is split equally,  then the cost of each member is set to totalAmount/groupSize */
     if (form.splitWay === "equal") {
       for (let i = 0; i < form.members?.length; i++) {
+        let newName = form.members[i].name;
+        if (!form.members[i].name) {
+          newName = "Member " + (i + 1);
+        }
         tempMemberArray[i] = {
-          name: form.members[i].name,
+          name: newName,
           cost: (
             equalCostPerMemberString(
               Math.floor(form.dollarAmount * 100),

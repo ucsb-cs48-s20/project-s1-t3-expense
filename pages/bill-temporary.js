@@ -7,6 +7,7 @@ import Link from "next/link";
 import Cookie from "js-cookie";
 import cookie from "cookie";
 import dynamic from "next/dynamic";
+import BillInfo from "../components/BillInfo";
 const ExportPDF = dynamic(() => import("../components/ExportPDF"), {
   ssr: false,
 });
@@ -54,20 +55,7 @@ const BillTemporary = ({ bills }) => {
           <Loader active />
         ) : (
           <>
-            <h1>{bills.title}</h1>
-            <h4>Group Size: {bills.groupSize}</h4>
-            <h4>Total Amount: ${(bills.dollarAmount / 100).toFixed(2)}</h4>
-            <h4>
-              Remaining Balance: ${(bills.remainingAmount / 100).toFixed(2)}
-            </h4>
-            <h4>Members:</h4>
-            {bills.members?.map((mem, index) => {
-              return (
-                <p key={index}>
-                  {mem.name} : ${(mem.cost / 100).toFixed(2)}
-                </p>
-              );
-            })}
+            <BillInfo form={bills} />
             <Button color="red" onClick={open}>
               Delete
             </Button>
