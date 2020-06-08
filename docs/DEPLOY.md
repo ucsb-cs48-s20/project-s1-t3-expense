@@ -5,10 +5,13 @@
 - Node.js v10 or higher
 
 - For installation advice, see: <https://ucsb-cs48.github.io/jstopics/node/>
+
 ## Before we get started
-=Fork the project repo to your own personal GitHub account by clicking on the "Fork" button at the upper right hand of the repo's page on GitHub.  This creates a personal copy of the repo under your own GitHub account.  This is necessary because you can't deploy an app to Heroku unless you have admin access to the repo.
+
+=Fork the project repo to your own personal GitHub account by clicking on the "Fork" button at the upper right hand of the repo's page on GitHub. This creates a personal copy of the repo under your own GitHub account. This is necessary because you can't deploy an app to Heroku unless you have admin access to the repo.
 
 -Create a new Heroku app, and link it to you forked copy, so that you are ready to deploy the master branch
+
 ## Installing dependencies
 
 Run the command:
@@ -22,7 +25,6 @@ Do this:
 - The first time you clone this repo
 - Any time you switch branches
 - Any time you pull new changes from GitHub
-
 
 ## Setting up MongoDb
 
@@ -50,47 +52,51 @@ MONGODB_URI_PRODUCTION=
 
 NODE_ENV=
 
-Set MONGODB_URI_PRODUCTION to the uri string obtained from _Setting up MongoDB_ and set NODE_ENV to _"production"_
+Set MONGODB*URI_PRODUCTION to the uri string obtained from \_Setting up MongoDB* and set NODE*ENV to *"production"\_
+
 ## Running on localhost
 
-To run on localhost, you must first modify two files: pages/[id]/edit.js and pages/[id]/index.js
-Change these bits of code from edit.js
+To run on localhost, you must first modify three files: components/Bill.js, pages/[id]/edit.js, and pages/[id]/index.js
+
+Change these bits of code from Bill.js
 
 Note: You must do this if you plan to first run in local host. This means that if you plan on deploying on heroku first, you can skip this step.
 
 from this (heroku set up)
 
-![1st change to edit.js](./images/edit1heroku.PNG)
+![1st change to edit.js](<./images/bill(heroku).PNG>)
 
 to this (localhost set up)
 
-![1st change to edit.js](./images/edit1localhost.PNG)
+![1st change to edit.js](<./images/bill(localhost).PNG>)
 
-and from this (heroku set up)
+Change these bits of code from edit.js
 
-![2nd change to edit.js](./images/edit2heroku.PNG)
+from this (heroku set up)
+
+![2nd change to edit.js](<./images/edit1(heroku).PNG>)
 
 to this (localhost set up)
 
-![2nd change to edit.js](./images/edit2localhost.PNG)
+![2nd change to edit.js](<./images/edit1(local).PNG>)
 
 Change these bits of code from index.js
 
 from this (heroku set up)
 
-![1st change to index.js](./images/index1heroku.PNG)
+![1st change to index.js](<./images/index1(heroku).PNG>)
 
 to this (localhost set up)
 
-![1st change to index.js](./images/index1localhost.PNG)
+![1st change to index.js](<./images/index1(local).PNG>)
 
 and from this (heroku set up)
 
-![2nd change to index.js](./images/index2heroku.PNG)
+![2nd change to index.js](<./images/index2(heroku).PNG>)
 
 to this (localhost set up)
 
-![2nd change to index.js](./images/index2localhost.PNG)
+![2nd change to index.js](<./images/index2(local).PNG>)
 
 Execute the following command to run on localhost:
 
@@ -105,7 +111,7 @@ the codebase will automatically be reflected in the browser.
 
 ## Deployment to Heroku
 
-Before setting up heroku, assure that  the following two files: 
+Before setting up heroku, assure that the following two files:
 pages/[id]/edit.js and pages/[id]/index.js
 are properly configured for heroku. All this means is that the code in these files match the images marked with (heroku set up) from the _Running on localhost_ section, with 1 modification. You must change
 cs48-s20-s1-t3-prod.herokuapp.com
