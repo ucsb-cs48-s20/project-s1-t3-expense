@@ -26,7 +26,10 @@ export default function Bill(props) {
           splitWay: "equal",
           paid: false,
           unique: user.sub,
-          members: [{ name: "", cost: 0, email: "" }],
+          // The initial name is set to be user's first name, email is user's login email
+          members: [
+            { name: user.name.split(" ")[0], cost: 0, email: user.email },
+          ],
         }
   );
   const [newBill, setIsNewBill] = useState(props.oldForm ? false : true);
@@ -70,7 +73,7 @@ export default function Bill(props) {
     /* Try catch here to try and updated the changed we made to the bill on the database */
     try {
       const res = await fetch(
-        //`http://localhost:3000/api/bills/${router.query.id}`,
+        // `http://localhost:3000/api/bills/${router.query.id}`,
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
         {
@@ -82,13 +85,18 @@ export default function Bill(props) {
           body: JSON.stringify(form),
         }
       );
-      /* Call sendEmail api for each member*/
-      for (let i = 0; i < form.members?.length; i++) {
-        form.members[i].email &&
-        prevMembers?.length > i &&
-        prevMembers[i].email !== form.members[i].email
+      /* Call sendEmail api for each member
+         Notifications will be resent when either email is updated or 
+         the amount for the member is updated */
+      // Loop from index 1 to avoid send notification to bill owner
+      for (let i = 1; i < form.members?.length; i++) {
+        (form.members[i].email &&
+          prevMembers?.length > i &&
+          (prevMembers[i].email !== form.members[i].email ||
+            prevMembers[i].cost !== form.members[i].cost)) ||
+        prevMembers?.length <= i
           ? await fetch(
-              //`http://localhost:3000/api/sendEmail`,
+              // `http://localhost:3000/api/sendEmail`,
               `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
               // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
@@ -100,6 +108,11 @@ export default function Bill(props) {
                   email: form.members[i].email,
                   cost: form.members[i].cost,
                   sender: user.name,
+                  // Send a different email when the amount is changed
+                  amountChanged:
+                    prevMembers?.length > i
+                      ? prevMembers[i].cost !== form.members[i].cost
+                      : false,
                 }),
               }
             )
@@ -123,7 +136,8 @@ export default function Bill(props) {
         },
         body: JSON.stringify(form),
       });
-      for (let i = 0; i < form.members?.length; i++) {
+      /* Avoid send notification to the bill owner */
+      for (let i = 1; i < form.members?.length; i++) {
         form.members[i].email
           ? await fetch("api/sendEmail", {
               method: "POST",

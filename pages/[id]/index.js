@@ -39,7 +39,7 @@ const Bills = ({ bills, user }) => {
     const billId = router.query.id;
     try {
       const deleted = await fetch(
-        //`http://localhost:3000/api/bills/${billId}`,
+        // `http://localhost:3000/api/bills/${billId}`,
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${billId}`,
         // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${billId}`,
         {
@@ -68,9 +68,12 @@ const Bills = ({ bills, user }) => {
         ) : (
           <>
             <BillInfo form={bills} user={user} />
-            <Button color="red" onClick={open}>
-              Delete
-            </Button>
+            {/* When the user is not the bill owner, they cannot delete the bill */}
+            {bills.unique === user.sub ? (
+              <Button color="red" onClick={open}>
+                Delete
+              </Button>
+            ) : null}
             <Link href="/bill-private">
               <Button color="grey">Go Back</Button>
             </Link>
@@ -89,7 +92,7 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  // const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
   const res = await fetch(
     `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
   );

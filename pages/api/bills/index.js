@@ -32,5 +32,7 @@ export default auth0.requireAuthentication(async function (req, res) {
 });
 
 export async function getBill(user) {
-  return Bill.find({ unique: user.sub });
+  return Bill.find({
+    $or: [{ "members.email": user.email }, { unique: user.sub }],
+  });
 }
