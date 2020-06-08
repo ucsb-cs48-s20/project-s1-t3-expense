@@ -3,7 +3,7 @@ import _ from "lodash";
 //Assume that dollarAmount is in cents
 //Returns the costPerMember in terms of cents
 export const equalCostPerMemberString = (dollarAmount, groupSize) => {
-  const costPerMember = Math.floor(dollarAmount / groupSize);
+  const costPerMember = (dollarAmount / groupSize).toFixed(2);
   return groupSize > 0 ? costPerMember.toString() : "";
 };
 

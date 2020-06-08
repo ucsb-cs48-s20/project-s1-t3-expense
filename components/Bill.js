@@ -79,8 +79,8 @@ export default function Bill(props) {
         member.cost = Math.floor(member.cost * 100);
       });
       const res = await fetch(
-        //`http://localhost:3000/api/bills/${router.query.id}`,
-        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        `http://localhost:3000/api/bills/${router.query.id}`,
+        //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
@@ -102,8 +102,8 @@ export default function Bill(props) {
             prevMembers[i].cost !== form.members[i].cost)) ||
         prevMembers?.length <= i
           ? await fetch(
-              //`http://localhost:3000/api/sendEmail`,
-              `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
+              `http://localhost:3000/api/sendEmail`,
+              //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
               // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
                 method: "POST",
@@ -171,31 +171,12 @@ export default function Bill(props) {
   };
 
   const handleSubmit = (e) => {
-    let tempMemberArray = [];
-    /* If the bill is split equally,  then the cost of each member is set to totalAmount/groupSize */
-    if (form.splitWay === "equal") {
-      for (let i = 0; i < form.members?.length; i++) {
-        tempMemberArray[i] = {
-          name: form.members[i].name,
-          cost: (
-            equalCostPerMemberString(
-              Math.floor(form.dollarAmount * 100),
-              form.groupSize
-            ) / 100
-          ).toFixed(2),
-          email: form.members[i].email,
-        };
-      }
-      setForm({
-        ...form,
-        members: tempMemberArray,
-      });
-    }
     e.preventDefault();
     /* We validate the form by checking if title/description is empty or too long */
     let errs = validateForm(form.title, form.description);
     setErrors(errs);
     setIsSubmitting(true);
+    console.log(form.members);
   };
 
   const handleMoney = (e) => {
@@ -244,8 +225,17 @@ export default function Bill(props) {
 
   const handleStyle = (e, { value }) => {
     if (value === "custom") {
+      const tempMemberArray = form.members;
+      for (let i = 0; i < form.groupSize; i++) {
+        tempMemberArray[i] = {
+          name: tempMemberArray[i].name,
+          cost: 0,
+          email: tempMemberArray[i].email,
+        };
+      }
       setForm({
         ...form,
+        members: tempMemberArray,
         splitWay: value,
         remainingAmount: (
           calculateRemainingAmount(
@@ -262,8 +252,6 @@ export default function Bill(props) {
         remainingAmount: 0,
       });
     }
-
-    console.log(form.remainingAmount);
   };
 
   const handleChange = (e) => {
@@ -336,6 +324,31 @@ export default function Bill(props) {
     });
   };
 
+  const extraCent = () => {
+    let extra =
+      form.dollarAmount -
+      (form.dollarAmount / form.groupSize).toFixed(2) * form.groupSize;
+    let x = (form.dollarAmount / form.groupSize + extra).toFixed(2);
+    let cost = Math.floor(x * 100) / 100;
+    form.members[0] = {
+      name: form.members[0].name,
+      cost: cost ? cost : 0,
+      email: form.members[0].email,
+    };
+    return form.members[0].cost.toFixed(2);
+  };
+
+  const evenSplit = (index) => {
+    form.members[index] = {
+      name: form.members[index].name,
+      cost: (
+        equalCostPerMemberString(form.dollarAmount * 100, form.groupSize) / 100
+      ).toFixed(2),
+      email: form.members[index].email,
+    };
+    return form.members[index].cost;
+  };
+
   return (
     <div>
       {isSubmitting ? (
@@ -398,12 +411,17 @@ export default function Bill(props) {
                     value={form.members[index]?.email}
                   />
                   {form.splitWay === "equal" ? (
-                    (
-                      equalCostPerMemberString(
-                        Math.floor(form.dollarAmount * 100),
-                        form.groupSize
-                      ) / 100
-                    ).toFixed(2)
+                    [
+                      form.dollarAmount -
+                        equalCostPerMemberString(
+                          form.dollarAmount,
+                          form.groupSize
+                        ) *
+                          form.groupSize !=
+                      0
+                        ? [index === 0 ? extraCent() : evenSplit(index)]
+                        : evenSplit(index),
+                    ]
                   ) : (
                     <div>
                       <Form.Input
@@ -425,9 +443,9 @@ export default function Bill(props) {
             })}
           </div>
           {form.splitWay === "equal" ? (
-            <p>Remaining Balance: 0</p>
+            <p>Remaining Balance: $0.00</p>
           ) : (
-            <p>Remaining Balance: {form.remainingAmount}</p>
+            <p>Remaining Balance: ${form.remainingAmount}</p>
           )}
 
           <Form.Input
