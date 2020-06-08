@@ -20,16 +20,18 @@
 
 # Project Members
 
-* Kobe Shavolian, KobeShav
-* Roberto Gutierrez, robg1638
-* Helen Huang, helenziyihuang
-* Kaylee Nguyen, kayleenguyen
-* Dylan Lin, DylanLin29
-* Greg Baroni, gbaroni888
+- Kobe Shavolian, KobeShav
+- Roberto Gutierrez, robg1638
+- Helen Huang, helenziyihuang
+- Kaylee Nguyen, kayleenguyen
+- Dylan Lin, DylanLin29
+- Greg Baroni, gbaroni888
 
 # Deployment
-* [Deployment Instructions](./docs/DEPLOY.md)
-* [Video](https://drive.google.com/open?id=1RYRhRH_2tTJ5RGw2EEmhO3AEBZGAFRpJ) (View with UCSB Google account)
+
+- [Deployment Instructions](./docs/DEPLOY.md)
+- [Video](https://drive.google.com/open?id=1RYRhRH_2tTJ5RGw2EEmhO3AEBZGAFRpJ) (View with UCSB Google account)
+- Note: The files you need to change for localhost/heroku deployment are different than from the video, please refer to the written instructions for the correct files
 
 # Commands
 
@@ -87,4 +89,3 @@ Then, when you are ready to update the static storybook published to GitHub page
 
   This will wipe out the directory `../project-s1-t3-expense-storybook/docs` in the other repo, and populate
   it with new content based on the current source code.
-

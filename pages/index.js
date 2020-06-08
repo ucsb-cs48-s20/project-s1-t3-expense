@@ -9,11 +9,6 @@ function HomePage(props) {
 
   return (
     <MainLayout user={user}>
-      {user ? (
-        <div className="log-in-message">You're logged in!</div>
-      ) : (
-        <div className="log-in-message">You're not logged in!</div>
-      )}
       <AppFooter />
     </MainLayout>
   );

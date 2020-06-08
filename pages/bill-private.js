@@ -39,6 +39,12 @@ const BillPrivate = ({ bills, user }) => {
                         <a>{bill.title}</a>
                       </Link>
                     </Card.Header>
+                    <Card.Description>
+                      Bill Amount: ${bill.dollarAmount.toFixed(2)}
+                      <Card.Description>
+                        Number of People Paying Bill: {bill.groupSize}
+                      </Card.Description>
+                    </Card.Description>
                   </Card.Content>
                   <Card.Content extra>
                     <Link href={`/${bill._id}`}>
@@ -75,6 +81,12 @@ const BillPrivate = ({ bills, user }) => {
                         <a>{bill.title}</a>
                       </Link>
                     </Card.Header>
+                    <Card.Description>
+                      Bill Amount: ${bill.dollarAmount.toFixed(2)}
+                      <Card.Description>
+                        Number of People Paying Bill: {bill.groupSize}
+                      </Card.Description>
+                    </Card.Description>
                   </Card.Content>
                   <Card.Content extra>
                     <Link href={`/${bill._id}`}>
