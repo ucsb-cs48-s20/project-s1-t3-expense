@@ -371,40 +371,40 @@ export default function Bill(props) {
             onChange={handleChange}
           />
 
-      <div className="mem-indent">
-        {form.members?.map((item, index) => {
-          return (
-            <div key={index}>
-              <Form.Input
-                key={index}
-                fluid
-                label="Member Name"
-                placeholder={index + 1}
-                name="members"
-                value={form.members[index]?.name}
-                onChange={(e) => {
-                  handleMemberName(e, index);
-                }}
-              />
-              <Form.Input
-                key={index - form.members?.length}
-                fluid
-                label="Member Email"
-                placeholder={index + 1 + "@gmail.com"}
-                name="emails"
-                onChange={(e) => {
-                  handleMemberEmail(e, index);
-                }}
-                value={form.members[index]?.email}
-              />
-              {form.splitWay === "equal" ? (
-                (
-                  equalCostPerMemberString(
-                    Math.floor(form.dollarAmount * 100),
-                    form.groupSize
-                  ) / 100
-                ).toFixed(2)
-              ) : (
+          <div className="mem-indent">
+            {form.members?.map((item, index) => {
+              return (
+                <div key={index}>
+                  <Form.Input
+                    key={index}
+                    fluid
+                    label="Member Name"
+                    placeholder={index + 1}
+                    name="members"
+                    value={form.members[index]?.name}
+                    onChange={(e) => {
+                      handleMemberName(e, index);
+                    }}
+                  />
+                  <Form.Input
+                    key={index - form.members?.length}
+                    fluid
+                    label="Member Email"
+                    placeholder={index + 1 + "@gmail.com"}
+                    name="emails"
+                    onChange={(e) => {
+                      handleMemberEmail(e, index);
+                    }}
+                    value={form.members[index]?.email}
+                  />
+                  {form.splitWay === "equal" ? (
+                    (
+                      equalCostPerMemberString(
+                        Math.floor(form.dollarAmount * 100),
+                        form.groupSize
+                      ) / 100
+                    ).toFixed(2)
+                  ) : (
                     <div>
                       <Form.Input
                         key={2 * (index + 1 + form.members?.length)}
