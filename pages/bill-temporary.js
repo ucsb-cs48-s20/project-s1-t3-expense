@@ -68,7 +68,6 @@ const BillTemporary = ({ bills }) => {
                 </p>
               );
             })}
-            <p>{bills.description}</p>
             <Button color="red" onClick={open}>
               Delete
             </Button>

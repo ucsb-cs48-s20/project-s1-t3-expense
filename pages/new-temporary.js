@@ -16,7 +16,6 @@ import { validateForm } from "../utils/validateForm";
 const NewBill = () => {
   const [form, setForm] = useState({
     title: "",
-    description: "",
     groupSize: 1,
     dollarAmount: 0,
     remainingAmount: 0,
@@ -36,12 +35,7 @@ const NewBill = () => {
         createBill();
       } else {
         setIsSubmitting(false);
-        if (errors.description) {
-          setForm({
-            ...form,
-            description: "",
-          });
-        } else if (errors.title) {
+        if (errors.title) {
           setForm({
             ...form,
             title: "",
@@ -81,7 +75,7 @@ const NewBill = () => {
       });
     }
     e.preventDefault();
-    let errs = validateForm(form.title, form.description);
+    let errs = validateForm(form.title);
     setErrors(errs);
     setIsSubmitting(true);
   };
@@ -109,14 +103,6 @@ const NewBill = () => {
       ...form,
       [e.target.name]: e.target.value,
       members: test,
-    });
-  };
-
-  const handleCheck = (e) => {
-    setCheck(!check);
-    setForm({
-      ...form,
-      // ["paid"]: !check,
     });
   };
 
@@ -284,24 +270,6 @@ const NewBill = () => {
                 onChange={handleStyle}
               />
             </Form.Group>
-
-            <Form.TextArea
-              fluid="true"
-              error={
-                errors.description
-                  ? {
-                      content:
-                        "Description must not be empty or longer than 200 characters",
-                      pointing: "below",
-                    }
-                  : null
-              }
-              label="Description"
-              placeholder="Description"
-              name="description"
-              value={form.description}
-              onChange={handleChange}
-            />
 
             {/* <Form.Checkbox label="Paid?" name="paid" onChange={handleCheck} /> */}
 
