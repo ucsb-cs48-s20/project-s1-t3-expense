@@ -43,7 +43,9 @@ export default function BillInfo({ form }) {
                     <span>Member {index + 1} </span>
                   )}
                 </Table.Cell>
-                <Table.Cell>${item?.cost ? item.cost / 100 : 0}</Table.Cell>
+                <Table.Cell>
+                  ${item?.cost ? (item.cost / 100).toFixed(2) : 0}
+                </Table.Cell>
                 <Table.Cell>
                   {item?.email ? (
                     <span> Email: {item?.email}</span>

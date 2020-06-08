@@ -40,7 +40,7 @@ const BillPrivate = ({ bills, user }) => {
                       </Link>
                     </Card.Header>
                     <Card.Description>
-                      Bill Amount: ${bill.dollarAmount.toFixed(2)}
+                      Bill Amount: ${(bill.dollarAmount / 100).toFixed(2)}
                       <Card.Description>
                         Number of People Paying Bill: {bill.groupSize}
                       </Card.Description>
