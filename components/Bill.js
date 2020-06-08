@@ -5,6 +5,7 @@ import { Form, Loader, Radio } from "semantic-ui-react";
 import {
   equalCostPerMemberString,
   calculateRemainingAmount,
+  convertMemberCoststoCents,
 } from "../utils/calculations";
 import { validateForm } from "../utils/validateForm";
 import Button from "react-bootstrap/Button";
@@ -51,7 +52,7 @@ export default function Bill(props) {
         and we reset the form with the proper error field reset */
         setIsSubmitting(!isSubmitting);
         if (errors.description) {
-          /* Here we check if the descrition field isn't
+          /* Here we check if the description field isn't
             correct and reset if needed */
           setForm({
             ...form,
@@ -72,8 +73,13 @@ export default function Bill(props) {
   const updateBill = async () => {
     /* Try catch here to try and updated the changed we made to the bill on the database */
     try {
+      form.dollarAmount = Math.floor(form.dollarAmount * 100);
+      form.remainingAmount = Math.floor(form.remainingAmount * 100);
+      form.members.forEach((member) => {
+        member.cost = Math.floor(member.cost * 100);
+      });
       const res = await fetch(
-        // `http://localhost:3000/api/bills/${router.query.id}`,
+        //`http://localhost:3000/api/bills/${router.query.id}`,
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
         {
@@ -96,7 +102,7 @@ export default function Bill(props) {
             prevMembers[i].cost !== form.members[i].cost)) ||
         prevMembers?.length <= i
           ? await fetch(
-              // `http://localhost:3000/api/sendEmail`,
+              //`http://localhost:3000/api/sendEmail`,
               `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
               // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
@@ -106,7 +112,7 @@ export default function Bill(props) {
                   title: form.title,
                   name: form.members[i].name,
                   email: form.members[i].email,
-                  cost: form.members[i].cost,
+                  cost: (form.members[i].cost / 100).toFixed(2),
                   sender: user.name,
                   // Send a different email when the amount is changed
                   amountChanged:
@@ -128,6 +134,11 @@ export default function Bill(props) {
   const createBill = async () => {
     /* Try to post the bill, and send emails if the member has the form field filled out */
     try {
+      form.dollarAmount = Math.floor(form.dollarAmount * 100);
+      form.remainingAmount = Math.floor(form.remainingAmount * 100);
+      form.members.forEach((member) => {
+        member.cost = Math.floor(member.cost * 100);
+      });
       const res = await fetch("api/bills", {
         method: "POST",
         headers: {
@@ -146,7 +157,7 @@ export default function Bill(props) {
                 title: form.title,
                 name: form.members[i].name,
                 email: form.members[i].email,
-                cost: form.members[i].cost,
+                cost: (form.members[i].cost / 100).toFixed(2),
                 sender: user.name,
               }),
             })
@@ -166,7 +177,12 @@ export default function Bill(props) {
       for (let i = 0; i < form.members?.length; i++) {
         tempMemberArray[i] = {
           name: form.members[i].name,
-          cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
+          cost: (
+            equalCostPerMemberString(
+              Math.floor(form.dollarAmount * 100),
+              form.groupSize
+            ) / 100
+          ).toFixed(2),
           email: form.members[i].email,
         };
       }
@@ -187,7 +203,12 @@ export default function Bill(props) {
     then if it is equal then we set remaining amount to 0 */
     setForm({
       ...form,
-      remainingAmount: calculateRemainingAmount(e.target.value, form.members),
+      remainingAmount: (
+        calculateRemainingAmount(
+          Math.floor(e.target.value * 100),
+          convertMemberCoststoCents(form.members)
+        ) / 100
+      ).toFixed(2),
       dollarAmount: e.target.value,
     });
     if (form.splitWay === "equal") {
@@ -209,14 +230,15 @@ export default function Bill(props) {
       cost: e.target.value,
       email: newMemberList[index].email,
     };
-
     setForm({
       ...form,
       members: newMemberList,
-      remainingAmount: calculateRemainingAmount(
-        form.dollarAmount,
-        form.members
-      ),
+      remainingAmount: (
+        calculateRemainingAmount(
+          Math.floor(form.dollarAmount * 100),
+          convertMemberCoststoCents(form.members)
+        ) / 100
+      ).toFixed(2),
     });
   };
 
@@ -225,10 +247,12 @@ export default function Bill(props) {
       setForm({
         ...form,
         splitWay: value,
-        remainingAmount: calculateRemainingAmount(
-          form.dollarAmount,
-          form.members
-        ),
+        remainingAmount: (
+          calculateRemainingAmount(
+            Math.floor(form.dollarAmount * 100),
+            convertMemberCoststoCents(form.members)
+          ) / 100
+        ).toFixed(2),
       });
     }
     if (value === "equal") {
@@ -350,7 +374,7 @@ export default function Bill(props) {
           <div className="mem-indent">
             {form.members?.map((item, index) => {
               return (
-                <div>
+                <div key={index}>
                   <Form.Input
                     key={index}
                     fluid
@@ -374,7 +398,12 @@ export default function Bill(props) {
                     value={form.members[index]?.email}
                   />
                   {form.splitWay === "equal" ? (
-                    equalCostPerMemberString(form.dollarAmount, form.groupSize)
+                    (
+                      equalCostPerMemberString(
+                        Math.floor(form.dollarAmount * 100),
+                        form.groupSize
+                      ) / 100
+                    ).toFixed(2)
                   ) : (
                     <div>
                       <Form.Input

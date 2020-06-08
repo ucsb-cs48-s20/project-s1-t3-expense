@@ -3,10 +3,9 @@ import fetch from "isomorphic-unfetch";
 import { requiredAuth } from "../../utils/ssr";
 import Layout from "../../components/Layout";
 import Bill from "../../components/Bill";
-
+import { convertMemberCoststoDollars } from "../../utils/calculations";
+/* this sets the form to the most updated version of the bill on the database */
 const EditBill = ({ bills, user }) => {
-  /* this sets the form to the most updated version of the bill on the database */
-
   return (
     <Layout user={user}>
       <div className="form-container">
@@ -18,12 +17,12 @@ const EditBill = ({ bills, user }) => {
               title: bills.title,
               description: bills.description,
               groupSize: bills.groupSize,
-              dollarAmount: bills.dollarAmount,
+              dollarAmount: (bills.dollarAmount / 100).toFixed(2),
               splitWay: bills.splitWay,
-              remainingAmount: bills.remainingAmount,
+              remainingAmount: (bills.remainingAmount / 100).toFixed(2),
               paid: bills.paid,
               unique: user.sub,
-              members: bills.members,
+              members: convertMemberCoststoDollars(bills.members),
             }}
           />
         </div>
@@ -38,7 +37,7 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
 
   let queryIdBills = context.query.id;
-  // const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
+  //const res = await fetch(`http://localhost:3000/api/bills/${queryIdBills}`);
   const res = await fetch(
     `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${queryIdBills}`
   );

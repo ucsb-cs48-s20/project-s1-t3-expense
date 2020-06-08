@@ -67,7 +67,7 @@ h3 {
 .create-new-button {
   width: 120px;
   margin: 20px auto;
-  font-family: monospace;
+  font-family: monospace, monospace;
   font-size: large;
   text-align: center;
 }

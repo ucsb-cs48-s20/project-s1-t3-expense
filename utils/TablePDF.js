@@ -44,7 +44,7 @@ function TablePDF({ bills }) {
           { textAlign: "right", paddingRight: 8, fontSize: 14 },
         ]}
       >
-        ${mem?.cost}
+        ${(mem?.cost / 100).toFixed(2)}
       </Text>
     </View>
   ));
