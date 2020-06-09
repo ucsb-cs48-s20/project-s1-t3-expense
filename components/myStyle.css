@@ -129,7 +129,7 @@ h3 {
   color: #000000;
   text-align: center;
   padding: 20px;
-  position: fixed;
+  position: relative;
   bottom: 0;
   height: 60px;
   width: 100%;

@@ -55,6 +55,23 @@ const NewBill = () => {
   };
 
   const handleSubmit = (e) => {
+    const tempArray = form.members;
+    for (let i = 0; i < form.members?.length; i++) {
+      let newName = form.members[i].name;
+      if (!form.members[i].name) {
+        newName = "Member " + (i + 1);
+      }
+      tempArray[i] = {
+        name: newName,
+        cost: form.members[i].cost,
+        email: form.members[i].email,
+      };
+    }
+
+    setForm({
+      ...form,
+      members: tempArray,
+    });
     e.preventDefault();
     let errs = validateForm(form.title);
     setErrors(errs);
