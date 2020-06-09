@@ -25,11 +25,5 @@ export async function getServerSideProps(context) {
   } = await requiredAuth(context);
   return { props: { user: user } };
 }
-/*
-{isSubmitting ? (
-  <Loader active inline="centered" />
-) : (
-  <Bill user={user}/>
-)}
-*/
+
 export default NewBill;
