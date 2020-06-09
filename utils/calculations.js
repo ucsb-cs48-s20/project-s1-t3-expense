@@ -3,7 +3,7 @@ import _ from "lodash";
 //Assume that dollarAmount is in cents
 //Returns the costPerMember in terms of cents
 export const equalCostPerMemberString = (dollarAmount, groupSize) => {
-  const costPerMember = Math.floor(dollarAmount / groupSize);
+  const costPerMember = (dollarAmount / groupSize).toFixed(2);
   return groupSize > 0 ? costPerMember.toString() : "";
 };
 
@@ -34,4 +34,22 @@ export const convertMemberCoststoDollars = (members) => {
     member.cost = (member.cost / 100).toFixed(2);
   });
   return membersCopy;
+};
+
+/* Calculates the cents left over from even split */
+export const centsLeftOver = (dollarAmount, groupSize) => {
+  let result = (
+    dollarAmount -
+    equalCostPerMemberString(dollarAmount, groupSize) * groupSize
+  ).toFixed(2);
+  return groupSize ? result : 0;
+};
+
+/* Calculates the cost for first member + extra cents */
+export const calculateExtraCentCost = (dollarAmount, groupSize) => {
+  let result = (
+    dollarAmount / groupSize +
+    (dollarAmount - (dollarAmount / groupSize).toFixed(2) * groupSize)
+  ).toFixed(2);
+  return groupSize ? result : 0.0;
 };

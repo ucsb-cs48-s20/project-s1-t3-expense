@@ -6,6 +6,8 @@ import {
   equalCostPerMemberString,
   calculateRemainingAmount,
   convertMemberCoststoCents,
+  centsLeftOver,
+  calculateExtraCentCost,
 } from "../utils/calculations";
 import { validateForm } from "../utils/validateForm";
 import Button from "react-bootstrap/Button";
@@ -171,30 +173,24 @@ export default function Bill(props) {
   };
 
   const handleSubmit = (e) => {
-    let tempMemberArray = [];
-    /* If the bill is split equally,  then the cost of each member is set to totalAmount/groupSize */
-    if (form.splitWay === "equal") {
-      for (let i = 0; i < form.members?.length; i++) {
-        let newName = form.members[i].name;
-        if (!form.members[i].name) {
-          newName = "Member " + (i + 1);
-        }
-        tempMemberArray[i] = {
-          name: newName,
-          cost: (
-            equalCostPerMemberString(
-              Math.floor(form.dollarAmount * 100),
-              form.groupSize
-            ) / 100
-          ).toFixed(2),
-          email: form.members[i].email,
-        };
+    const tempArray = form.members;
+    for (let i = 0; i < form.members?.length; i++) {
+      let newName = form.members[i].name;
+      if (!form.members[i].name) {
+        newName = "Member " + (i + 1);
       }
-      setForm({
-        ...form,
-        members: tempMemberArray,
-      });
+      tempArray[i] = {
+        name: newName,
+        cost: form.members[i].cost,
+        email: form.members[i].email,
+      };
     }
+
+    setForm({
+      ...form,
+      members: tempArray,
+    });
+
     e.preventDefault();
     /* We validate the form by checking if title/description is empty or too long */
     let errs = validateForm(form.title, form.description);
@@ -248,8 +244,17 @@ export default function Bill(props) {
 
   const handleStyle = (e, { value }) => {
     if (value === "custom") {
+      const tempMemberArray = form.members;
+      for (let i = 0; i < form.groupSize; i++) {
+        tempMemberArray[i] = {
+          name: tempMemberArray[i].name,
+          cost: 0,
+          email: tempMemberArray[i].email,
+        };
+      }
       setForm({
         ...form,
+        members: tempMemberArray,
         splitWay: value,
         remainingAmount: (
           calculateRemainingAmount(
@@ -266,8 +271,6 @@ export default function Bill(props) {
         remainingAmount: 0,
       });
     }
-
-    console.log(form.remainingAmount);
   };
 
   const handleChange = (e) => {
@@ -340,6 +343,27 @@ export default function Bill(props) {
     });
   };
 
+  /* If the total amount is split evenly, this gives the extra cent leftover from the even split calculation
+  to the first member (i.e 100/3) */
+  const handleExtraCent = () => {
+    form.members[0] = {
+      name: form.members[0].name,
+      cost: calculateExtraCentCost(form.dollarAmount, form.groupSize),
+      email: form.members[0].email,
+    };
+    return form.members[0].cost;
+  };
+
+  /* Gives the rest of the group members the even split amount */
+  const handleEvenSplit = (index) => {
+    form.members[index] = {
+      name: form.members[index].name,
+      cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
+      email: form.members[index].email,
+    };
+    return form.members[index].cost;
+  };
+
   return (
     <div>
       {isSubmitting ? (
@@ -402,12 +426,16 @@ export default function Bill(props) {
                     value={form.members[index]?.email}
                   />
                   {form.splitWay === "equal" ? (
-                    (
-                      equalCostPerMemberString(
-                        Math.floor(form.dollarAmount * 100),
-                        form.groupSize
-                      ) / 100
-                    ).toFixed(2)
+                    [
+                      /* checks if there is leftover cents in even calculation */
+                      centsLeftOver(form.dollarAmount, form.groupSize) != 0
+                        ? [
+                            index === 0
+                              ? handleExtraCent()
+                              : handleEvenSplit(index),
+                          ]
+                        : handleEvenSplit(index),
+                    ]
                   ) : (
                     <div>
                       <Form.Input
@@ -429,9 +457,17 @@ export default function Bill(props) {
             })}
           </div>
           {form.splitWay === "equal" ? (
-            <p>Remaining Balance: 0</p>
+            <p>Remaining Balance: $0.00</p>
           ) : (
-            <p>Remaining Balance: {form.remainingAmount}</p>
+            [
+              form.remainingAmount < 0 ? (
+                <p>
+                  Remaining Balance: <b>-</b>${Math.abs(form.remainingAmount)}
+                </p>
+              ) : (
+                <p>Remaining Balance: ${form.remainingAmount}</p>
+              ),
+            ]
           )}
 
           <Form.Input
