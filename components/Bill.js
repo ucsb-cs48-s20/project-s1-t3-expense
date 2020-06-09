@@ -443,7 +443,15 @@ export default function Bill(props) {
           {form.splitWay === "equal" ? (
             <p>Remaining Balance: $0.00</p>
           ) : (
-            <p>Remaining Balance: ${form.remainingAmount}</p>
+            [
+              form.remainingAmount < 0 ? (
+                <p>
+                  Remaining Balance: <b>-</b>${Math.abs(form.remainingAmount)}
+                </p>
+              ) : (
+                <p>Remaining Balance: ${form.remainingAmount}</p>
+              ),
+            ]
           )}
 
           <Form.Input
