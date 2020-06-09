@@ -91,7 +91,7 @@ describe("Temporary Bill", () => {
 
       cy.get("h2").contains(`Total Amount: $${amount}`);
 
-      cy.get("h2").contains(`Remaining Balance: $${amount}`);
+      cy.get("h2").contains(`Remaining Balance: $0.00`);
 
       cy.get("h1").contains("Members:");
 
