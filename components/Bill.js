@@ -6,6 +6,8 @@ import {
   equalCostPerMemberString,
   calculateRemainingAmount,
   convertMemberCoststoCents,
+  centsLeftOver,
+  calculateExtraCentCost,
 } from "../utils/calculations";
 import { validateForm } from "../utils/validateForm";
 import Button from "react-bootstrap/Button";
@@ -324,28 +326,25 @@ export default function Bill(props) {
     });
   };
 
-  const extraCent = () => {
-    let extra =
-      form.dollarAmount -
-      (form.dollarAmount / form.groupSize).toFixed(2) * form.groupSize;
-    let x = (form.dollarAmount / form.groupSize + extra).toFixed(2);
-    let cost = Math.floor(x * 100) / 100;
+  /* If the total amount is split evenly, this gives the extra cent leftover from the even split calculation
+  to the first member (i.e 100/3) */
+  const handleExtraCent = () => {
     form.members[0] = {
       name: form.members[0].name,
-      cost: cost ? cost : 0,
+      cost: calculateExtraCentCost(form.dollarAmount, form.groupSize),
       email: form.members[0].email,
     };
-    return form.members[0].cost.toFixed(2);
+    return form.members[0].cost;
   };
 
-  const evenSplit = (index) => {
+  /* Gives the rest of the group members the even split amount */
+  const handleEvenSplit = (index) => {
     form.members[index] = {
       name: form.members[index].name,
-      cost: (
-        equalCostPerMemberString(form.dollarAmount * 100, form.groupSize) / 100
-      ).toFixed(2),
+      cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
       email: form.members[index].email,
     };
+    console.log(form.members);
     return form.members[index].cost;
   };
 
@@ -412,15 +411,14 @@ export default function Bill(props) {
                   />
                   {form.splitWay === "equal" ? (
                     [
-                      form.dollarAmount -
-                        equalCostPerMemberString(
-                          form.dollarAmount,
-                          form.groupSize
-                        ) *
-                          form.groupSize !=
-                      0
-                        ? [index === 0 ? extraCent() : evenSplit(index)]
-                        : evenSplit(index),
+                      /* checks if there is leftover cents in even calculation */
+                      centsLeftOver(form.dollarAmount, form.groupSize) != 0
+                        ? [
+                            index === 0
+                              ? handleExtraCent()
+                              : handleEvenSplit(index),
+                          ]
+                        : handleEvenSplit(index),
                     ]
                   ) : (
                     <div>

@@ -35,3 +35,19 @@ export const convertMemberCoststoDollars = (members) => {
   });
   return membersCopy;
 };
+
+export const centsLeftOver = (dollarAmount, groupSize) => {
+  let result = (
+    dollarAmount -
+    equalCostPerMemberString(dollarAmount, groupSize) * groupSize
+  ).toFixed(2);
+  return groupSize ? result : 0;
+};
+
+export const calculateExtraCentCost = (dollarAmount, groupSize) => {
+  let result = (
+    dollarAmount / groupSize +
+    (dollarAmount - (dollarAmount / groupSize).toFixed(2) * groupSize)
+  ).toFixed(2);
+  return groupSize ? result : 0.0;
+};
