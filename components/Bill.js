@@ -81,8 +81,8 @@ export default function Bill(props) {
         member.cost = Math.floor(member.cost * 100);
       });
       const res = await fetch(
-        `http://localhost:3000/api/bills/${router.query.id}`,
-        //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
+        //`http://localhost:3000/api/bills/${router.query.id}`,
+        `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
         // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/bills/${router.query.id}`,
         {
           method: "PUT",
@@ -104,8 +104,8 @@ export default function Bill(props) {
             prevMembers[i].cost !== form.members[i].cost)) ||
         prevMembers?.length <= i
           ? await fetch(
-              `http://localhost:3000/api/sendEmail`,
-              //`https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
+              //`http://localhost:3000/api/sendEmail`,
+              `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
               // `https://cs48-s20-s1-t3-qa.herokuapp.com/api/sendEmail`,
               {
                 method: "POST",
@@ -356,13 +356,9 @@ export default function Bill(props) {
 
   /* Gives the rest of the group members the even split amount */
   const handleEvenSplit = (index) => {
-    const equalCost = (
-      (equalCostPerMemberString(form.dollarAmount, form.groupSize) * 100) /
-      100
-    ).toFixed(2);
     form.members[index] = {
       name: form.members[index].name,
-      cost: equalCost,
+      cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
       email: form.members[index].email,
     };
     return form.members[index].cost;
