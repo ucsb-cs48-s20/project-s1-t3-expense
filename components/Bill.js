@@ -236,7 +236,7 @@ export default function Bill(props) {
       remainingAmount: (
         calculateRemainingAmount(
           Math.floor(form.dollarAmount * 100),
-          convertMemberCoststoCents(newMemberList)
+          convertMemberCoststoCents(form.members)
         ) / 100
       ).toFixed(2),
     });
