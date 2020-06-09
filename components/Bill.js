@@ -175,8 +175,12 @@ export default function Bill(props) {
     /* If the bill is split equally,  then the cost of each member is set to totalAmount/groupSize */
     if (form.splitWay === "equal") {
       for (let i = 0; i < form.members?.length; i++) {
+        let newName = form.members[i].name;
+        if (!form.members[i].name) {
+          newName = "Member " + (i + 1);
+        }
         tempMemberArray[i] = {
-          name: form.members[i].name,
+          name: newName,
           cost: (
             equalCostPerMemberString(
               Math.floor(form.dollarAmount * 100),

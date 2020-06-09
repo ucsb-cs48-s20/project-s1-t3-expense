@@ -45,9 +45,11 @@ function BillPDF(props) {
             {JSON.parse(props.bills.dollarAmount / 100).toFixed(2)}
           </Text>
 
-          <Text style={{ fontSize: 12, textAlign: "center", marginTop: 24 }}>
-            {props.bills.description}
-          </Text>
+          {props.bills.description !== "undefined" ? (
+            <Text style={{ fontSize: 12, textAlign: "center", marginTop: 24 }}>
+              {props.bills.description}
+            </Text>
+          ) : null}
         </View>
 
         <TablePDF bills={props.bills} />
