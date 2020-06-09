@@ -36,6 +36,7 @@ export const convertMemberCoststoDollars = (members) => {
   return membersCopy;
 };
 
+/* Calculates the cents left over from even split */
 export const centsLeftOver = (dollarAmount, groupSize) => {
   let result = (
     dollarAmount -
@@ -44,6 +45,7 @@ export const centsLeftOver = (dollarAmount, groupSize) => {
   return groupSize ? result : 0;
 };
 
+/* Calculates the cost for first member + extra cents */
 export const calculateExtraCentCost = (dollarAmount, groupSize) => {
   let result = (
     dollarAmount / groupSize +

@@ -10,6 +10,8 @@ import {
   equalCostPerMemberString,
   calculateRemainingAmount,
   convertMemberCoststoCents,
+  centsLeftOver,
+  calculateExtraCentCost,
 } from "../utils/calculations";
 import { validateForm } from "../utils/validateForm";
 
@@ -62,35 +64,42 @@ const NewBill = () => {
   };
 
   const handleSubmit = (e) => {
-    let test = [];
-    if (form.splitWay === "equal") {
-      for (let i = 0; i < form.members.length; i++) {
-        test[i] = {
-          name: form.members[i].name,
-          cost: (
-            equalCostPerMemberString(
-              Math.floor(form.dollarAmount * 100),
-              form.groupSize
-            ) / 100
-          ).toFixed(2),
-        };
-      }
-      setForm({
-        ...form,
-        members: test,
-      });
-    }
     e.preventDefault();
     let errs = validateForm(form.title, form.description);
     setErrors(errs);
     setIsSubmitting(true);
+    console.log(form.members);
   };
 
   const handleStyle = (e, { value }) => {
-    setForm({
-      ...form,
-      splitWay: value,
-    });
+    if (value === "custom") {
+      const tempMemberArray = form.members;
+      for (let i = 0; i < form.groupSize; i++) {
+        tempMemberArray[i] = {
+          name: tempMemberArray[i].name,
+          cost: 0,
+          email: tempMemberArray[i].email,
+        };
+      }
+      setForm({
+        ...form,
+        members: tempMemberArray,
+        splitWay: value,
+        remainingAmount: (
+          calculateRemainingAmount(
+            Math.floor(form.dollarAmount * 100),
+            convertMemberCoststoCents(form.members)
+          ) / 100
+        ).toFixed(2),
+      });
+    }
+    if (value === "equal") {
+      setForm({
+        ...form,
+        splitWay: value,
+        remainingAmount: 0,
+      });
+    }
   };
 
   const handleChange = (e) => {
@@ -131,6 +140,13 @@ const NewBill = () => {
       ).toFixed(2),
       dollarAmount: e.target.value,
     });
+    if (form.splitWay === "equal") {
+      setForm({
+        ...form,
+        remainingAmount: 0,
+        dollarAmount: e.target.value,
+      });
+    }
   };
 
   const handleMemberCost = (e, index) => {
@@ -168,6 +184,27 @@ const NewBill = () => {
       ...form,
       members: memberObject,
     });
+  };
+
+  const handleEvenSplit = (index) => {
+    form.members[index] = {
+      name: form.members[index].name,
+      cost: equalCostPerMemberString(form.dollarAmount, form.groupSize),
+      email: form.members[index].email,
+    };
+    console.log(form.members);
+    console.log(form.remainingAmount);
+    return form.members[index].cost;
+  };
+
+  const handleExtraCent = () => {
+    form.members[0] = {
+      name: form.members[0].name,
+      cost: calculateExtraCentCost(form.dollarAmount, form.groupSize),
+      email: form.members[0].email,
+    };
+    return form.members[0].cost;
+    console.log(form.members);
   };
 
   return (
@@ -223,12 +260,16 @@ const NewBill = () => {
                       }}
                     />
                     {form.splitWay === "equal" ? (
-                      (
-                        equalCostPerMemberString(
-                          Math.floor(form.dollarAmount * 100),
-                          form.groupSize
-                        ) / 100
-                      ).toFixed(2)
+                      [
+                        /* checks if there is leftover cents in even calculation */
+                        centsLeftOver(form.dollarAmount, form.groupSize) != 0
+                          ? [
+                              index === 0
+                                ? handleExtraCent()
+                                : handleEvenSplit(index),
+                            ]
+                          : handleEvenSplit(index),
+                      ]
                     ) : (
                       <div>
                         <Form.Input
@@ -249,7 +290,7 @@ const NewBill = () => {
               })}
             </div>
             {form.splitWay === "equal" ? (
-              <p>Remaining Balance: 0</p>
+              <p>Remaining Balance: 0.00</p>
             ) : (
               <p>Remaining Balance: {form.remainingAmount}</p>
             )}
