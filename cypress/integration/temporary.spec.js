@@ -34,9 +34,10 @@ describe("Temporary Bill", () => {
         .type("30")
         .should("have.value", "30");
 
-      cy.get('textarea[name="description"]')
-        .type("Apple and Banana")
-        .should("have.value", "Apple and Banana");
+      // description is removed from 'Temporary Bill'
+      // cy.get('textarea[name="description"]')
+      //   .type("Apple and Banana")
+      //   .should("have.value", "Apple and Banana");
 
       cy.get("form").submit();
     });
@@ -62,7 +63,7 @@ describe("Temporary Bill", () => {
 
       cy.get('input[name="dollarAmount"]').clear().type("20");
 
-      cy.get('textarea[name="description"]').type("Coke");
+      // cy.get('textarea[name="description"]').type("Coke");
 
       cy.get('button[type="submit"]')
         .click()
@@ -74,14 +75,14 @@ describe("Temporary Bill", () => {
   context("When guest goes to result page", () => {
     let title = "Grocery";
     let amount = 30;
-    let description = "Apple and Banana";
+    // let description = "Apple and Banana";
     beforeEach(() => {
       cy.visit("http://localhost:3000/new-temporary");
       cy.get('input[name="title"]').type(title);
 
       cy.get('input[name="dollarAmount"]').clear().type(amount.toString());
 
-      cy.get('textarea[name="description"]').type(description);
+      // cy.get('textarea[name="description"]').type(description);
 
       cy.get('button[type="submit"]').click();
     });
@@ -98,7 +99,7 @@ describe("Temporary Bill", () => {
 
       cy.get("p").contains(`: $${amount}.00`);
 
-      cy.get("p").contains(description);
+      // cy.get("p").contains(description);
     });
 
     it("has a delete button", () => {
