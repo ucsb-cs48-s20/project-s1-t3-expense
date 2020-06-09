@@ -34,7 +34,6 @@ describe("Temporary Bill", () => {
         .type("30")
         .should("have.value", "30");
 
-      // description is removed from 'Temporary Bill'
       // cy.get('textarea[name="description"]')
       //   .type("Apple and Banana")
       //   .should("have.value", "Apple and Banana");
@@ -89,15 +88,14 @@ describe("Temporary Bill", () => {
 
     it("allows me to see the result page", () => {
       // Examine the information of the result page
-      cy.get("h4").contains("Group Size: 1");
 
-      cy.get("h4").contains(`Total Amount: $${amount}`);
+      cy.get("h2").contains(`Total Amount: $${amount}`);
 
-      cy.get("h4").contains(`Remaining Balance: $${amount}`);
+      cy.get("h2").contains(`Remaining Balance: $${amount}`);
 
-      cy.get("h4").contains("Members:");
+      cy.get("h1").contains("Members:");
 
-      cy.get("p").contains(`: $${amount}.00`);
+      // cy.get("table").contains(`: $${amount}.00`);
 
       // cy.get("p").contains(description);
     });
