@@ -25,7 +25,7 @@ const Mailer = async ({ name, email, cost, sender, title, amountChanged }) => {
         {
           type: "text/html",
           value: amountChanged
-            ? `Hi ${name}, the bill "${title}" is updated to $${cost}`
+            ? `Hi ${name}, your cost on the bill "${title}" is updated to $${cost}`
             : `Hi ${name}, you are asked to pay $${cost} by ${sender} for ${title}`,
         },
       ],
