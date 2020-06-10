@@ -262,13 +262,18 @@ const NewBill = () => {
                     {form.splitWay === "equal" ? (
                       [
                         /* checks if there is leftover cents in even calculation */
-                        centsLeftOver(form.dollarAmount, form.groupSize) != 0
-                          ? [
-                              index === 0
-                                ? handleExtraCent()
-                                : handleEvenSplit(index),
-                            ]
-                          : handleEvenSplit(index),
+                        centsLeftOver(form.dollarAmount, form.groupSize) !=
+                        0 ? (
+                          [
+                            index === 0 ? (
+                              <div>${handleExtraCent()}</div>
+                            ) : (
+                              <div>${handleEvenSplit(index)}</div>
+                            ),
+                          ]
+                        ) : (
+                          <div>${handleEvenSplit(index)}</div>
+                        ),
                       ]
                     ) : (
                       <div className="mem-indent-email">
