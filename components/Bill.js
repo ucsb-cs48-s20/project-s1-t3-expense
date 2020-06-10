@@ -75,10 +75,10 @@ export default function Bill(props) {
   const updateBill = async () => {
     /* Try catch here to try and updated the changed we made to the bill on the database */
     try {
-      form.dollarAmount = Math.floor(form.dollarAmount * 100);
-      form.remainingAmount = Math.floor(form.remainingAmount * 100);
+      form.dollarAmount = Math.round(form.dollarAmount * 100);
+      form.remainingAmount = Math.round(form.remainingAmount * 100);
       form.members.forEach((member) => {
-        member.cost = Math.floor(member.cost * 100);
+        member.cost = Math.round(member.cost * 100);
       });
       const res = await fetch(
         //`http://localhost:3000/api/bills/${router.query.id}`,
@@ -136,10 +136,10 @@ export default function Bill(props) {
   const createBill = async () => {
     /* Try to post the bill, and send emails if the member has the form field filled out */
     try {
-      form.dollarAmount = Math.floor(form.dollarAmount * 100);
-      form.remainingAmount = Math.floor(form.remainingAmount * 100);
+      form.dollarAmount = Math.round(form.dollarAmount * 100);
+      form.remainingAmount = Math.round(form.remainingAmount * 100);
       form.members.forEach((member) => {
-        member.cost = Math.floor(member.cost * 100);
+        member.cost = Math.round(member.cost * 100);
       });
       const res = await fetch("api/bills", {
         method: "POST",
@@ -205,7 +205,7 @@ export default function Bill(props) {
       ...form,
       remainingAmount: (
         calculateRemainingAmount(
-          Math.floor(e.target.value * 100),
+          Math.round(e.target.value * 100),
           convertMemberCoststoCents(form.members)
         ) / 100
       ).toFixed(2),
@@ -235,7 +235,7 @@ export default function Bill(props) {
       members: newMemberList,
       remainingAmount: (
         calculateRemainingAmount(
-          Math.floor(form.dollarAmount * 100),
+          Math.round(form.dollarAmount * 100),
           convertMemberCoststoCents(form.members)
         ) / 100
       ).toFixed(2),
@@ -258,7 +258,7 @@ export default function Bill(props) {
         splitWay: value,
         remainingAmount: (
           calculateRemainingAmount(
-            Math.floor(form.dollarAmount * 100),
+            Math.round(form.dollarAmount * 100),
             convertMemberCoststoCents(form.members)
           ) / 100
         ).toFixed(2),
