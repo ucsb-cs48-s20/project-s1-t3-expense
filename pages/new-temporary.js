@@ -45,10 +45,10 @@ const NewBill = () => {
   }, [errors]);
 
   const createBill = async () => {
-    form.dollarAmount = Math.floor(form.dollarAmount * 100);
-    form.remainingAmount = Math.floor(form.remainingAmount * 100);
+    form.dollarAmount = Math.round(form.dollarAmount * 100);
+    form.remainingAmount = Math.round(form.remainingAmount * 100);
     form.members.forEach((member) => {
-      member.cost = Math.floor(member.cost * 100);
+      member.cost = Math.round(member.cost * 100);
     });
     Cookie.set("form", JSON.stringify(form));
     router.push("/bill-temporary");
@@ -95,7 +95,7 @@ const NewBill = () => {
         splitWay: value,
         remainingAmount: (
           calculateRemainingAmount(
-            Math.floor(form.dollarAmount * 100),
+            Math.round(form.dollarAmount * 100),
             convertMemberCoststoCents(form.members)
           ) / 100
         ).toFixed(2),
@@ -134,7 +134,7 @@ const NewBill = () => {
       ...form,
       remainingAmount: (
         calculateRemainingAmount(
-          Math.floor(e.target.value * 100),
+          Math.round(e.target.value * 100),
           convertMemberCoststoCents(form.members)
         ) / 100
       ).toFixed(2),
@@ -163,7 +163,7 @@ const NewBill = () => {
       members: newMemberList,
       remainingAmount: (
         calculateRemainingAmount(
-          Math.floor(form.dollarAmount * 100),
+          Math.round(form.dollarAmount * 100),
           convertMemberCoststoCents(form.members)
         ) / 100
       ).toFixed(2),
