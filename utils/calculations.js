@@ -21,7 +21,7 @@ export const calculateRemainingAmount = (remainingAmount, members) => {
 export const convertMemberCoststoCents = (members) => {
   let membersCopy = _.cloneDeep(members);
   membersCopy.forEach((member) => {
-    member.cost = Math.floor(member.cost * 100);
+    member.cost = Math.round(member.cost * 100);
   });
   return membersCopy;
 };
