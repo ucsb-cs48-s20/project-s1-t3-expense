@@ -84,9 +84,9 @@ const BillPrivate = ({ bills, user }) => {
                       </Link>
                     </Card.Header>
                     <Card.Description>
-                      Bill Amount: ${bill.dollarAmount.toFixed(2)}
+                      Bill Amount: ${(bill.dollarAmount / 100).toFixed(2)}
                       <Card.Description>
-                        Number of People Paying Bill: {bill.groupSize}
+                        Owner: {bill?.members[0].name}
                       </Card.Description>
                     </Card.Description>
                   </Card.Content>
@@ -94,9 +94,12 @@ const BillPrivate = ({ bills, user }) => {
                     <Link href={`/${bill._id}`}>
                       <Button primary>View</Button>
                     </Link>
-                    <Link href={`/${bill._id}/edit`}>
-                      <Button primary>Edit</Button>
-                    </Link>
+                    {/* Only show the edit button for the bill owner */}
+                    {user.sub === bill.unique ? (
+                      <Link href={`/${bill._id}/edit`}>
+                        <Button primary>Edit</Button>
+                      </Link>
+                    ) : null}
                   </Card.Content>
                 </Card>
               </div>
