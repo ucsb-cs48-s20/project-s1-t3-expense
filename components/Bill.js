@@ -414,44 +414,46 @@ export default function Bill(props) {
                       handleMemberName(e, index);
                     }}
                   />
-                  <Form.Input
-                    key={index - form.members?.length}
-                    fluid
-                    label="Member Email"
-                    placeholder={index + 1 + "@gmail.com"}
-                    name="emails"
-                    onChange={(e) => {
-                      handleMemberEmail(e, index);
-                    }}
-                    value={form.members[index]?.email}
-                  />
-                  {form.splitWay === "equal" ? (
-                    [
-                      /* checks if there is leftover cents in even calculation */
-                      centsLeftOver(form.dollarAmount, form.groupSize) != 0
-                        ? [
-                            index === 0
-                              ? handleExtraCent()
-                              : handleEvenSplit(index),
-                          ]
-                        : handleEvenSplit(index),
-                    ]
-                  ) : (
-                    <div>
-                      <Form.Input
-                        key={2 * (index + 1 + form.members?.length)}
-                        name="expense"
-                        label="Cost"
-                        type="number"
-                        step=".01"
-                        min="0"
-                        value={form.members[index]?.cost}
-                        onChange={(e) => {
-                          handleMemberCost(e, index);
-                        }}
-                      />
-                    </div>
-                  )}
+                  <div className="mem-indent-email">
+                    <Form.Input
+                      key={index - form.members?.length}
+                      fluid
+                      label="Member Email"
+                      placeholder={index + 1 + "@gmail.com"}
+                      name="emails"
+                      onChange={(e) => {
+                        handleMemberEmail(e, index);
+                      }}
+                      value={form.members[index]?.email}
+                    />
+                    {form.splitWay === "equal" ? (
+                      [
+                        /* checks if there is leftover cents in even calculation */
+                        centsLeftOver(form.dollarAmount, form.groupSize) != 0
+                          ? [
+                              index === 0
+                                ? handleExtraCent()
+                                : handleEvenSplit(index),
+                            ]
+                          : handleEvenSplit(index),
+                      ]
+                    ) : (
+                      <div>
+                        <Form.Input
+                          key={2 * (index + 1 + form.members?.length)}
+                          name="expense"
+                          label="Cost"
+                          type="number"
+                          step=".01"
+                          min="0"
+                          value={form.members[index]?.cost}
+                          onChange={(e) => {
+                            handleMemberCost(e, index);
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               );
             })}

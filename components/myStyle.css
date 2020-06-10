@@ -134,3 +134,8 @@ h3 {
   height: 60px;
   width: 100%;
 }
+
+.mem-indent-email {
+  padding-left: 35px !important;
+  padding-bottom: 15px !important;
+}
