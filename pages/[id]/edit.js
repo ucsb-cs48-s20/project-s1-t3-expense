@@ -48,7 +48,8 @@ export async function getServerSideProps(context) {
   // Redirect the users to auth0 login page when they are trying to
   // enter the edit page by changing the url
   if (data.unique !== user.sub) {
-    context.res.writeHead(302, { Location: "/api/login" });
+    // context.res.writeHead(302, { Location: "_error" });
+    context.res.writeHead(302);
     context.res.end();
   }
   return { props: { bills: data, user: user } };

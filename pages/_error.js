@@ -4,10 +4,14 @@ import Link from "next/link";
 function Error({ statusCode }) {
   return (
     <div className="errorPage">
-      <p>
-        <span className="errorPageStatus">{statusCode}</span> This bill does not
-        exist
-      </p>
+      {statusCode === 302 ? (
+        <p>
+          <span className="errorPageStatus">{statusCode}</span> This bill does
+          not exist
+        </p>
+      ) : (
+        <p>You can't modify this bill</p>
+      )}
       <Link href="/">
         <Button color="grey">Go Back</Button>
       </Link>
