@@ -271,7 +271,7 @@ const NewBill = () => {
                           : handleEvenSplit(index),
                       ]
                     ) : (
-                      <div>
+                      <div className="mem-indent-email">
                         <Form.Input
                           label="Cost"
                           name="expense"
