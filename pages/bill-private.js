@@ -7,6 +7,7 @@ import { requiredAuth } from "../utils/ssr";
 import { Card, Button } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { getBill } from "./api/bills/index";
+import TotalAmountOwed from "../components/TotalAmountOwed";
 
 const BillPrivate = ({ bills, user }) => {
   /* We must anticipate for different types of bills when
@@ -26,6 +27,7 @@ const BillPrivate = ({ bills, user }) => {
   });
   return (
     <Layout user={user}>
+      <TotalAmountOwed activeBills={activeBills} user={user} />
       <div className="bill-container">
         <h1>Active Bills:</h1>
         <div className="grid wrapper">
