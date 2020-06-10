@@ -276,7 +276,7 @@ const NewBill = () => {
                         ),
                       ]
                     ) : (
-                      <div>
+                      <div className="mem-indent-email">
                         <Form.Input
                           label="Cost"
                           name="expense"
