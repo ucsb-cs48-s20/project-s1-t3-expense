@@ -80,6 +80,9 @@ export default function Bill(props) {
       form.members.forEach((member) => {
         member.cost = Math.round(member.cost * 100);
       });
+      prevMembers.forEach((member) => {
+        member.cost = Math.round(member.cost * 100);
+      });
       const res = await fetch(
         //`http://localhost:3000/api/bills/${router.query.id}`,
         `https://cs48-s20-s1-t3-prod.herokuapp.com/api/bills/${router.query.id}`,
@@ -98,11 +101,15 @@ export default function Bill(props) {
          the amount for the member is updated */
       // Loop from index 1 to avoid send notification to bill owner
       for (let i = 1; i < form.members?.length; i++) {
+        // Make sure email exists
+        (form.members[i].email && prevMembers?.length <= i) ||
+        // If previous email of this place exists
+        // Compare previous email with current email to see if
+        // email is updated
         (form.members[i].email &&
           prevMembers?.length > i &&
           (prevMembers[i].email !== form.members[i].email ||
-            prevMembers[i].cost !== form.members[i].cost)) ||
-        prevMembers?.length <= i
+            prevMembers[i].cost !== form.members[i].cost))
           ? await fetch(
               //`http://localhost:3000/api/sendEmail`,
               `https://cs48-s20-s1-t3-prod.herokuapp.com/api/sendEmail`,
